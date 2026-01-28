@@ -5,6 +5,11 @@ import { ImageViewer } from './components/ImageViewer'
 import { ModelViewer } from './components/ModelViewer'
 import { ControlPanel } from './components/ControlPanel'
 import { ConstructorPage } from './pages/ConstructorPage'
+import { SliderDemo } from './pages/SliderDemo'
+import { AnimationDemo } from './pages/AnimationDemo'
+import { StyleDemo } from './pages/StyleDemo'
+import { ButtonsDemo } from './pages/ButtonsDemo'
+import { IncludedDemo } from './pages/IncludedDemo'
 import { useHouseStore } from './store/houseStore'
 import './App.css'
 
@@ -70,6 +75,11 @@ function AppContent() {
   const { error, setError } = useHouseStore()
   const location = useLocation()
   const isConstructor = location.pathname === '/constructor'
+  const isSliderDemo = location.pathname === '/slider-demo'
+  const isAnimationDemo = location.pathname === '/animation-demo'
+  const isStyleDemo = location.pathname === '/style-demo'
+  const isButtonsDemo = location.pathname === '/buttons-demo'
+  const isIncludedDemo = location.pathname === '/included-demo'
 
   // Для конструктора - отдельный layout без общего хедера
   if (isConstructor) {
@@ -84,6 +94,31 @@ function AppContent() {
         )}
       </>
     )
+  }
+
+  // Для демо слайдера - отдельный layout
+  if (isSliderDemo) {
+    return <SliderDemo />
+  }
+
+  // Для демо анимаций - отдельный layout
+  if (isAnimationDemo) {
+    return <AnimationDemo />
+  }
+
+  // Для выбора стилей - отдельный layout
+  if (isStyleDemo) {
+    return <StyleDemo />
+  }
+
+  // Для демо кнопок - отдельный layout
+  if (isButtonsDemo) {
+    return <ButtonsDemo />
+  }
+
+  // Для демо секции "Что входит" - отдельный layout
+  if (isIncludedDemo) {
+    return <IncludedDemo />
   }
 
   return (
@@ -102,6 +137,11 @@ function AppContent() {
       <Routes>
         <Route path="/" element={<GeneratorPage />} />
         <Route path="/constructor" element={<ConstructorPage />} />
+        <Route path="/slider-demo" element={<SliderDemo />} />
+        <Route path="/animation-demo" element={<AnimationDemo />} />
+        <Route path="/style-demo" element={<StyleDemo />} />
+        <Route path="/buttons-demo" element={<ButtonsDemo />} />
+        <Route path="/included-demo" element={<IncludedDemo />} />
       </Routes>
 
       {error && (

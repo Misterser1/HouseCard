@@ -1,0 +1,684 @@
+/* Buttons Demo Page */
+.buttons-demo-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+}
+
+.buttons-demo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.buttons-demo-header h1 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+}
+
+.buttons-demo-header .back-btn {
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.buttons-demo-header .back-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.buttons-demo-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Variant Selector */
+.variant-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.variant-tab {
+  padding: 0.6rem 1.2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.variant-tab:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.variant-tab.active {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+}
+
+/* Preview Area */
+.buttons-preview-area {
+  min-height: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.buttons-variant {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+}
+
+.buttons-variant h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+}
+
+.buttons-variant .variant-desc {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin: -1rem 0 0;
+}
+
+.buttons-group,
+.buttons-group-glass,
+.buttons-group-pills,
+.buttons-group-cards,
+.buttons-group-floating {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* =============================================
+   VARIANT 1: Gradient Glow
+============================================= */
+.btn-v1 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.75rem;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-v1 .btn-glow {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  filter: blur(20px);
+}
+
+.btn-v1.telegram {
+  background: linear-gradient(135deg, #0088cc 0%, #00b4d8 50%, #00d4ff 100%);
+}
+
+.btn-v1.telegram .btn-glow {
+  background: linear-gradient(135deg, #0088cc 0%, #00b4d8 100%);
+}
+
+.btn-v1.email {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #a855f7 100%);
+}
+
+.btn-v1.email .btn-glow {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.btn-v1:hover {
+  transform: translateY(-3px) scale(1.02);
+}
+
+.btn-v1:hover .btn-glow {
+  opacity: 0.6;
+}
+
+.btn-v1 .btn-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  z-index: 1;
+}
+
+.btn-v1 .btn-icon {
+  width: 28px;
+  height: 28px;
+  color: #fff;
+}
+
+.btn-v1 .btn-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.btn-v1 .btn-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.btn-v1 .btn-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.btn-v1 .btn-subtitle {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* =============================================
+   VARIANT 2: Minimal Line
+============================================= */
+.btn-v2 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.3s ease;
+}
+
+.btn-v2 .btn-icon {
+  width: 22px;
+  height: 22px;
+  transition: transform 0.3s ease;
+}
+
+.btn-v2 .btn-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.btn-v2 .btn-text {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.btn-v2 .btn-line {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: currentColor;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.btn-v2:hover {
+  color: #fff;
+}
+
+.btn-v2:hover .btn-icon {
+  transform: scale(1.1);
+}
+
+.btn-v2:hover .btn-line {
+  width: 80%;
+}
+
+.btn-v2.telegram:hover {
+  color: #00d4ff;
+}
+
+.btn-v2.email:hover {
+  color: #a855f7;
+}
+
+/* =============================================
+   VARIANT 3: Glass Morphism
+============================================= */
+.buttons-group-glass {
+  gap: 1rem;
+}
+
+.btn-v3 {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 260px;
+}
+
+.btn-v3:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.btn-v3 .btn-icon {
+  width: 32px;
+  height: 32px;
+  padding: 6px;
+  border-radius: 10px;
+  color: #fff;
+}
+
+.btn-v3 .btn-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.btn-v3.telegram .btn-icon {
+  background: linear-gradient(135deg, #0088cc, #00d4ff);
+}
+
+.btn-v3.email .btn-icon {
+  background: linear-gradient(135deg, #667eea, #a855f7);
+}
+
+.btn-v3 .btn-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.btn-v3 .btn-text span:first-child {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+.btn-v3 .btn-hint {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-v3 .btn-arrow {
+  width: 20px;
+  height: 20px;
+  color: rgba(255, 255, 255, 0.4);
+  transition: all 0.3s ease;
+}
+
+.btn-v3 .btn-arrow svg {
+  width: 100%;
+  height: 100%;
+}
+
+.btn-v3:hover .btn-arrow {
+  color: rgba(255, 255, 255, 0.8);
+  transform: translateX(4px);
+}
+
+/* =============================================
+   VARIANT 4: Pill Buttons
+============================================= */
+.variant-4 {
+  gap: 1.5rem;
+}
+
+.buttons-group-pills {
+  gap: 1rem;
+}
+
+.btn-v4 {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 1.5rem 0.6rem 0.6rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-v4:hover {
+  transform: scale(1.05);
+}
+
+.btn-v4 .btn-icon-circle {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #fff;
+}
+
+.btn-v4 .btn-icon-circle svg {
+  width: 20px;
+  height: 20px;
+}
+
+.btn-v4.telegram .btn-icon-circle {
+  background: linear-gradient(135deg, #0088cc, #00d4ff);
+}
+
+.btn-v4.email .btn-icon-circle {
+  background: linear-gradient(135deg, #667eea, #a855f7);
+}
+
+.btn-v4.telegram:hover {
+  background: rgba(0, 136, 204, 0.15);
+  border-color: rgba(0, 212, 255, 0.3);
+}
+
+.btn-v4.email:hover {
+  background: rgba(102, 126, 234, 0.15);
+  border-color: rgba(168, 85, 247, 0.3);
+}
+
+.btn-v4 .btn-text {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+.pills-label {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+/* =============================================
+   VARIANT 5: Card Style
+============================================= */
+.buttons-group-cards {
+  gap: 1.5rem;
+}
+
+.btn-v5 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  cursor: pointer;
+  width: 200px;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+
+.btn-v5:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-4px);
+}
+
+.btn-v5 .btn-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.btn-v5 .btn-icon {
+  width: 36px;
+  height: 36px;
+  padding: 8px;
+  border-radius: 12px;
+  color: #fff;
+}
+
+.btn-v5 .btn-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.btn-v5.telegram .btn-icon {
+  background: linear-gradient(135deg, #0088cc, #00d4ff);
+}
+
+.btn-v5.email .btn-icon {
+  background: linear-gradient(135deg, #667eea, #a855f7);
+}
+
+.btn-v5 .btn-badge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-v5.telegram .btn-badge {
+  background: rgba(0, 212, 255, 0.15);
+  color: #00d4ff;
+}
+
+.btn-v5.email .btn-badge {
+  background: rgba(168, 85, 247, 0.15);
+  color: #a855f7;
+}
+
+.btn-v5 .btn-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.btn-v5 .btn-card-desc {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.4;
+}
+
+.btn-v5 .btn-card-action {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.btn-v5 .btn-card-action svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.3s ease;
+}
+
+.btn-v5.telegram .btn-card-action {
+  color: #00d4ff;
+}
+
+.btn-v5.email .btn-card-action {
+  color: #a855f7;
+}
+
+.btn-v5:hover .btn-card-action svg {
+  transform: translateX(4px);
+}
+
+/* =============================================
+   VARIANT 6: Floating Action
+============================================= */
+.buttons-group-floating {
+  gap: 2rem;
+}
+
+.btn-v6 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-v6 .btn-circle {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #fff;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.btn-v6 .btn-circle svg {
+  width: 26px;
+  height: 26px;
+}
+
+.btn-v6.telegram .btn-circle {
+  background: linear-gradient(135deg, #0088cc, #00d4ff);
+}
+
+.btn-v6.email .btn-circle {
+  background: linear-gradient(135deg, #667eea, #a855f7);
+}
+
+.btn-v6 .btn-label {
+  position: absolute;
+  left: 100%;
+  margin-left: 0;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #fff;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.btn-v6:hover .btn-circle {
+  transform: scale(1.1);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.btn-v6:hover .btn-label {
+  opacity: 1;
+  transform: translateX(12px);
+}
+
+.floating-hint {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0;
+  font-style: italic;
+}
+
+/* =============================================
+   Apply Section
+============================================= */
+.apply-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.apply-btn {
+  padding: 0.85rem 2rem;
+  background: linear-gradient(135deg, #2E5A3C 0%, #4a8c5c 100%);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.apply-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(46, 90, 60, 0.4);
+}
+
+/* =============================================
+   Responsive
+============================================= */
+@media (max-width: 700px) {
+  .buttons-demo-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .variant-selector {
+    gap: 0.35rem;
+  }
+
+  .variant-tab {
+    padding: 0.5rem 0.9rem;
+    font-size: 0.8rem;
+  }
+
+  .buttons-preview-area {
+    padding: 2rem 1rem;
+  }
+
+  .btn-v3 {
+    min-width: 100%;
+  }
+
+  .btn-v5 {
+    width: 100%;
+  }
+
+  .buttons-group-cards {
+    flex-direction: column;
+    width: 100%;
+  }
+}

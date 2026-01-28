@@ -1,0 +1,590 @@
+/* Slider Demo Page */
+.slider-demo-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #faf6f0 0%, #f5ede0 100%);
+}
+
+/* Demo Header */
+.demo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: #2d5a3d;
+  color: #faf6f0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.demo-header h1 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #faf6f0;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+}
+
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.back-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.variant-selector {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.variant-btn {
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  background: transparent;
+  color: #faf6f0;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.variant-btn:hover {
+  border-color: #c9a86c;
+  background: rgba(201, 168, 108, 0.2);
+}
+
+.variant-btn.active {
+  background: #c9a86c;
+  border-color: #c9a86c;
+  color: #1a3c2a;
+}
+
+/* Variant Label */
+.variant-label {
+  text-align: center;
+  padding: 1rem;
+  color: #1a3c2a;
+  font-size: 1rem;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Common Slider Styles */
+.slider-variant {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(45, 90, 61, 0.9);
+  color: #faf6f0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  z-index: 10;
+}
+
+.nav-btn:hover {
+  background: #2d5a3d;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.nav-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+.nav-prev {
+  left: 2rem;
+}
+
+.nav-next {
+  right: 2rem;
+}
+
+/* ==========================================
+   ВАРИАНТ 1: Полноэкранный баннер
+   ========================================== */
+
+.variant-1 .fullwidth-slider {
+  position: relative;
+  height: calc(100vh - 140px);
+  overflow: hidden;
+}
+
+.variant-1 .slider-image-wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.variant-1 .slider-main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.variant-1 .slider-gradient-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to top, rgba(26, 60, 42, 0.8) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.variant-1 .slider-info {
+  position: absolute;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #faf6f0;
+  z-index: 5;
+}
+
+.variant-1 .slider-info h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.variant-1 .slider-info p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin: 0;
+}
+
+.variant-1 .bottom-thumbnails {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  z-index: 10;
+}
+
+.variant-1 .thumb {
+  width: 80px;
+  height: 55px;
+  border: 3px solid transparent;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s;
+  opacity: 0.7;
+  padding: 0;
+  background: none;
+}
+
+.variant-1 .thumb:hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.variant-1 .thumb.active {
+  border-color: #c9a86c;
+  opacity: 1;
+  box-shadow: 0 0 20px rgba(201, 168, 108, 0.5);
+}
+
+.variant-1 .thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ==========================================
+   ВАРИАНТ 2: Градиентная рамка
+   ========================================== */
+
+.variant-2 .gradient-frame-slider {
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.variant-2 .gradient-border {
+  padding: 4px;
+  background: linear-gradient(135deg, #2d5a3d 0%, #c9a86c 50%, #2d5a3d 100%);
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(45, 90, 61, 0.2);
+}
+
+.variant-2 .slider-inner {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #fefcf8;
+}
+
+.variant-2 .slider-main-image {
+  display: block;
+  width: 100%;
+  max-width: 900px;
+  height: 500px;
+  object-fit: cover;
+}
+
+.variant-2 .image-counter {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  padding: 0.5rem 1rem;
+  background: rgba(45, 90, 61, 0.9);
+  color: #faf6f0;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.variant-2 .thumbnails-row {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: #fefcf8;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(45, 90, 61, 0.1);
+}
+
+.variant-2 .thumb {
+  position: relative;
+  width: 100px;
+  height: 70px;
+  border: 3px solid #e5ddd0;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s;
+  padding: 0;
+  background: none;
+}
+
+.variant-2 .thumb:hover {
+  border-color: #c9a86c;
+  transform: translateY(-4px);
+}
+
+.variant-2 .thumb.active {
+  border-color: #2d5a3d;
+  box-shadow: 0 8px 25px rgba(45, 90, 61, 0.25);
+}
+
+.variant-2 .thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.variant-2 .thumb-number {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 22px;
+  height: 22px;
+  background: #2d5a3d;
+  color: #faf6f0;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ==========================================
+   ВАРИАНТ 3: Минимализм с превью
+   ========================================== */
+
+.variant-3 .minimal-slider {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.variant-3 .slider-wrapper {
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(45, 90, 61, 0.15);
+}
+
+.variant-3 .slider-container {
+  position: relative;
+  width: 100%;
+}
+
+.variant-3 .slider-main-image {
+  display: block;
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+}
+
+.variant-3 .nav-btn {
+  background: rgba(255, 255, 255, 0.9);
+  color: #2d5a3d;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.variant-3 .nav-btn:hover {
+  background: #fff;
+}
+
+/* Fullscreen Button */
+.variant-3 .fullscreen-btn-v3 {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 12px;
+  background: rgba(45, 90, 61, 0.9);
+  color: #faf6f0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  z-index: 10;
+  box-shadow: 0 4px 15px rgba(45, 90, 61, 0.3);
+}
+
+.variant-3 .fullscreen-btn-v3:hover {
+  background: #2d5a3d;
+  transform: scale(1.1);
+}
+
+.variant-3 .fullscreen-btn-v3 svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* Thumbnails Strip */
+.variant-3 .thumbnails-strip {
+  display: flex;
+  gap: 4px;
+  padding: 8px;
+  background: #f5ede0;
+  justify-content: center;
+}
+
+.variant-3 .thumb-v3 {
+  flex: 1;
+  max-width: 200px;
+  height: 70px;
+  border: 3px solid transparent;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s;
+  padding: 0;
+  background: none;
+  opacity: 0.6;
+}
+
+.variant-3 .thumb-v3:hover {
+  opacity: 1;
+}
+
+.variant-3 .thumb-v3.active {
+  border-color: #2d5a3d;
+  opacity: 1;
+  box-shadow: 0 4px 12px rgba(45, 90, 61, 0.25);
+}
+
+.variant-3 .thumb-v3 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.variant-3 .project-info-card {
+  text-align: center;
+  padding: 1.5rem 3rem;
+  background: #fefcf8;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(45, 90, 61, 0.08);
+  border: 1px solid #e5ddd0;
+}
+
+.variant-3 .project-info-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a3c2a;
+}
+
+.variant-3 .project-info-card p {
+  margin: 0;
+  font-size: 1rem;
+  color: #5a7a65;
+}
+
+/* ==========================================
+   ВАРИАНТ 4: Превью сбоку
+   ========================================== */
+
+.variant-4 .side-preview-slider {
+  display: grid;
+  grid-template-columns: 1fr 150px;
+  gap: 1rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.variant-4 .main-image-area {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(45, 90, 61, 0.15);
+}
+
+.variant-4 .slider-main-image {
+  display: block;
+  width: 100%;
+  height: 550px;
+  object-fit: cover;
+}
+
+.variant-4 .image-title {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  padding: 0.5rem 1rem;
+  background: rgba(45, 90, 61, 0.9);
+  color: #faf6f0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.variant-4 .side-thumbnails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.variant-4 .thumb {
+  position: relative;
+  width: 100%;
+  height: 100px;
+  border: 3px solid #e5ddd0;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s;
+  padding: 0;
+  background: none;
+}
+
+.variant-4 .thumb:hover {
+  border-color: #c9a86c;
+}
+
+.variant-4 .thumb.active {
+  border-color: #2d5a3d;
+  box-shadow: 0 4px 15px rgba(45, 90, 61, 0.25);
+}
+
+.variant-4 .thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.variant-4 .thumb-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(45, 90, 61, 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.variant-4 .thumb:hover .thumb-overlay,
+.variant-4 .thumb.active .thumb-overlay {
+  background: rgba(45, 90, 61, 0.4);
+}
+
+.variant-4 .thumb-overlay span {
+  width: 30px;
+  height: 30px;
+  background: #faf6f0;
+  color: #2d5a3d;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.3s;
+}
+
+.variant-4 .thumb:hover .thumb-overlay span,
+.variant-4 .thumb.active .thumb-overlay span {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .variant-4 .side-preview-slider {
+    grid-template-columns: 1fr;
+  }
+
+  .variant-4 .side-thumbnails {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .variant-4 .thumb {
+    width: 100px;
+    height: 70px;
+    flex-shrink: 0;
+  }
+}
