@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatedImage } from '../components/AnimatedImage'
 
@@ -243,8 +243,8 @@ export function ConstructorPage() {
   const [_projectName] = useState('Мой проект')
   const [areaLength] = useState(10) // длина по осям (м)
   const [areaWidth] = useState(12) // ширина по осям (м)
-  const [rooms, setRooms] = useState(4)
-  const [bathrooms, setBathrooms] = useState(2)
+  const [rooms, _setRooms] = useState(4)
+  const [bathrooms, _setBathrooms] = useState(2)
 
   // Параметры дома
   const [floors, setFloors] = useState(2)
@@ -357,9 +357,9 @@ export function ConstructorPage() {
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isFullscreen, setIsFullscreen] = useState(false)
-  const [activeTab, setActiveTab] = useState('about')
+  const [_activeTab, _setActiveTab] = useState('about')
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [_mobileMenuOpen, _setMobileMenuOpen] = useState(false)
   const [darkMode, setDarkMode] = useState(false)
   const svgRef = useRef<HTMLObjectElement>(null)
 
@@ -466,15 +466,16 @@ export function ConstructorPage() {
   }
 
   // Suppress unused warnings (these are for future functionality)
-  void _roofLabels; void _facadeLabels
+  void _roofLabels; void _facadeLabels; void _activeTab; void _setActiveTab; void _mobileMenuOpen; void _setMobileMenuOpen; void _setRooms; void _setBathrooms
 
-  const navTabs = [
+  const _navTabs = [
     { id: 'about', label: 'О проекте' },
     { id: 'gallery', label: 'Галерея' },
     { id: 'plans', label: 'Планировки' },
     { id: 'config', label: 'Комплектация' },
     { id: 'video', label: 'Видео' },
   ]
+  void _navTabs
 
   return (
     <div className={`premium-constructor ${darkMode ? 'dark-theme' : ''}`}>
