@@ -10,6 +10,11 @@ import { AnimationDemo } from './pages/AnimationDemo'
 import { StyleDemo } from './pages/StyleDemo'
 import { ButtonsDemo } from './pages/ButtonsDemo'
 import { IncludedDemo } from './pages/IncludedDemo'
+import { ConstructorTest } from './pages/ConstructorTest'
+import { DesignDemo } from './pages/DesignDemo'
+import LogoDemo from './pages/LogoDemo'
+import ControlsDemo from './pages/ControlsDemo'
+import CardDemo from './pages/CardDemo'
 import { useHouseStore } from './store/houseStore'
 import './App.css'
 
@@ -80,6 +85,11 @@ function AppContent() {
   const isStyleDemo = location.pathname === '/style-demo'
   const isButtonsDemo = location.pathname === '/buttons-demo'
   const isIncludedDemo = location.pathname === '/included-demo'
+  const isConstructorTest = location.pathname === '/constructor-test'
+  const isDesignDemo = location.pathname === '/design-demo'
+  const isLogoDemo = location.pathname === '/logo-demo'
+  const isControlsDemo = location.pathname === '/controls-demo'
+  const isCardDemo = location.pathname === '/card-demo'
 
   // Для конструктора - отдельный layout без общего хедера
   if (isConstructor) {
@@ -121,6 +131,31 @@ function AppContent() {
     return <IncludedDemo />
   }
 
+  // Для тестового конструктора - отдельный layout
+  if (isConstructorTest) {
+    return <ConstructorTest />
+  }
+
+  // Для демо дизайна - отдельный layout
+  if (isDesignDemo) {
+    return <DesignDemo />
+  }
+
+  // Для демо логотипа - отдельный layout
+  if (isLogoDemo) {
+    return <LogoDemo />
+  }
+
+  // Для демо контролов - отдельный layout
+  if (isControlsDemo) {
+    return <ControlsDemo />
+  }
+
+  // Для демо вариантов карточки - отдельный layout
+  if (isCardDemo) {
+    return <CardDemo />
+  }
+
   return (
     <div className="app">
       <header className="header">
@@ -142,6 +177,11 @@ function AppContent() {
         <Route path="/style-demo" element={<StyleDemo />} />
         <Route path="/buttons-demo" element={<ButtonsDemo />} />
         <Route path="/included-demo" element={<IncludedDemo />} />
+        <Route path="/constructor-test" element={<ConstructorTest />} />
+        <Route path="/design-demo" element={<DesignDemo />} />
+        <Route path="/logo-demo" element={<LogoDemo />} />
+        <Route path="/controls-demo" element={<ControlsDemo />} />
+        <Route path="/card-demo" element={<CardDemo />} />
       </Routes>
 
       {error && (

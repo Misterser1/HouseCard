@@ -4476,6 +4476,39 @@ body {
   background-repeat: no-repeat;
 }
 
+/* Excluded features (what's NOT included) */
+.material-card-excluded {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.material-card-excluded li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  color: #8a7a75;
+  line-height: 1.4;
+  opacity: 0.8;
+}
+
+.material-card-excluded li::before {
+  content: '';
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a85050' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
 /* Material Options Responsive */
 @media (max-width: 1024px) {
   .material-options-grid {
@@ -4986,6 +5019,10 @@ body {
     padding: 0.4rem 0;
   }
 
+  .material-card-excluded li {
+    font-size: 0.75rem;
+  }
+
   /* Tabs Mobile */
   .tabs-list {
     gap: 0.25rem;
@@ -5305,7 +5342,7 @@ body {
 }
 
 .dark-theme .preview-section {
-  background: rgba(10, 10, 15, 0.8);
+  background: transparent;
 }
 
 .dark-theme .premium-layout {
@@ -5317,9 +5354,9 @@ body {
 }
 
 .dark-theme .slider-container {
-  background: rgba(18, 18, 26, 0.9);
-  border: 1px solid rgba(255, 0, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(255, 0, 255, 0.15);
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 .dark-theme .thumbnail-item {
@@ -5438,6 +5475,19 @@ body {
 
 .dark-theme .material-card-features li::before {
   color: #00ffff;
+}
+
+/* Dark theme excluded features */
+.dark-theme .material-card-excluded {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-theme .material-card-excluded li {
+  color: rgba(255, 100, 100, 0.7);
+}
+
+.dark-theme .material-card-excluded li::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff6666' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E");
 }
 
 /* Neon theme for material card button - only colors */
@@ -5630,8 +5680,8 @@ body {
 
 /* Neon theme for spec block */
 .dark-theme .spec-block {
-  background: rgba(26, 26, 37, 0.5);
-  border-color: rgba(0, 255, 255, 0.1);
+  background: transparent;
+  border-color: transparent;
 }
 
 .dark-theme .spec-value-big {
@@ -5649,8 +5699,8 @@ body {
 }
 
 .dark-theme .spec-row-double .spec-block {
-  background: rgba(26, 26, 37, 0.6);
-  border-color: rgba(0, 255, 255, 0.15);
+  background: transparent;
+  border-color: transparent;
 }
 
 /* Neon theme for slider navigation */
@@ -5698,19 +5748,83 @@ body {
 }
 
 .dark-theme .thumbnails-strip {
-  background: rgba(10, 10, 15, 0.8);
-  border-top: 1px solid rgba(255, 0, 255, 0.2);
+  background: transparent;
+  border-top: none;
 }
 
 /* Neon theme for slider container */
 .dark-theme .slider-wrapper {
-  background: rgba(10, 10, 15, 0.9);
+  background: transparent;
 }
 
-.dark-theme .slider-container {
+/* slider-container styles moved above */
+
+/* Neon theme for floor plan section */
+.dark-theme .floor-plan-section {
+  background: transparent;
+}
+
+.dark-theme .floor-plan-header {
+  border-bottom-color: rgba(255, 0, 255, 0.2);
+}
+
+.dark-theme .floor-plan-header h2 {
+  color: #00ffff;
+  text-shadow: 0 0 20px rgba(0, 255, 255, 0.5), 0 0 40px rgba(0, 255, 255, 0.3);
+}
+
+.dark-theme .floor-plan-wrapper {
+  background: rgba(18, 18, 26, 0.85);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 255, 255, 0.1);
+}
+
+.dark-theme .floor-indicator {
+  background: rgba(18, 18, 26, 0.9);
+  border: none;
+}
+
+.dark-theme .floor-label {
+  color: #ff00ff;
+}
+
+.dark-theme .floor-total-area {
+  color: #00ffff;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.dark-theme .room-list {
   background: rgba(18, 18, 26, 0.95);
   border: 1px solid rgba(255, 0, 255, 0.2);
-  box-shadow: 0 8px 40px rgba(255, 0, 255, 0.15);
+  box-shadow: 0 4px 30px rgba(255, 0, 255, 0.1);
+}
+
+.dark-theme .room-list h3 {
+  color: #ff00ff;
+  border-bottom-color: rgba(255, 0, 255, 0.2);
+  text-shadow: 0 0 10px rgba(255, 0, 255, 0.4);
+}
+
+.dark-theme .room-list-item {
+  color: #ffffff;
+}
+
+.dark-theme .room-list-item:hover {
+  background: rgba(0, 255, 255, 0.1);
+}
+
+.dark-theme .room-list-item.active {
+  background: rgba(255, 0, 255, 0.15);
+  border: 1px solid rgba(255, 0, 255, 0.3);
+}
+
+.dark-theme .room-list-name {
+  color: #ffffff;
+}
+
+.dark-theme .room-list-area {
+  color: #00ffff;
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
 }
 
 /* Neon theme for project info section */
@@ -5835,7 +5949,8 @@ body {
 
 .dark-theme .room-modal-features li {
   color: rgba(255, 255, 255, 0.9);
-  border-color: rgba(0, 255, 255, 0.2);
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid rgba(0, 255, 255, 0.3);
 }
 
 .dark-theme .room-modal-features li::before {
@@ -5843,8 +5958,8 @@ body {
 }
 
 .dark-theme .room-modal-dimensions {
-  background: rgba(26, 26, 37, 0.8);
-  border: 1px solid rgba(191, 0, 255, 0.2);
+  background: transparent;
+  border: none;
 }
 
 .dark-theme .room-modal-dimensions span {
@@ -6844,6 +6959,19 @@ body {
 .dark-theme .custom-select:focus + .select-arrow {
   color: #ff00ff;
   filter: drop-shadow(0 0 4px rgba(255, 0, 255, 0.6));
+}
+
+/* Style dropdown options in dark theme */
+.dark-theme .custom-select option {
+  background: #1a1a25;
+  color: #ffffff;
+  padding: 0.5rem;
+}
+
+.dark-theme .custom-select option:hover,
+.dark-theme .custom-select option:checked {
+  background: #2a2a3a;
+  color: #ff00ff;
 }
 
 .config-checkbox {

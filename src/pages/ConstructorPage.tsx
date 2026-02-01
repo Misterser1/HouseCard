@@ -259,8 +259,8 @@ export function ConstructorPage() {
   // Suppress unused warnings (these are for future functionality)
   void _projectName; void wallMaterial; void setWallMaterial; void hasGarage; void setHasGarage; void hasTerrace; void setHasTerrace
 
-  // Галерея изображений проекта по комбинации фасад + кровля
-  const houseImagesByConfig: Record<FacadeStyle, Record<RoofStyle, string[]>> = {
+  // Галерея изображений проекта по комбинации фасад + кровля (ДЕНЬ)
+  const houseImagesByConfigDay: Record<FacadeStyle, Record<RoofStyle, string[]>> = {
     brick: {
       natural: [
         '/houses/brick/natural/house_brick_roof1.jpg',
@@ -332,8 +332,166 @@ export function ConstructorPage() {
     },
   }
 
-  // Текущие изображения на основе выбранного фасада и кровли
-  const houseImages = houseImagesByConfig[facadeStyle][roofStyle]
+  // Галерея изображений проекта по комбинации фасад + кровля (НОЧЬ)
+  const houseImagesByConfigNight: Record<FacadeStyle, Record<RoofStyle, string[]>> = {
+    brick: {
+      natural: [
+        '/houses/night/brick/natural/house_brick_roof_night1.jpg',
+        '/houses/night/brick/natural/house_brick_roof_night2.jpg',
+        '/houses/night/brick/natural/house_brick_roof_night3.jpg',
+        '/houses/night/brick/natural/house_brick_roof_night4.jpg',
+        '/houses/night/brick/natural/house_brick_roof_night5.jpg',
+      ],
+      soft: [
+        '/houses/night/brick/soft/house_brick_soft_night1.jpg',
+        '/houses/night/brick/soft/house_brick_soft_night2.jpg',
+        '/houses/night/brick/soft/house_brick_soft_night3.jpg',
+        '/houses/night/brick/soft/house_brick_soft_night4.jpg',
+        '/houses/night/brick/soft/house_brick_soft_night5.jpg',
+      ],
+      flat: [
+        '/houses/night/brick/flat/house_brick_night1.jpg',
+        '/houses/night/brick/flat/house_brick_night2.jpg',
+        '/houses/night/brick/flat/house_brick_night3.jpg',
+        '/houses/night/brick/flat/house_brick_night4.jpg',
+        '/houses/night/brick/flat/house_brick_night5.jpg',
+      ],
+    },
+    combined: {
+      natural: [
+        '/houses/night/combined/natural/house_roof_night1.jpg',
+        '/houses/night/combined/natural/house_roof_night2.jpg',
+        '/houses/night/combined/natural/house_roof_night3.jpg',
+        '/houses/night/combined/natural/house_roof_night4.jpg',
+        '/houses/night/combined/natural/house_roof_night5.jpg',
+      ],
+      soft: [
+        '/houses/night/combined/soft/house_combined_soft_night1.jpg',
+        '/houses/night/combined/soft/house_combined_soft_night2.jpg',
+        '/houses/night/combined/soft/house_combined_soft_night3.jpg',
+        '/houses/night/combined/soft/house_combined_soft_night4.jpg',
+        '/houses/night/combined/soft/house_combined_soft_night5.jpg',
+      ],
+      flat: [
+        '/houses/night/combined/flat/house_combined_night1.jpg',
+        '/houses/night/combined/flat/house_combined_night2.jpg',
+        '/houses/night/combined/flat/house_combined_night3.jpg',
+        '/houses/night/combined/flat/house_combined_night4.jpg',
+        '/houses/night/combined/flat/house_combined_night5.jpg',
+      ],
+    },
+    ventilated: {
+      natural: [
+        '/houses/night/ventilated/natural/house_vent_roof_night1.jpg',
+        '/houses/night/ventilated/natural/house_vent_roof_night2.jpg',
+        '/houses/night/ventilated/natural/house_vent_roof_night3.jpg',
+        '/houses/night/ventilated/natural/house_vent_roof_night4.jpg',
+        '/houses/night/ventilated/natural/house_vent_roof_night5.jpg',
+      ],
+      soft: [
+        '/houses/night/ventilated/soft/house_vent_soft_night1.jpg',
+        '/houses/night/ventilated/soft/house_vent_soft_night2.jpg',
+        '/houses/night/ventilated/soft/house_vent_soft_night3.jpg',
+        '/houses/night/ventilated/soft/house_vent_soft_night4.jpg',
+        '/houses/night/ventilated/soft/house_vent_soft_night5.jpg',
+      ],
+      flat: [
+        '/houses/night/ventilated/flat/house_vent_night1.jpg',
+        '/houses/night/ventilated/flat/house_vent_night2.jpg',
+        '/houses/night/ventilated/flat/house_vent_night3.jpg',
+        '/houses/night/ventilated/flat/house_vent_night4.jpg',
+        '/houses/night/ventilated/flat/house_vent_night5.jpg',
+      ],
+    },
+  }
+
+  // Галерея изображений проекта по комбинации фасад + кровля (ЗИМА)
+  const houseImagesByConfigWinter: Record<FacadeStyle, Record<RoofStyle, string[]>> = {
+    brick: {
+      natural: [
+        '/houses/winter/brick/natural/house_brick_roof_winter1.jpg',
+        '/houses/winter/brick/natural/house_brick_roof_winter2.jpg',
+        '/houses/winter/brick/natural/house_brick_roof_winter3.jpg',
+        '/houses/winter/brick/natural/house_brick_roof_winter4.jpg',
+        '/houses/winter/brick/natural/house_brick_roof_winter5.jpg',
+      ],
+      soft: [
+        '/houses/winter/brick/soft/house_brick_soft_winter1.jpg',
+        '/houses/winter/brick/soft/house_brick_soft_winter2.jpg',
+        '/houses/winter/brick/soft/house_brick_soft_winter3.jpg',
+        '/houses/winter/brick/soft/house_brick_soft_winter4.jpg',
+        '/houses/winter/brick/soft/house_brick_soft_winter5.jpg',
+      ],
+      flat: [
+        '/houses/winter/brick/flat/house_brick_winter1.jpg',
+        '/houses/winter/brick/flat/house_brick_winter2.jpg',
+        '/houses/winter/brick/flat/house_brick_winter3.jpg',
+        '/houses/winter/brick/flat/house_brick_winter4.jpg',
+        '/houses/winter/brick/flat/house_brick_winter5.jpg',
+      ],
+    },
+    combined: {
+      natural: [
+        '/houses/winter/combined/natural/house_roof_winter1.jpg',
+        '/houses/winter/combined/natural/house_roof_winter2.jpg',
+        '/houses/winter/combined/natural/house_roof_winter3.jpg',
+        '/houses/winter/combined/natural/house_roof_winter4.jpg',
+        '/houses/winter/combined/natural/house_roof_winter5.jpg',
+      ],
+      soft: [
+        '/houses/winter/combined/soft/house_combined_soft_winter1.jpg',
+        '/houses/winter/combined/soft/house_combined_soft_winter2.jpg',
+        '/houses/winter/combined/soft/house_combined_soft_winter3.jpg',
+        '/houses/winter/combined/soft/house_combined_soft_winter4.jpg',
+        '/houses/winter/combined/soft/house_combined_soft_winter5.jpg',
+      ],
+      flat: [
+        '/houses/winter/combined/flat/house_winter1.jpg',
+        '/houses/winter/combined/flat/house_winter2.jpg',
+        '/houses/winter/combined/flat/house_winter3.jpg',
+        '/houses/winter/combined/flat/house_winter4.jpg',
+        '/houses/winter/combined/flat/house_winter5.jpg',
+      ],
+    },
+    ventilated: {
+      natural: [
+        '/houses/winter/ventilated/natural/house_vent_roof_winter1.jpg',
+        '/houses/winter/ventilated/natural/house_vent_roof_winter2.jpg',
+        '/houses/winter/ventilated/natural/house_vent_roof_winter3.jpg',
+        '/houses/winter/ventilated/natural/house_vent_roof_winter4.jpg',
+        '/houses/winter/ventilated/natural/house_vent_roof_winter5.jpg',
+      ],
+      soft: [
+        '/houses/winter/ventilated/soft/house_vent_soft_winter1.jpg',
+        '/houses/winter/ventilated/soft/house_vent_soft_winter2.jpg',
+        '/houses/winter/ventilated/soft/house_vent_soft_winter3.jpg',
+        '/houses/winter/ventilated/soft/house_vent_soft_winter4.jpg',
+        '/houses/winter/ventilated/soft/house_vent_soft_winter5.jpg',
+      ],
+      flat: [
+        '/houses/winter/ventilated/flat/house_vent_winter1.jpg',
+        '/houses/winter/ventilated/flat/house_vent_winter2.jpg',
+        '/houses/winter/ventilated/flat/house_vent_winter3.jpg',
+        '/houses/winter/ventilated/flat/house_vent_winter4.jpg',
+        '/houses/winter/ventilated/flat/house_vent_winter5.jpg',
+      ],
+    },
+  }
+
+  // Текущие изображения на основе выбранного фасада, кровли, сезона и времени суток
+  const getHouseImages = () => {
+    if (isSummer) {
+      return isDay
+        ? houseImagesByConfigDay[facadeStyle][roofStyle]
+        : houseImagesByConfigNight[facadeStyle][roofStyle]
+    } else {
+      // Зима - пока только дневные фото, ночные используем летние
+      return isDay
+        ? houseImagesByConfigWinter[facadeStyle][roofStyle]
+        : houseImagesByConfigNight[facadeStyle][roofStyle]
+    }
+  }
+  const houseImages = getHouseImages()
 
   // Внешние URL для API анимации (Cloudinary - без сжатия, оригинальное качество)
   const houseImagesExternal: Record<string, string> = {
@@ -368,6 +526,19 @@ export function ConstructorPage() {
     setCurrentImageIndex(0)
   }, [facadeStyle, roofStyle])
 
+  // Функция подсветки комнаты на SVG
+  const highlightRoom = (roomId: string, highlight: boolean) => {
+    const svgObject = svgRef.current
+    if (!svgObject?.contentDocument) return
+
+    const room = svgObject.contentDocument.querySelector(`[data-room="${roomId}"]`)
+    if (room) {
+      ;(room as SVGRectElement).style.fill = highlight
+        ? (darkMode ? 'rgba(0, 255, 255, 0.25)' : 'rgba(46, 90, 60, 0.2)')
+        : 'transparent'
+    }
+  }
+
   // Обработка кликов на комнаты в SVG
   useEffect(() => {
     const svgObject = svgRef.current
@@ -387,7 +558,9 @@ export function ConstructorPage() {
         })
 
         room.addEventListener('mouseenter', () => {
-          ;(room as SVGRectElement).style.fill = 'rgba(46, 90, 60, 0.2)'
+          ;(room as SVGRectElement).style.fill = darkMode
+            ? 'rgba(0, 255, 255, 0.25)'
+            : 'rgba(46, 90, 60, 0.2)'
         })
 
         room.addEventListener('mouseleave', () => {
@@ -401,7 +574,7 @@ export function ConstructorPage() {
     if (svgObject.contentDocument) handleLoad()
 
     return () => svgObject.removeEventListener('load', handleLoad)
-  }, [])
+  }, [darkMode])
 
   // Данные комнат для планировки согласно plan.pdf
   // Позиции в процентах относительно изображения плана (viewBox: 230 175 680 480)
@@ -509,13 +682,6 @@ export function ConstructorPage() {
             </div>
           </button>
 
-          {/* Desktop Back Button */}
-          <Link to="/" className="clean-back-btn">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-            Назад
-          </Link>
         </div>
       </header>
 
@@ -743,9 +909,8 @@ export function ConstructorPage() {
 
       {/* Floor Plan Section */}
       <div className="floor-plan-section">
-        <div className="floor-plan-header">
-          <h2>Планировка 1 этажа</h2>
-          <span className="floor-plan-area">189.26 м²</span>
+        <div className="floor-plan-header" style={{ justifyContent: 'center' }}>
+          <h2>Планировка</h2>
         </div>
         <div className="floor-plan-container">
           <div className="floor-plan-wrapper">
@@ -775,6 +940,8 @@ export function ConstructorPage() {
                 key={room.id}
                 className={`room-list-item ${selectedRoom === room.id ? 'active' : ''}`}
                 onClick={() => setSelectedRoom(room.id)}
+                onMouseEnter={() => highlightRoom(room.id, true)}
+                onMouseLeave={() => highlightRoom(room.id, false)}
               >
                 <span className="room-list-name">{room.name}</span>
                 <span className="room-list-area">{room.area} м²</span>
@@ -804,6 +971,10 @@ export function ConstructorPage() {
               <li>Внутренняя отделка</li>
               <li>Внешняя отделка - Имитация бруса</li>
             </ul>
+            <ul className="material-card-excluded">
+              <li>Геология</li>
+              <li>Монолитная плита</li>
+            </ul>
           </div>
 
           {/* Газобетонный дом */}
@@ -821,6 +992,10 @@ export function ConstructorPage() {
               <li>Наружные стены - блоки Bonolit 400 мм</li>
               <li>Внутренние стены - блоки Bonolit 250 мм</li>
               <li>Перегородки - блоки Bonolit 100 мм</li>
+            </ul>
+            <ul className="material-card-excluded">
+              <li>Внутренняя отделка</li>
+              <li>Внешняя отделка</li>
             </ul>
           </div>
 
@@ -840,14 +1015,17 @@ export function ConstructorPage() {
               <li>Внутренние стены - блоки Porotherm 250 мм</li>
               <li>Перегородки - блоки Porotherm Thermo 120/80 мм</li>
             </ul>
+            <ul className="material-card-excluded">
+              <li>Внутренняя отделка</li>
+              <li>Внешняя отделка</li>
+            </ul>
           </div>
         </div>
       </div>
 
-      {/* What's Included & Payment Terms Section */}
+      {/* What's Included & Payment Terms Section - ВРЕМЕННО СКРЫТО
       <div className="included-payment-section">
         <div className="included-payment-grid">
-          {/* Что входит в стоимость */}
           <div className="included-card">
             <h3 className="included-card-title">Что входит в стоимость</h3>
             <div className="included-card-content">
@@ -882,7 +1060,6 @@ export function ConstructorPage() {
             </div>
           </div>
 
-          {/* Условия оплаты */}
           <div className="payment-card">
             <h3 className="payment-card-title">Условия оплаты</h3>
             <div className="payment-stages">
@@ -929,6 +1106,7 @@ export function ConstructorPage() {
           </div>
         </div>
       </div>
+      */}
 
       {/* Room Detail Modal */}
       {selectedRoom && (
