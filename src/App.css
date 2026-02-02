@@ -1412,11 +1412,14 @@ body {
   font-size: 1.35rem;
   letter-spacing: 0.02em;
   color: #2E5A3C;
+  line-height: 1;
+  position: relative;
+  top: 4px;
 }
 
 .clean-logo .logo-icon {
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   color: #2E5A3C;
   display: flex;
   align-items: center;
@@ -5462,8 +5465,8 @@ body {
   }
 
   .clean-logo .logo-icon {
-    width: 18px;
-    height: 18px;
+    width: 22px;
+    height: 22px;
   }
 }
 
