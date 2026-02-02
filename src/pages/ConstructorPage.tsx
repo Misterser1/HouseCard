@@ -9,9 +9,8 @@ type FacadeStyle = 'brick' | 'combined' | 'ventilated'
 // SVG Icons
 const Icons = {
   house: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-      <polyline points="9,22 9,12 15,12 15,22"/>
+    <svg viewBox="0 274.42 22.58 22.58" fill="currentColor">
+      <path d="m 15.948527,281.05091 v -0.33156 c 1.3e-5,-0.54755 -0.449703,-0.99985 -0.997257,-0.99985 h -1.33206 v -0.32895 c 0,-0.15838 -0.06741,-0.23325 -0.197346,-0.30828 -2.161878,-0.97188 -4.3264716,-1.94673 -6.4883466,-2.91966 -0.1046928,-0.43891 -0.5019052,-0.77036 -0.9833047,-0.77025 -0.5045157,0.0128 -0.9123895,0.39071 -0.976154,0.86932 l -3.9272051,4.91674 c -0.0815351,0.0999 -0.0980014,0.23799 -0.042256,0.3543 l 1.0005075,1.99777 c 0.056291,0.11259 0.1712492,0.18374 0.2970941,0.18398 h 1.3314093 v 0.9979 c 0,0.61617 0.4263307,1.13897 0.997908,1.28851 v 6.0336 c -0.5475553,0 -0.9979212,0.4523 -0.997908,0.99985 v 0.99726 h -0.33415 c -0.3637344,0 -0.6657013,0.30264 -0.6657046,0.66636 v 0.6657 H 1.3023444 c -0.1840839,3.7e-4 -0.33292228,0.15007 -0.33220332,0.33415 6.6575e-4,0.18307 0.14913462,0.3312 0.33220332,0.33155 H 21.273484 c 0.18383,7.3e-4 0.333435,-0.14772 0.334152,-0.33155 7.33e-4,-0.18484 -0.149306,-0.33488 -0.334152,-0.33415 h -0.332202 v -1.66361 c 0.363719,0 0.66636,-0.30199 0.666354,-0.66571 v -0.66571 c 6e-6,-0.36373 -0.30262,-0.66635 -0.666354,-0.66635 v -1.66295 c 0.363703,0 0.66636,-0.30265 0.666354,-0.66637 v -0.66569 c 6e-6,-0.36372 -0.30262,-0.66571 -0.666354,-0.66571 v -1.66361 h 0.332202 c 0.184846,7.3e-4 0.334876,-0.14931 0.334152,-0.33416 -7.32e-4,-0.18382 -0.150322,-0.33227 -0.334152,-0.33155 h -0.332202 v -0.6657 c 7.32e-4,-0.18383 -0.147723,-0.33344 -0.331552,-0.33416 -0.184847,-7.2e-4 -0.334876,0.14931 -0.334153,0.33416 v 0.6657 h -3.329173 v -0.6657 c 7.32e-4,-0.18383 -0.147723,-0.33344 -0.331553,-0.33416 -0.184846,-7.2e-4 -0.334876,0.14931 -0.334152,0.33416 v 0.99725 1.99777 h -5.324988 c -0.363719,0 -0.665709,0.30199 -0.665704,0.66571 v 0.66569 c -5e-6,0.36372 0.301985,0.66637 0.665704,0.66637 v 1.66295 c -0.363719,0 -0.665709,0.30262 -0.665704,0.66635 v 0.66571 c -5e-6,0.36372 0.30197,0.66571 0.665704,0.66571 v 1.66361 H 9.2927501 v -0.6657 c -2.5e-6,-0.36372 -0.3026204,-0.66636 -0.6663543,-0.66636 H 8.2922431 v -0.99726 c 1.39e-5,-0.54755 -0.4497035,-0.99985 -0.9972575,-0.99985 2.14e-5,-2.01976 2.5e-6,-4.21583 0,-5.99071 H 7.626538 c 0.3637213,0 0.6657101,-0.30197 0.6657051,-0.6657 8.68e-5,-0.55533 0,-1.10893 0,-1.66361 h 3.3298239 v 0.6657 c -0.363722,0 -0.666356,0.30264 -0.666356,0.66636 v 1.66296 c 0,0.36372 0.302634,0.66635 0.666356,0.66635 h 3.329173 c 0.36372,0 0.665705,-0.30263 0.665705,-0.66635 v -1.66296 c 0,-0.36372 -0.301985,-0.66636 -0.665705,-0.66636 v -0.6657 h 4.32708 c 0.306731,0 0.433317,-0.24411 0.275072,-0.51819 l -1.329459,-1.99777 c -0.0627,-0.10857 -0.172813,-0.14759 -0.276343,-0.14759 z M 5.9628634,276.0582 c 0.187769,0 0.3322028,0.14637 0.3322015,0.33415 -2.5e-6,0.18778 -0.144425,0.33156 -0.3322015,0.33156 -0.1877728,0 -0.3315511,-0.14381 -0.3315511,-0.33156 -3.8e-6,-0.18779 0.1437783,-0.33415 0.3315511,-0.33415 z m 0.883488,0.79572 6.1070596,2.74734 v 0.11838 h -1.331408 c -0.547556,0 -0.997921,0.4523 -0.997907,0.99985 v 0.33156 H 7.8371074 c -0.1539885,-0.135 -0.3386136,-0.23558 -0.5421847,-0.28865 v -2.04068 c 0,-0.3637 -0.3019712,-0.66569 -0.6657051,-0.66569 H 6.2950649 v -0.72357 c 0.2374345,-0.0848 0.434728,-0.25768 0.5512865,-0.47847 z m -1.6402087,0.18528 c 0.1128574,0.13169 0.2590889,0.23392 0.4251696,0.2932 v 0.72357 h -0.334154 c -0.3637342,0 -0.6657045,0.30198 -0.6657045,0.66569 v 1.99777 h -0.331551 c -0.242373,0 -0.4575388,0.13439 -0.5740404,0.33155 H 1.9952898 Z m 0.091018,1.68246 H 6.62922 v 0.15408 l -1.3320593,0.88675 z m 1.3320593,0.95435 v 1.04342 H 5.2971608 v -0.15472 z m 4.992785,0.70928 h 1.662961 1.666212 c 0.187775,0 0.331557,0.14637 0.331552,0.33414 v 0.33155 h -3.994878 v -0.33155 c -5e-6,-0.18777 0.146378,-0.33414 0.334153,-0.33414 z m -7.3220998,0.99985 h 2.6608647 c 0.2498286,0 0.464591,0.13218 0.5785907,0.33155 H 5.9628634 c -0.1830602,7.3e-4 -0.3311788,0.14914 -0.3315511,0.33221 v 1.66556 c 0,0.54754 0.4503564,0.9979 0.9979053,0.9979 h 0.9972575 v 0.66571 H 4.9656075 c -0.371603,0 -0.6657047,-0.29411 -0.6657047,-0.66571 z m -2.4573889,0.33155 h 1.1682351 l -0.6676551,1.0018 z m 6.407408,0 h 1.0856715 l -0.88869,1.33206 H 8.2921815 v -0.99141 c 0,-0.12278 -0.014731,-0.23466 -0.042257,-0.34065 z m 2.3286667,0 h 1.420473 l -0.709911,1.06487 z m 2.663469,0 h 1.417873 l -0.708612,1.06292 z m 2.663468,0 h 1.417873 l -0.708611,1.06292 z m -12.2719798,0.26654 v 1.06552 H 2.9236375 Z m 6.3235457,6.7e-4 0.7105611,1.06486 H 9.2465315 Z m 2.6634681,0 0.709261,1.06486 h -1.419822 z m 2.662168,0.003 0.709912,1.06292 h -1.419176 z m 2.66347,0 0.709911,1.06292 h -1.419174 z m -11.6511327,0.39722 h 1.3314102 v 1.66241 h -0.99726 c -0.1877715,0 -0.3341527,-0.14378 -0.3341527,-0.33156 z m 5.9926427,1.33141 h 1.997764 v 0.66571 H 12.28771 Z m -0.665705,1.33206 h 3.329173 v 1.66296 h -3.329173 z m -6.3248443,0.99726 H 6.62922 v 1.04276 l -1.3320618,-0.8886 z m 11.6491813,0.33414 h 3.329173 v 1.66361 h -3.329173 z m -11.6491813,0.62085 1.0648675,0.70992 -1.0648675,0.70991 z m 1.3320593,1.33142 v 1.41851 l -1.0648687,-0.70861 z m 4.326431,0.37705 h 9.98557 v 0.66571 h -9.98557 z m -5.6584903,0.95501 1.0629163,0.7086 -0.581191,0.38812 c -0.1537986,0.10152 -0.1957688,0.30879 -0.09361,0.46222 0.1017867,0.15357 0.3089721,0.19525 0.4622196,0.093 l 0.4817266,-0.32049 v 1.04081 H 5.2971633 Z m 6.3248443,0.37705 h 3.329173 v 1.66296 h -3.329173 z m 3.994878,0 h 0.663754 v 1.66296 h -0.663754 z m 1.329459,0 h 3.329173 v 1.66296 h -3.329173 z m -5.990691,2.32932 h 9.98557 v 0.6657 h -9.98557 z m -6.3241948,0.33156 h 2.663469 c 0.1877741,0 0.3315562,0.14637 0.3315524,0.33414 v 0.99726 H 6.96077 v -0.33155 c 7.322e-4,-0.18384 -0.1477223,-0.33344 -0.3315524,-0.33416 -0.1848466,-7.3e-4 -0.3348761,0.1493 -0.3341527,0.33416 v 0.33155 H 5.6313123 v -0.33155 c 6.654e-4,-0.18486 -0.1493074,-0.33488 -0.334154,-0.33416 -0.1838275,7.3e-4 -0.3322697,0.15032 -0.3315508,0.33416 v 0.33155 H 4.2999028 v -0.99726 c -6.7e-6,-0.18777 0.1437756,-0.33414 0.331551,-0.33414 z m 6.9905488,0.99985 h 3.329173 v 1.66361 h -3.329173 z m 3.994878,0 h 0.663754 v 1.66361 h -0.663754 z m 1.329459,0 h 3.329173 v 1.66361 H 16.94634 Z m -13.6469468,0.99735 h 5.3269364 v 0.66571 H 3.2993953 Z"/>
     </svg>
   ),
   sparkle: (
@@ -247,7 +246,7 @@ export function ConstructorPage() {
   const [bathrooms, _setBathrooms] = useState(2)
 
   // Параметры дома
-  const [floors, setFloors] = useState(2)
+  const [isExterior, setIsExterior] = useState(true) // true = снаружи, false = внутри
   const [roofStyle, setRoofStyle] = useState<RoofStyle>('natural')
   const [wallMaterial, setWallMaterial] = useState<WallMaterial>('brick')
   const [facadeStyle, setFacadeStyle] = useState<FacadeStyle>('brick')
@@ -478,8 +477,59 @@ export function ConstructorPage() {
     },
   }
 
+  // Интерьерные фото (одинаковые для всех фасадов)
+  const interiorImages: Record<FacadeStyle, string[]> = {
+    brick: [
+      '/houses/interior/brick/1. Прихожая.jpg',
+      '/houses/interior/brick/2.Гардероб.jpg',
+      '/houses/interior/brick/3.Кухня-столовая.jpg',
+      '/houses/interior/brick/4. Кухня.jpg',
+      '/houses/interior/brick/5. Спальня.jpg',
+      '/houses/interior/brick/6.Спальня.jpg',
+      '/houses/interior/brick/7.Ванная.jpg',
+      '/houses/interior/brick/8.Кладовая.jpg',
+      '/houses/interior/brick/9.Сан.узел.jpg',
+      '/houses/interior/brick/9.Терраса.jpg',
+      '/houses/interior/brick/10. Терраса.jpg',
+      '/houses/interior/brick/11.Крыльцо.jpg',
+    ],
+    combined: [
+      '/houses/interior/combined/1. Прихожая.jpg',
+      '/houses/interior/combined/2.Гардероб.jpg',
+      '/houses/interior/combined/3.Кухня-столовая.jpg',
+      '/houses/interior/combined/4. Кухня.jpg',
+      '/houses/interior/combined/5. Спальня.jpg',
+      '/houses/interior/combined/6.Спальня.jpg',
+      '/houses/interior/combined/7.Ванная.jpg',
+      '/houses/interior/combined/8.Кладовая.jpg',
+      '/houses/interior/combined/9.Сан.узел.jpg',
+      '/houses/interior/combined/9.Терраса.jpg',
+      '/houses/interior/combined/10. Терраса.jpg',
+      '/houses/interior/combined/11.Крыльцо.jpg',
+    ],
+    ventilated: [
+      '/houses/interior/ventilated/1. Прихожая.jpg',
+      '/houses/interior/ventilated/2.Гардероб.jpg',
+      '/houses/interior/ventilated/3.Кухня-столовая.jpg',
+      '/houses/interior/ventilated/4. Кухня.jpg',
+      '/houses/interior/ventilated/5. Спальня.jpg',
+      '/houses/interior/ventilated/6.Спальня.jpg',
+      '/houses/interior/ventilated/7.Ванная.jpg',
+      '/houses/interior/ventilated/8.Кладовая.jpg',
+      '/houses/interior/ventilated/9.Сан.узел.jpg',
+      '/houses/interior/ventilated/9.Терраса.jpg',
+      '/houses/interior/ventilated/10. Терраса.jpg',
+      '/houses/interior/ventilated/11.Крыльцо.jpg',
+    ],
+  }
+
   // Текущие изображения на основе выбранного фасада, кровли, сезона и времени суток
   const getHouseImages = () => {
+    // Если выбран интерьер - возвращаем фото комнат
+    if (!isExterior) {
+      return interiorImages[facadeStyle]
+    }
+    // Экстерьер
     if (isSummer) {
       return isDay
         ? houseImagesByConfigDay[facadeStyle][roofStyle]
@@ -513,6 +563,54 @@ export function ConstructorPage() {
     '/houses/house5.jpg': undefined,
   }
 
+  // Видео для интерьерных фото (воспроизводятся при наведении)
+  const interiorVideos: Record<string, string> = {
+    '/houses/interior/brick/1. Прихожая.jpg': '/videos/rooms/1. Прихожая.mp4',
+    '/houses/interior/brick/2.Гардероб.jpg': '/videos/rooms/2.Гардероб.mp4',
+    '/houses/interior/brick/3.Кухня-столовая.jpg': '/videos/rooms/3.Кухня-столовая.mp4',
+    '/houses/interior/brick/4. Кухня.jpg': '/videos/rooms/4. Кухня.mp4',
+    '/houses/interior/brick/5. Спальня.jpg': '/videos/rooms/5. Спальня.mp4',
+    '/houses/interior/brick/6.Спальня.jpg': '/videos/rooms/6.Спальня.mp4',
+    '/houses/interior/brick/7.Ванная.jpg': '/videos/rooms/7.Ванная.mp4',
+    '/houses/interior/brick/8.Кладовая.jpg': '/videos/rooms/8.Кладовая.mp4',
+    '/houses/interior/brick/9.Сан.узел.jpg': '/videos/rooms/9.Сан.узел.mp4',
+    '/houses/interior/brick/9.Терраса.jpg': '/videos/rooms/9.Терраса.mp4',
+    '/houses/interior/brick/10. Терраса.jpg': '/videos/rooms/10. Терраса.mp4',
+    '/houses/interior/brick/11.Крыльцо.jpg': '/videos/rooms/11.Крыльцо.mp4',
+    '/houses/interior/combined/1. Прихожая.jpg': '/videos/rooms/1. Прихожая.mp4',
+    '/houses/interior/combined/2.Гардероб.jpg': '/videos/rooms/2.Гардероб.mp4',
+    '/houses/interior/combined/3.Кухня-столовая.jpg': '/videos/rooms/3.Кухня-столовая.mp4',
+    '/houses/interior/combined/4. Кухня.jpg': '/videos/rooms/4. Кухня.mp4',
+    '/houses/interior/combined/5. Спальня.jpg': '/videos/rooms/5. Спальня.mp4',
+    '/houses/interior/combined/6.Спальня.jpg': '/videos/rooms/6.Спальня.mp4',
+    '/houses/interior/combined/7.Ванная.jpg': '/videos/rooms/7.Ванная.mp4',
+    '/houses/interior/combined/8.Кладовая.jpg': '/videos/rooms/8.Кладовая.mp4',
+    '/houses/interior/combined/9.Сан.узел.jpg': '/videos/rooms/9.Сан.узел.mp4',
+    '/houses/interior/combined/9.Терраса.jpg': '/videos/rooms/9.Терраса.mp4',
+    '/houses/interior/combined/10. Терраса.jpg': '/videos/rooms/10. Терраса.mp4',
+    '/houses/interior/combined/11.Крыльцо.jpg': '/videos/rooms/11.Крыльцо.mp4',
+    '/houses/interior/ventilated/1. Прихожая.jpg': '/videos/rooms/1. Прихожая.mp4',
+    '/houses/interior/ventilated/2.Гардероб.jpg': '/videos/rooms/2.Гардероб.mp4',
+    '/houses/interior/ventilated/3.Кухня-столовая.jpg': '/videos/rooms/3.Кухня-столовая.mp4',
+    '/houses/interior/ventilated/4. Кухня.jpg': '/videos/rooms/4. Кухня.mp4',
+    '/houses/interior/ventilated/5. Спальня.jpg': '/videos/rooms/5. Спальня.mp4',
+    '/houses/interior/ventilated/6.Спальня.jpg': '/videos/rooms/6.Спальня.mp4',
+    '/houses/interior/ventilated/7.Ванная.jpg': '/videos/rooms/7.Ванная.mp4',
+    '/houses/interior/ventilated/8.Кладовая.jpg': '/videos/rooms/8.Кладовая.mp4',
+    '/houses/interior/ventilated/9.Сан.узел.jpg': '/videos/rooms/9.Сан.узел.mp4',
+    '/houses/interior/ventilated/9.Терраса.jpg': '/videos/rooms/9.Терраса.mp4',
+    '/houses/interior/ventilated/10. Терраса.jpg': '/videos/rooms/10. Терраса.mp4',
+    '/houses/interior/ventilated/11.Крыльцо.jpg': '/videos/rooms/11.Крыльцо.mp4',
+  }
+
+  // Получить видео для текущего изображения
+  const getCurrentVideo = (imagePath: string): string | undefined => {
+    if (!isExterior) {
+      return interiorVideos[imagePath]
+    }
+    return houseVideos[imagePath]
+  }
+
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [_activeTab, _setActiveTab] = useState('about')
@@ -521,10 +619,10 @@ export function ConstructorPage() {
   const [darkMode, setDarkMode] = useState(false)
   const svgRef = useRef<HTMLObjectElement>(null)
 
-  // Сброс индекса изображения при смене фасада или кровли
+  // Сброс индекса изображения при смене фасада, кровли или вида (снаружи/внутри)
   useEffect(() => {
     setCurrentImageIndex(0)
-  }, [facadeStyle, roofStyle])
+  }, [facadeStyle, roofStyle, isExterior])
 
   // Функция подсветки комнаты на SVG
   const highlightRoom = (roomId: string, highlight: boolean) => {
@@ -581,30 +679,30 @@ export function ConstructorPage() {
   const floorPlanRooms = [
     // Верхний ряд (слева направо)
     { id: 'boiler', name: 'Котельная', area: 6.92, description: 'Техническое помещение', features: ['Газовый котёл', 'Бойлер', 'Вентиляция'], image: '/rooms/boiler.jpg' },
-    { id: 'bedroom-parents', name: 'Спальня', area: 13.83, description: 'Спальня родителей', features: ['Большое окно', 'Гардеробная зона'], image: '/rooms/bedroom.jpg' },
+    { id: 'bedroom-parents', name: 'Спальня', area: 13.83, description: 'Спальня родителей', features: ['Большое окно', 'Гардеробная зона'], image: '/rooms/5. Спальня.jpg' },
 
     // Второй ряд
-    { id: 'wardrobe', name: 'Гардероб', area: 9.12, description: 'Вместительный гардероб', features: ['Системы хранения', 'Освещение', 'Зеркало'], image: '/rooms/hall.jpg' },
-    { id: 'bathroom-small', name: 'С/У', area: 6.08, description: 'Гостевой санузел', features: ['Унитаз', 'Раковина', 'Зеркало'], image: '/rooms/bathroom.jpg' },
-    { id: 'kitchen', name: 'Кухня', area: 11.88, description: 'Функциональная кухня', features: ['Современная техника', 'Рабочая зона', 'Кухонный остров'], image: '/rooms/kitchen.jpg' },
-    { id: 'storage', name: 'Кладовая', area: 6.08, description: 'Кладовая для хранения', features: ['Стеллажи', 'Вентиляция'], image: '/rooms/storage.jpg' },
+    { id: 'wardrobe', name: 'Гардероб', area: 9.12, description: 'Вместительный гардероб', features: ['Системы хранения', 'Освещение', 'Зеркало'], image: '/rooms/2.Гардероб.jpg' },
+    { id: 'bathroom-small', name: 'С/У', area: 6.08, description: 'Гостевой санузел', features: ['Унитаз', 'Раковина', 'Зеркало'], image: '/rooms/9.Сан.узел.jpg' },
+    { id: 'kitchen', name: 'Кухня', area: 11.88, description: 'Функциональная кухня', features: ['Современная техника', 'Рабочая зона', 'Кухонный остров'], image: '/rooms/4. Кухня.jpg' },
+    { id: 'storage', name: 'Кладовая', area: 6.08, description: 'Кладовая для хранения', features: ['Стеллажи', 'Вентиляция'], image: '/rooms/8.Кладовая.jpg' },
 
     // Средний ряд
-    { id: 'porch', name: 'Крыльцо', area: 8.07, description: 'Входная группа', features: ['Навес', 'Освещение'], image: '/rooms/entrance.jpg' },
-    { id: 'hallway', name: 'Прихожая', area: 10.87, description: 'Просторная прихожая', features: ['Встроенные шкафы', 'Зеркало', 'Банкетка'], image: '/rooms/entrance.jpg' },
-    { id: 'living-room', name: 'Кухня-гостиная', area: 43.60, description: 'Просторная кухня-гостиная - сердце дома', features: ['Открытая планировка', 'Зона отдыха', 'Обеденная зона', 'Выход на террасу'], image: '/rooms/living.jpg' },
-    { id: 'corridor', name: 'Коридор', area: 4.63, description: 'Коридор', features: ['Освещение'], image: '/rooms/hall.jpg' },
-    { id: 'bathroom-large', name: 'С/У', area: 8.47, description: 'Основной санузел', features: ['Ванна', 'Душевая', 'Раковина', 'Тёплый пол'], image: '/rooms/bathroom.jpg' },
+    { id: 'porch', name: 'Крыльцо', area: 8.07, description: 'Входная группа', features: ['Навес', 'Освещение'], image: '/rooms/11.Крыльцо.jpg' },
+    { id: 'hallway', name: 'Прихожая', area: 10.87, description: 'Просторная прихожая', features: ['Встроенные шкафы', 'Зеркало', 'Банкетка'], image: '/rooms/1. Прихожая.jpg' },
+    { id: 'living-room', name: 'Кухня-гостиная', area: 43.60, description: 'Просторная кухня-гостиная - сердце дома', features: ['Открытая планировка', 'Зона отдыха', 'Обеденная зона', 'Выход на террасу'], image: '/rooms/3.Кухня-столовая.jpg' },
+    { id: 'corridor', name: 'Коридор', area: 4.63, description: 'Коридор', features: ['Освещение'], image: '/rooms/1. Прихожая.jpg' },
+    { id: 'bathroom-large', name: 'С/У', area: 8.47, description: 'Основной санузел', features: ['Ванна', 'Душевая', 'Раковина', 'Тёплый пол'], image: '/rooms/7.Ванная.jpg' },
 
     // Нижний ряд
-    { id: 'bedroom-left', name: 'Спальня', area: 16.72, description: 'Главная спальня', features: ['Большое окно', 'Гардеробная зона', 'Выход на террасу'], image: '/rooms/bedroom.jpg' },
-    { id: 'terrace', name: 'Терраса', area: 26.27, description: 'Просторная терраса для отдыха', features: ['Зона барбекю', 'Мебель для отдыха', 'Освещение'], image: '/rooms/terrace.jpg' },
-    { id: 'bedroom-right', name: 'Спальня', area: 16.72, description: 'Вторая спальня', features: ['Большое окно', 'Рабочая зона'], image: '/rooms/bedroom.jpg' },
+    { id: 'bedroom-left', name: 'Спальня', area: 16.72, description: 'Главная спальня', features: ['Большое окно', 'Гардеробная зона', 'Выход на террасу'], image: '/rooms/5. Спальня.jpg' },
+    { id: 'terrace', name: 'Терраса', area: 26.27, description: 'Просторная терраса для отдыха', features: ['Зона барбекю', 'Мебель для отдыха', 'Освещение'], image: '/rooms/10. Терраса.jpg' },
+    { id: 'bedroom-right', name: 'Спальня', area: 16.72, description: 'Вторая спальня', features: ['Большое окно', 'Рабочая зона'], image: '/rooms/6.Спальня.jpg' },
   ]
 
   
   // Вычисляемые значения
-  const totalArea = areaLength * areaWidth * floors
+  const totalArea = areaLength * areaWidth * 2 // 2 этажа по умолчанию
   const pricePerSqm = wallMaterial === 'brick' ? 85000 : 65000 // руб/м²
   const estimatedCost = totalArea * pricePerSqm
 
@@ -695,7 +793,7 @@ export function ConstructorPage() {
                 key={currentImageIndex}
                 src={houseImages[currentImageIndex]}
                 externalSrc={houseImagesExternal[houseImages[currentImageIndex]]}
-                localVideo={houseVideos[houseImages[currentImageIndex]]}
+                localVideo={getCurrentVideo(houseImages[currentImageIndex])}
                 alt="Ваш дом"
                 className="slider-main-image"
                 enableAnimation={true}
@@ -793,13 +891,29 @@ export function ConstructorPage() {
                   </div>
                 </div>
 
-                {/* Этажность */}
-                <div className="config-row">
-                  <span className="config-label">Этажность</span>
-                  <div className="config-stepper">
-                    <button onClick={() => setFloors(Math.max(1, floors - 1))}>−</button>
-                    <span>{floors}</span>
-                    <button onClick={() => setFloors(Math.min(4, floors + 1))}>+</button>
+                {/* Снаружи/Внутри */}
+                <div className="config-toggle-row" onClick={() => setIsExterior(!isExterior)}>
+                  <div className="toggle-info">
+                    <span className="toggle-icon-box">
+                      {isExterior ? (
+                        <svg viewBox="0 0 256 256" fill="currentColor">
+                          <path d="M239.98828,210h-18V115.53882a14.03222,14.03222,0,0,0-4.582-10.35889L137.40039,32.44458a13.94491,13.94491,0,0,0-18.83594.001L38.57031,105.17969a14.02742,14.02742,0,0,0-4.582,10.35888V210h-18a6,6,0,0,0,0,12h224a6,6,0,1,0,0-12Zm-194-94.46143a2.00429,2.00429,0,0,1,.6543-1.48l79.99414-72.73437a1.99291,1.99291,0,0,1,2.6914-.00049L209.333,114.05786a2.00817,2.00817,0,0,1,.65527,1.481V210H157.98242V151.9917a6.00014,6.00014,0,0,0-6-6h-48a6.00015,6.00015,0,0,0-6,6V210H45.98828ZM145.98242,210h-36V157.9917h36Z"/>
+                        </svg>
+                      ) : (
+                        <svg viewBox="0 0 32 32" fill="currentColor">
+                          <path d="M23,30H21V28a3.0033,3.0033,0,0,0-3-3H14a3.0033,3.0033,0,0,0-3,3v2H9V28a5.0059,5.0059,0,0,1,5-5h4a5.0059,5.0059,0,0,1,5,5Z"/>
+                          <path d="M16,13a3,3,0,1,1-3,3,3,3,0,0,1,3-3m0-2a5,5,0,1,0,5,5A5,5,0,0,0,16,11Z"/>
+                          <path d="M30,30H28V14.4639L16,4.31,4,14.4639V30H2V14a1,1,0,0,1,.354-.7634l13-11a1,1,0,0,1,1.292,0l13,11A1,1,0,0,1,30,14Z"/>
+                        </svg>
+                      )}
+                    </span>
+                    <span className="toggle-label">{isExterior ? 'Снаружи' : 'Внутри'}</span>
+                  </div>
+                  <div className="toggle-right">
+                    <div className={`custom-toggle ${isExterior ? 'active' : ''}`}>
+                      <div className="toggle-track-inner"></div>
+                      <div className="toggle-thumb-inner"></div>
+                    </div>
                   </div>
                 </div>
 
@@ -808,13 +922,29 @@ export function ConstructorPage() {
                   <div className="toggle-info">
                     <span className="toggle-icon-box">
                       {isSummer ? (
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                          <circle cx="12" cy="12" r="5"/>
-                          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M27,31c-2.9-3.6-7.4-6-12.5-6S4.9,27.4,2,31H27z"/>
+                          <path d="M8.6,12v1H17c-1.6-2.4-4.2-4-7-4s-5.4,1.6-7,4h3.6L8.6,12z"/>
+                          <path d="M10.9,5.5l-0.7,0.8l6.2,5.7C17,9,16.2,6,14.1,4.1S9,1.7,6.1,2.5l2.6,2.4L10.9,5.5z"/>
+                          <path d="M21.6,9.5l0.5,0.9l7.5-3.8c-2.6-1.4-5.5-1.7-8.1-0.4s-4.1,3.8-4.4,6.7l3.2-1.6L21.6,9.5z"/>
+                          <path d="M16,13L16,13c1.3,3.8,0.7,7.9-1.5,11.3L14,25"/>
+                          <path d="M18,13l0.9,1.5c2,3.5,2.4,7.7,1.1,11.5l0,0"/>
                         </svg>
                       ) : (
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                          <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+                        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M11.9033,54.5322a1,1,0,0,1-1-1V39.7583a1,1,0,0,1,2,0V53.5322A1,1,0,0,1,11.9033,54.5322Z"/>
+                          <path d="M16.6973,52.5469a.9969.9969,0,0,1-.7071-.293l-9.7392-9.74A1,1,0,0,1,7.665,41.1l9.7393,9.74a1,1,0,0,1-.707,1.7071Z"/>
+                          <path d="M18.6836,47.7524H4.9092a1,1,0,0,1,0-2H18.6836a1,1,0,1,1,0,2Z"/>
+                          <path d="M6.958,52.6982a1,1,0,0,1-.707-1.707l9.7392-9.74a1,1,0,1,1,1.4141,1.414l-9.7393,9.74A.9966.9966,0,0,1,6.958,52.6982Z"/>
+                          <path d="M34.6416,63a1,1,0,0,1-1-1V48.2261a1,1,0,0,1,2,0V62A1,1,0,0,1,34.6416,63Z"/>
+                          <path d="M39.4355,61.0142a.9969.9969,0,0,1-.707-.293l-9.7392-9.74a1,1,0,0,1,1.414-1.414l9.7393,9.74a1,1,0,0,1-.7071,1.7071Z"/>
+                          <path d="M41.4219,56.22H27.6475a1,1,0,0,1,0-2H41.4219a1,1,0,0,1,0,2Z"/>
+                          <path d="M29.6963,61.166a1,1,0,0,1-.707-1.707l9.7392-9.74a1,1,0,1,1,1.4141,1.4141l-9.7393,9.74A.9964.9964,0,0,1,29.6963,61.166Z"/>
+                          <path d="M54.0283,55.356a1,1,0,0,1-1-1V40.582a1,1,0,1,1,2,0V54.356A1,1,0,0,1,54.0283,55.356Z"/>
+                          <path d="M58.8223,53.37a.9965.9965,0,0,1-.7071-.293l-9.74-9.74a1,1,0,1,1,1.4141-1.4141l9.74,9.74a1,1,0,0,1-.707,1.707Z"/>
+                          <path d="M60.8076,48.5762H47.0342a1,1,0,0,1,0-2H60.8076a1,1,0,1,1,0,2Z"/>
+                          <path d="M49.082,53.522a1,1,0,0,1-.707-1.7071l9.74-9.74a1,1,0,0,1,1.4141,1.4141l-9.74,9.74A.9969.9969,0,0,1,49.082,53.522Z"/>
+                          <path d="M48.1738,36.2144H13.1289a10.9366,10.9366,0,0,1-.123-21.8726A10.9167,10.9167,0,0,1,27.4434,8.5957a13.8994,13.8994,0,0,1,26.2871,6.3032c0,.3057-.0117.6192-.0362.9473a10.9306,10.9306,0,0,1-5.52,20.3682ZM13.1289,16.3413a8.9366,8.9366,0,0,0,0,17.8731H48.1738a8.9307,8.9307,0,0,0,4.0108-16.9131,1.0011,1.0011,0,0,1-.543-1.01,11.8953,11.8953,0,0,0-22.7988-5.958.9995.9995,0,0,1-1.4121.4878,8.9191,8.9191,0,0,0-12.8037,4.875,1.0077,1.0077,0,0,1-1.001.6719l-.1748-.0113C13.3438,16.3491,13.2373,16.3413,13.1289,16.3413Z"/>
                         </svg>
                       )}
                     </span>
@@ -1108,38 +1238,38 @@ export function ConstructorPage() {
       </div>
       */}
 
-      {/* Room Detail Modal */}
+      {/* Room Detail Modal - Split Screen */}
       {selectedRoom && (
-        <div className="room-modal-overlay" onClick={() => setSelectedRoom(null)}>
-          <div className="room-modal" onClick={e => e.stopPropagation()}>
-            <button className="room-modal-close" onClick={() => setSelectedRoom(null)}>
-              {Icons.close}
-            </button>
+        <div className="room-modal-overlay-v2" onClick={() => setSelectedRoom(null)}>
+          <div className="room-modal-v2" onClick={e => e.stopPropagation()}>
             {(() => {
               const room = floorPlanRooms.find(r => r.id === selectedRoom)
               if (!room) return null
               return (
                 <>
-                  <div className="room-modal-image">
-                    <img src={room.image} alt={room.name} loading="eager" decoding="async" />
+                  <div className="room-modal-v2-left">
+                    <img src={room.image} alt={room.name} />
                   </div>
-                  <div className="room-modal-header">
-                    <h2>{room.name}</h2>
-                    <span className="room-modal-area">{room.area} м²</span>
-                  </div>
-                  <p className="room-modal-description">{room.description}</p>
-                  <div className="room-modal-features">
-                    <h4>Особенности:</h4>
-                    <ul>
-                      {room.features.map((feature, idx) => (
-                        <li key={idx}>{feature}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="room-modal-dimensions">
-                    <div className="dimension-item">
-                      <span className="dimension-label">Площадь</span>
-                      <span className="dimension-value">{room.area} м²</span>
+                  <div className="room-modal-v2-right">
+                    <button className="room-modal-close-v2" onClick={() => setSelectedRoom(null)}>
+                      {Icons.close}
+                    </button>
+                    <div className="room-modal-v2-content">
+                      <span className="room-modal-v2-label">Помещение</span>
+                      <h2>{room.name}</h2>
+                      <div className="room-modal-v2-area">
+                        <span className="area-number">{room.area}</span>
+                        <span className="area-unit">м²</span>
+                      </div>
+                      <p className="room-modal-v2-description">{room.description}</p>
+                      <div className="room-modal-v2-features">
+                        <h4>Особенности</h4>
+                        <ul>
+                          {room.features.map((feature, idx) => (
+                            <li key={idx}>{feature}</li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </>

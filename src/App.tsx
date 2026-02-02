@@ -15,6 +15,7 @@ import { DesignDemo } from './pages/DesignDemo'
 import LogoDemo from './pages/LogoDemo'
 import ControlsDemo from './pages/ControlsDemo'
 import CardDemo from './pages/CardDemo'
+import RoomModalDemo from './pages/RoomModalDemo'
 import { useHouseStore } from './store/houseStore'
 import './App.css'
 
@@ -182,6 +183,7 @@ function AppContent() {
         <Route path="/logo-demo" element={<LogoDemo />} />
         <Route path="/controls-demo" element={<ControlsDemo />} />
         <Route path="/card-demo" element={<CardDemo />} />
+        <Route path="/room-modal-demo" element={<RoomModalDemo />} />
       </Routes>
 
       {error && (

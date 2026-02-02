@@ -2466,29 +2466,29 @@ body {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(0, 0, 0, 0.5);
   border: none;
   border-radius: 50%;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
   z-index: 10;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  color: #fff;
 }
 
 .room-modal-close:hover {
-  background: #fff;
-  transform: scale(1.05);
+  background: rgba(0, 0, 0, 0.7);
+  transform: scale(1.1);
 }
 
 .room-modal-close svg {
-  width: 18px;
-  height: 18px;
-  color: #5a6b60;
+  width: 20px;
+  height: 20px;
+  color: #fff;
 }
 
 .room-modal-image {
@@ -2615,6 +2615,253 @@ body {
   font-size: 1.1rem;
   font-weight: 600;
   color: #1a2e22;
+}
+
+/* ============================================
+   Room Modal V2 - Split Screen
+   ============================================ */
+.room-modal-overlay-v2 {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+}
+
+.room-modal-v2 {
+  display: flex;
+  width: 95vw;
+  max-width: 1100px;
+  height: 80vh;
+  max-height: 650px;
+  background: white;
+  border-radius: 24px;
+  overflow: hidden;
+  animation: modalScaleIn 0.35s ease;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes modalScaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.room-modal-v2-left {
+  flex: 1;
+  overflow: hidden;
+}
+
+.room-modal-v2-left img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.room-modal-v2-right {
+  flex: 1;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: #fafbfc;
+}
+
+.room-modal-close-v2 {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  color: white;
+}
+
+.room-modal-close-v2:hover {
+  background: rgba(0, 0, 0, 0.7);
+  transform: scale(1.1);
+}
+
+.room-modal-close-v2 svg {
+  width: 20px;
+  height: 20px;
+}
+
+.room-modal-v2-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.room-modal-v2-label {
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  color: #2E5A3C;
+  font-weight: 600;
+}
+
+.room-modal-v2-content h2 {
+  font-size: 2.5rem;
+  color: #1a2f23;
+  margin: 0.5rem 0 1rem;
+  font-weight: 400;
+}
+
+.room-modal-v2-area {
+  margin-bottom: 2rem;
+}
+
+.room-modal-v2-area .area-number {
+  font-size: 4rem;
+  font-weight: 200;
+  color: #2E5A3C;
+  line-height: 1;
+}
+
+.room-modal-v2-area .area-unit {
+  font-size: 1.5rem;
+  color: #666;
+  margin-left: 0.5rem;
+}
+
+.room-modal-v2-description {
+  color: #666;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin: 0 0 2rem;
+}
+
+.room-modal-v2-features h4 {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #999;
+  margin: 0 0 1rem;
+}
+
+.room-modal-v2-features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.room-modal-v2-features li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #eee;
+  color: #444;
+  font-size: 1rem;
+}
+
+.room-modal-v2-features li:last-child {
+  border-bottom: none;
+}
+
+/* Room Modal V2 Responsive */
+@media (max-width: 900px) {
+  .room-modal-v2 {
+    flex-direction: column;
+    height: 90vh;
+    max-height: none;
+  }
+
+  .room-modal-v2-left {
+    flex: none;
+    height: 40%;
+  }
+
+  .room-modal-v2-right {
+    padding: 2rem;
+    overflow-y: auto;
+  }
+
+  .room-modal-v2-content h2 {
+    font-size: 1.75rem;
+  }
+
+  .room-modal-v2-area .area-number {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .room-modal-overlay-v2 {
+    padding: 0;
+  }
+
+  .room-modal-v2 {
+    border-radius: 0;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  .room-modal-v2-right {
+    padding: 1.5rem;
+  }
+}
+
+/* Dark theme for Room Modal V2 */
+.dark-theme .room-modal-overlay-v2 {
+  background: rgba(10, 10, 15, 0.85);
+}
+
+.dark-theme .room-modal-v2 {
+  background: #12121a;
+  border: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.dark-theme .room-modal-v2-right {
+  background: rgba(18, 18, 26, 0.95);
+}
+
+.dark-theme .room-modal-close-v2 {
+  background: rgba(255, 0, 255, 0.3);
+  border: 1px solid rgba(255, 0, 255, 0.5);
+}
+
+.dark-theme .room-modal-close-v2:hover {
+  background: rgba(255, 0, 255, 0.5);
+  box-shadow: 0 0 20px rgba(255, 0, 255, 0.4);
+}
+
+.dark-theme .room-modal-v2-label {
+  color: #00ffff;
+}
+
+.dark-theme .room-modal-v2-content h2 {
+  color: #fff;
+}
+
+.dark-theme .room-modal-v2-area .area-number {
+  color: #00ffff;
+  text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+.dark-theme .room-modal-v2-area .area-unit {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.dark-theme .room-modal-v2-description {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.dark-theme .room-modal-v2-features h4 {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.dark-theme .room-modal-v2-features li {
+  color: rgba(255, 255, 255, 0.8);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Floor Plan Responsive */
