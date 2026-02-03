@@ -84,8 +84,23 @@ export function ConstructorV1() {
 
   // Floor plan state
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null)
-  const [isLightTheme, setIsLightTheme] = useState(false)
+  const [floorPlanTheme, setFloorPlanTheme] = useState<'dark' | 'light' | 'original'>('dark')
   const svgRef = useRef<HTMLObjectElement>(null)
+
+  // Cycle through themes
+  const cycleTheme = () => {
+    setFloorPlanTheme(prev => {
+      if (prev === 'dark') return 'light'
+      if (prev === 'light') return 'original'
+      return 'dark'
+    })
+  }
+
+  const themeLabels = {
+    dark: 'Тёмная',
+    light: 'Светлая',
+    original: 'Оригинал'
+  }
 
   // Обработка кликов на комнаты в SVG
   const handleSvgRoomClick = useCallback((roomId: string) => {
@@ -703,7 +718,7 @@ export function ConstructorV1() {
       )}
 
       {/* Floor Plan Section - Cinematic Split */}
-      <section className={`floor-plan-section ${isLightTheme ? 'light-theme' : ''}`}>
+      <section className={`floor-plan-section ${floorPlanTheme}-theme`}>
         <div className="floor-plan-container">
           <div className="floor-plan-left">
             <div className="floor-plan-header">
@@ -712,9 +727,9 @@ export function ConstructorV1() {
               <p>Каждый метр используется максимально эффективно</p>
               <button
                 className="theme-toggle-btn"
-                onClick={() => setIsLightTheme(!isLightTheme)}
+                onClick={cycleTheme}
               >
-                {isLightTheme ? 'Тёмная тема' : 'Светлая тема'}
+                Тема: {themeLabels[floorPlanTheme]}
               </button>
             </div>
             <div className="floor-plan-stats">

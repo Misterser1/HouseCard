@@ -1678,6 +1678,114 @@
   border-color: rgba(0, 0, 0, 0.3);
 }
 
+/* Original Theme (Green) for Floor Plan Section */
+.cinematic-page .floor-plan-section.original-theme {
+  background: #f8faf8;
+}
+
+.cinematic-page .floor-plan-section.original-theme .floor-plan-tag {
+  color: #2E5A3C;
+  border-color: rgba(46, 90, 60, 0.3);
+  background: rgba(46, 90, 60, 0.05);
+}
+
+.cinematic-page .floor-plan-section.original-theme .floor-plan-header h2 {
+  color: #1a2e22;
+}
+
+.cinematic-page .floor-plan-section.original-theme .floor-plan-header p {
+  color: rgba(26, 46, 34, 0.6);
+}
+
+.cinematic-page .floor-plan-section.original-theme .floor-plan-stats {
+  border-top-color: rgba(46, 90, 60, 0.15);
+  border-bottom-color: rgba(46, 90, 60, 0.15);
+}
+
+.cinematic-page .floor-plan-section.original-theme .floor-plan-stat-value {
+  color: #2E5A3C;
+}
+
+.cinematic-page .floor-plan-section.original-theme .floor-plan-stat-label {
+  color: rgba(46, 90, 60, 0.6);
+}
+
+.cinematic-page .floor-plan-section.original-theme .floor-plan-rooms {
+  scrollbar-color: rgba(46, 90, 60, 0.2) transparent;
+}
+
+.cinematic-page .floor-plan-section.original-theme .floor-plan-rooms::-webkit-scrollbar-thumb {
+  background: rgba(46, 90, 60, 0.2);
+}
+
+.cinematic-page .floor-plan-section.original-theme .floor-plan-rooms::-webkit-scrollbar-thumb:hover {
+  background: rgba(46, 90, 60, 0.35);
+}
+
+.cinematic-page .floor-plan-section.original-theme .floor-plan-room {
+  background: rgba(46, 90, 60, 0.05);
+  border-color: rgba(46, 90, 60, 0.15);
+  color: #1a2e22;
+}
+
+.cinematic-page .floor-plan-section.original-theme .floor-plan-room:hover {
+  background: rgba(46, 90, 60, 0.1);
+  border-color: rgba(46, 90, 60, 0.3);
+}
+
+.cinematic-page .floor-plan-section.original-theme .floor-plan-room.active {
+  background: rgba(46, 90, 60, 0.15);
+  border-color: #2E5A3C;
+}
+
+.cinematic-page .floor-plan-section.original-theme .floor-plan-room-area {
+  color: rgba(46, 90, 60, 0.7);
+}
+
+.cinematic-page .floor-plan-section.original-theme .floor-plan-room.active .floor-plan-room-area {
+  color: #2E5A3C;
+}
+
+.cinematic-page .floor-plan-section.original-theme .floor-plan-image {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(46, 90, 60, 0.08);
+  border: 1px solid rgba(46, 90, 60, 0.1);
+}
+
+.cinematic-page .floor-plan-section.original-theme .floor-plan-image object {
+  filter: none;
+}
+
+.cinematic-page .floor-plan-section.original-theme .floor-plan-overlay {
+  background: none;
+}
+
+.cinematic-page .floor-plan-section.original-theme .floor-plan-room-preview {
+  background: white;
+  border-color: rgba(46, 90, 60, 0.15);
+  box-shadow: 0 4px 20px rgba(46, 90, 60, 0.1);
+}
+
+.cinematic-page .floor-plan-section.original-theme .floor-plan-room-preview-info h3 {
+  color: #1a2e22;
+}
+
+.cinematic-page .floor-plan-section.original-theme .floor-plan-room-preview-info p {
+  color: rgba(46, 90, 60, 0.7);
+}
+
+.cinematic-page .floor-plan-section.original-theme .theme-toggle-btn {
+  color: #2E5A3C;
+  background: rgba(46, 90, 60, 0.08);
+  border-color: rgba(46, 90, 60, 0.25);
+}
+
+.cinematic-page .floor-plan-section.original-theme .theme-toggle-btn:hover {
+  background: rgba(46, 90, 60, 0.15);
+  border-color: rgba(46, 90, 60, 0.4);
+}
+
 /* Floor Plan Responsive */
 @media (max-width: 1200px) {
   .cinematic-page .floor-plan-container {
