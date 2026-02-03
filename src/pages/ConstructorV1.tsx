@@ -84,11 +84,23 @@ export function ConstructorV1() {
 
   // Floor plan state
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null)
+  const [hoveredRoom, setHoveredRoom] = useState<string | null>(null)
   const svgRef = useRef<HTMLObjectElement>(null)
 
   // Обработка кликов на комнаты в SVG
   const handleSvgRoomClick = useCallback((roomId: string) => {
     setSelectedRoom(roomId)
+  }, [])
+
+  // Функция подсветки комнаты на SVG (при hover на кнопку слева)
+  const highlightRoom = useCallback((roomId: string, highlight: boolean) => {
+    const svgObject = svgRef.current
+    if (!svgObject?.contentDocument) return
+
+    const room = svgObject.contentDocument.querySelector(`[data-room="${roomId}"]`) as SVGRectElement | null
+    if (room) {
+      room.style.fill = highlight ? 'rgba(46, 90, 60, 0.2)' : 'transparent'
+    }
   }, [])
 
   useEffect(() => {
@@ -109,11 +121,13 @@ export function ConstructorV1() {
         })
 
         room.addEventListener('mouseenter', () => {
-          ;(room as SVGRectElement).style.fill = 'rgba(255, 255, 255, 0.15)'
+          ;(room as SVGRectElement).style.fill = 'rgba(46, 90, 60, 0.2)'
+          if (roomId) setHoveredRoom(roomId)
         })
 
         room.addEventListener('mouseleave', () => {
           ;(room as SVGRectElement).style.fill = 'transparent'
+          setHoveredRoom(null)
         })
       })
     }
@@ -539,7 +553,7 @@ export function ConstructorV1() {
         {/* Header */}
         <header className="cinematic-header">
           <Link to="/" className="cinematic-logo">
-            <span className="cinematic-logo-text">Родные Края</span>
+            <img src="/logo.png" alt="Родные Края" className="cinematic-logo-img" />
           </Link>
           <div className="cinematic-header-right">
             <button className="cinematic-btn-header">
@@ -728,8 +742,10 @@ export function ConstructorV1() {
               {floorPlanRooms.map(room => (
                 <button
                   key={room.id}
-                  className={`floor-plan-chip ${selectedRoom === room.id ? 'active' : ''}`}
+                  className={`floor-plan-chip ${selectedRoom === room.id ? 'active' : ''} ${hoveredRoom === room.id ? 'hovered' : ''}`}
                   onClick={() => setSelectedRoom(selectedRoom === room.id ? null : room.id)}
+                  onMouseEnter={() => highlightRoom(room.id, true)}
+                  onMouseLeave={() => highlightRoom(room.id, false)}
                 >
                   <span className="chip-name">{room.name}</span>
                   <span className="chip-divider">·</span>

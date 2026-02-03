@@ -99,6 +99,12 @@
   color: white;
 }
 
+.cinematic-logo-img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
 .cinematic-header-right {
   display: flex;
   align-items: center;
@@ -1808,8 +1814,19 @@
 .cinematic-page .floor-plan-chip:hover .chip-area,
 .cinematic-page .floor-plan-chip.active .chip-name,
 .cinematic-page .floor-plan-chip.active .chip-divider,
-.cinematic-page .floor-plan-chip.active .chip-area {
+.cinematic-page .floor-plan-chip.active .chip-area,
+.cinematic-page .floor-plan-chip.hovered .chip-name,
+.cinematic-page .floor-plan-chip.hovered .chip-divider,
+.cinematic-page .floor-plan-chip.hovered .chip-area {
   color: white;
+}
+
+/* Hovered state (when hovering on SVG room) */
+.cinematic-page .floor-plan-chip.hovered {
+  background: #2E5A3C;
+  border-color: #2E5A3C;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(46, 90, 60, 0.25);
 }
 
 .cinematic-page .floor-plan-section.original-theme .floor-plan-image {
@@ -2254,4 +2271,25 @@
     border-radius: 2px;
     z-index: 20;
   }
+}
+
+/* ========================================
+   Floor Plan SVG Clickable Areas Hover
+   (Same green color as original)
+======================================== */
+.cinematic-page .floor-plan-image .room-clickable {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cinematic-page .floor-plan-image .room-clickable:hover {
+  filter: brightness(0.97);
+}
+
+.cinematic-page .floor-plan-image .room-clickable:hover rect:first-of-type {
+  fill: rgba(46, 90, 60, 0.12) !important;
+}
+
+.cinematic-page .floor-plan-section.original-theme .floor-plan-image .room-clickable:hover rect:first-of-type {
+  fill: rgba(46, 90, 60, 0.12) !important;
 }
