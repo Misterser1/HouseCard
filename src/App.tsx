@@ -5,6 +5,11 @@ import { ImageViewer } from './components/ImageViewer'
 import { ModelViewer } from './components/ModelViewer'
 import { ControlPanel } from './components/ControlPanel'
 import { ConstructorPage } from './pages/ConstructorPage'
+import { ConstructorV1 } from './pages/ConstructorV1'
+import { ConstructorV2 } from './pages/ConstructorV2'
+import { ConstructorV3 } from './pages/ConstructorV3'
+import { ConstructorV4 } from './pages/ConstructorV4'
+import { ConstructorV5 } from './pages/ConstructorV5'
 import { SliderDemo } from './pages/SliderDemo'
 import { AnimationDemo } from './pages/AnimationDemo'
 import { StyleDemo } from './pages/StyleDemo'
@@ -16,6 +21,8 @@ import LogoDemo from './pages/LogoDemo'
 import ControlsDemo from './pages/ControlsDemo'
 import CardDemo from './pages/CardDemo'
 import RoomModalDemo from './pages/RoomModalDemo'
+import HeroSectionDemo from './pages/HeroSectionDemo'
+import FloorPlanDemo from './pages/FloorPlanDemo'
 import { useHouseStore } from './store/houseStore'
 import './App.css'
 
@@ -91,6 +98,12 @@ function AppContent() {
   const isLogoDemo = location.pathname === '/logo-demo'
   const isControlsDemo = location.pathname === '/controls-demo'
   const isCardDemo = location.pathname === '/card-demo'
+  const isHeroDemo = location.pathname === '/hero-demo'
+  const isConstructorV1 = location.pathname === '/constructor-v1'
+  const isConstructorV2 = location.pathname === '/constructor-v2'
+  const isConstructorV3 = location.pathname === '/constructor-v3'
+  const isConstructorV4 = location.pathname === '/constructor-v4'
+  const isConstructorV5 = location.pathname === '/constructor-v5'
 
   // Для конструктора - отдельный layout без общего хедера
   if (isConstructor) {
@@ -157,6 +170,36 @@ function AppContent() {
     return <CardDemo />
   }
 
+  // Для демо hero секций - отдельный layout
+  if (isHeroDemo) {
+    return <HeroSectionDemo />
+  }
+
+  // Для конструктора V1 (тестовая копия)
+  if (isConstructorV1) {
+    return <ConstructorV1 />
+  }
+
+  // Для конструктора V2
+  if (isConstructorV2) {
+    return <ConstructorV2 />
+  }
+
+  // Для конструктора V3
+  if (isConstructorV3) {
+    return <ConstructorV3 />
+  }
+
+  // Для конструктора V4
+  if (isConstructorV4) {
+    return <ConstructorV4 />
+  }
+
+  // Для конструктора V5
+  if (isConstructorV5) {
+    return <ConstructorV5 />
+  }
+
   return (
     <div className="app">
       <header className="header">
@@ -184,6 +227,13 @@ function AppContent() {
         <Route path="/controls-demo" element={<ControlsDemo />} />
         <Route path="/card-demo" element={<CardDemo />} />
         <Route path="/room-modal-demo" element={<RoomModalDemo />} />
+        <Route path="/hero-demo" element={<HeroSectionDemo />} />
+        <Route path="/floor-plan-demo" element={<FloorPlanDemo />} />
+        <Route path="/constructor-v1" element={<ConstructorV1 />} />
+        <Route path="/constructor-v2" element={<ConstructorV2 />} />
+        <Route path="/constructor-v3" element={<ConstructorV3 />} />
+        <Route path="/constructor-v4" element={<ConstructorV4 />} />
+        <Route path="/constructor-v5" element={<ConstructorV5 />} />
       </Routes>
 
       {error && (

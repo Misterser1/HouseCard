@@ -1,0 +1,1712 @@
+/* ========== CONSTRUCTOR V1: Cinematic Fullscreen ========== */
+
+.cinematic-page {
+  min-height: 100vh;
+  background: #000;
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* ===== HERO SLIDER ===== */
+.cinematic-hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.cinematic-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 1;
+}
+
+.cinematic-slide.active {
+  animation: fadeInSlide 0.4s ease-out forwards;
+}
+
+@keyframes fadeInSlide {
+  0% {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.cinematic-slide img,
+.cinematic-slide .animated-image-container {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cinematic-slide .animated-image-container img,
+.cinematic-slide .animated-image-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Hide LIVE badge from AnimatedImage */
+.cinematic-slide .animated-image-badge {
+  display: none !important;
+}
+
+/* Dark cinematic overlay */
+.cinematic-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.1) 40%,
+    rgba(0, 0, 0, 0.4) 70%,
+    rgba(0, 0, 0, 0.85) 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ===== HEADER ===== */
+.cinematic-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+
+.cinematic-logo {
+  display: flex;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+}
+
+.cinematic-logo-text {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: white;
+}
+
+.cinematic-header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cinematic-btn-header {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cinematic-btn-header:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.cinematic-btn-header svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ===== MAIN CONTENT OVERLAY ===== */
+.cinematic-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0 4rem 6rem;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+/* Left side - Title & Info */
+.cinematic-info {
+  color: white;
+  max-width: 600px;
+}
+
+.cinematic-tag {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cinematic-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 5rem;
+  font-weight: 300;
+  line-height: 1.1;
+  margin: 0 0 1rem;
+  text-shadow: 0 4px 40px rgba(0, 0, 0, 0.5);
+}
+
+.cinematic-subtitle {
+  font-size: 1.25rem;
+  opacity: 0.8;
+  margin-bottom: 2rem;
+  font-weight: 300;
+}
+
+.cinematic-stats {
+  display: flex;
+  gap: 3rem;
+}
+
+.cinematic-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.cinematic-stat-value {
+  font-size: 2.5rem;
+  font-weight: 300;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+.cinematic-stat-label {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+/* Right side - Controls Panel */
+.cinematic-controls {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 2rem;
+  min-width: 340px;
+  color: white;
+}
+
+.cinematic-controls-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  opacity: 0.6;
+  margin-bottom: 1.5rem;
+}
+
+.cinematic-control-row {
+  margin-bottom: 1.25rem;
+}
+
+.cinematic-control-label {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.cinematic-select {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: white;
+  padding: 0.875rem 1rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  transition: all 0.3s ease;
+}
+
+.cinematic-select:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.cinematic-select:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.cinematic-select option {
+  background: #1a1a1a;
+  color: white;
+}
+
+/* Toggle Rows */
+.cinematic-toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cinematic-toggle-row:hover {
+  background: rgba(255, 255, 255, 0.05);
+  margin: 0 -1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+}
+
+.cinematic-toggle-row:last-child {
+  border-bottom: none;
+}
+
+.cinematic-toggle-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.cinematic-toggle-icon {
+  width: 24px;
+  height: 24px;
+  opacity: 0.8;
+}
+
+.cinematic-toggle-label {
+  font-size: 0.95rem;
+}
+
+.cinematic-toggle {
+  width: 48px;
+  height: 26px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 13px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.cinematic-toggle.active {
+  background: #2E5A3C;
+}
+
+.cinematic-toggle-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.cinematic-toggle.active .cinematic-toggle-thumb {
+  left: 25px;
+}
+
+/* ===== NAVIGATION ===== */
+.cinematic-nav {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1rem;
+  z-index: 8;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.cinematic-hero:hover .cinematic-nav {
+  opacity: 1;
+}
+
+.cinematic-nav-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: all;
+}
+
+.cinematic-nav-btn:hover {
+  background: rgba(0, 0, 0, 0.6);
+  transform: scale(1.05);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.cinematic-nav-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* ===== PROGRESS DOTS ===== */
+.cinematic-progress {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+.cinematic-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.4s ease;
+  border: none;
+}
+
+.cinematic-dot:hover {
+  background: rgba(255, 255, 255, 0.5);
+  transform: scale(1.2);
+}
+
+.cinematic-dot.active {
+  background: white;
+  width: 40px;
+  border-radius: 6px;
+}
+
+/* ===== FULLSCREEN BUTTON ===== */
+.cinematic-fullscreen-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 14rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 11;
+  opacity: 0;
+}
+
+.cinematic-hero:hover .cinematic-fullscreen-btn {
+  opacity: 1;
+}
+
+.cinematic-fullscreen-btn:hover {
+  background: rgba(0, 0, 0, 0.6);
+  transform: scale(1.05);
+}
+
+.cinematic-fullscreen-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ===== THUMBNAILS (shown on hover/click) ===== */
+.cinematic-thumbs {
+  position: absolute;
+  bottom: 5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 9;
+  opacity: 0;
+  transition: all 0.4s ease;
+  pointer-events: none;
+}
+
+.cinematic-hero:hover .cinematic-thumbs {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.cinematic-thumb {
+  width: 80px;
+  height: 50px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0.6;
+  background: none;
+  padding: 0;
+}
+
+.cinematic-thumb:hover {
+  opacity: 1;
+  transform: translateY(-4px);
+}
+
+.cinematic-thumb.active {
+  border-color: white;
+  opacity: 1;
+}
+
+.cinematic-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ===== FULLSCREEN MODAL ===== */
+.cinematic-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.98);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.cinematic-modal-close {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.cinematic-modal-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(90deg);
+}
+
+.cinematic-modal-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.cinematic-modal-main img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.cinematic-modal-main .animated-image-container {
+  max-width: 90vw;
+  max-height: 80vh;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.cinematic-modal-main .animated-image-container img,
+.cinematic-modal-main .animated-image-container video {
+  max-width: 90vw;
+  max-height: 80vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+/* Hide LIVE badge in fullscreen modal */
+.cinematic-modal .animated-image-badge {
+  display: none !important;
+}
+
+.cinematic-modal-thumbs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.cinematic-modal-thumb {
+  width: 100px;
+  height: 65px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+  background: none;
+  padding: 0;
+}
+
+.cinematic-modal-thumb:hover {
+  opacity: 0.8;
+}
+
+.cinematic-modal-thumb.active {
+  border-color: white;
+  opacity: 1;
+}
+
+.cinematic-modal-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ===== RESPONSIVE ===== */
+
+/* Large Tablet / Small Desktop */
+@media (max-width: 1200px) {
+  .cinematic-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 0 2rem 7rem;
+  }
+
+  .cinematic-controls {
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .cinematic-title {
+    font-size: 3.5rem;
+  }
+
+  .cinematic-fullscreen-btn {
+    right: 1.5rem;
+  }
+
+  .cinematic-thumbs {
+    bottom: 4rem;
+  }
+
+  .cinematic-progress {
+    bottom: 1.5rem;
+  }
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .cinematic-header {
+    padding: 1rem 1.5rem;
+  }
+
+  .cinematic-btn-header {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.85rem;
+  }
+
+  .cinematic-content {
+    padding: 0 1.5rem 6rem;
+    gap: 1.25rem;
+  }
+
+  .cinematic-title {
+    font-size: 3rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .cinematic-subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .cinematic-stats {
+    gap: 2rem;
+  }
+
+  .cinematic-stat-value {
+    font-size: 2rem;
+  }
+
+  .cinematic-controls {
+    padding: 1.5rem;
+    border-radius: 20px;
+  }
+
+  .cinematic-control-row {
+    margin-bottom: 1rem;
+  }
+
+  .cinematic-thumbs {
+    display: none;
+  }
+
+  .cinematic-nav {
+    opacity: 1;
+    padding: 0 0.75rem;
+  }
+
+  .cinematic-nav-btn {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .cinematic-header {
+    padding: 0.875rem 1rem;
+  }
+
+  .cinematic-logo-text {
+    font-size: 1.25rem;
+  }
+
+  .cinematic-btn-header {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    border-radius: 25px;
+  }
+
+  .cinematic-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0.05) 25%,
+      rgba(0, 0, 0, 0.1) 45%,
+      rgba(0, 0, 0, 0.7) 75%,
+      rgba(0, 0, 0, 0.95) 100%
+    );
+  }
+
+  .cinematic-content {
+    padding: 0 1rem 3.5rem;
+    gap: 0.75rem;
+  }
+
+  .cinematic-info {
+    max-width: 100%;
+  }
+
+  .cinematic-tag {
+    padding: 4px 10px;
+    font-size: 0.6rem;
+    letter-spacing: 1.5px;
+    margin-bottom: 0.5rem;
+  }
+
+  .cinematic-title {
+    font-size: 2rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .cinematic-subtitle {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.75;
+  }
+
+  .cinematic-stats {
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.25rem;
+  }
+
+  .cinematic-stat {
+    gap: 0.25rem;
+  }
+
+  .cinematic-stat-value {
+    font-size: 1.35rem;
+  }
+
+  .cinematic-stat-label {
+    font-size: 0.75rem;
+  }
+
+  /* Compact controls card */
+  .cinematic-controls {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 14px;
+    min-width: unset;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(15px);
+  }
+
+  .cinematic-controls-title {
+    font-size: 0.6rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .cinematic-control-row {
+    margin-bottom: 0.4rem;
+  }
+
+  .cinematic-control-label {
+    font-size: 0.7rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .cinematic-select {
+    padding: 0.45rem 0.6rem;
+    font-size: 0.8rem;
+    border-radius: 8px;
+  }
+
+  .cinematic-toggle-row {
+    padding: 0.35rem 0;
+  }
+
+  .cinematic-toggle-row:hover {
+    margin: 0;
+    padding: 0.35rem 0;
+    background: transparent;
+    border-radius: 0;
+  }
+
+  .cinematic-toggle-label {
+    font-size: 0.8rem;
+  }
+
+  .cinematic-toggle {
+    width: 38px;
+    height: 20px;
+  }
+
+  .cinematic-toggle-thumb {
+    width: 14px;
+    height: 14px;
+    top: 3px;
+  }
+
+  .cinematic-toggle.active .cinematic-toggle-thumb {
+    left: 21px;
+  }
+
+  /* Hide navigation arrows on mobile - use swipe instead */
+  .cinematic-nav {
+    display: none;
+  }
+
+  .cinematic-progress {
+    bottom: 1rem;
+    gap: 8px;
+  }
+
+  .cinematic-dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  .cinematic-dot.active {
+    width: 32px;
+    border-radius: 5px;
+  }
+
+  .cinematic-thumbs {
+    display: none;
+  }
+
+  /* Move fullscreen button below header */
+  .cinematic-fullscreen-btn {
+    top: auto;
+    bottom: auto;
+    right: 1rem;
+    top: 4rem;
+    width: 44px;
+    height: 44px;
+    opacity: 1;
+  }
+
+  .cinematic-fullscreen-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Fullscreen Modal Mobile */
+  .cinematic-modal-close {
+    top: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+    font-size: 1.25rem;
+  }
+
+  .cinematic-modal-main {
+    padding: 1rem;
+  }
+
+  .cinematic-modal-main img {
+    max-height: 70vh;
+    border-radius: 10px;
+  }
+
+  .cinematic-modal-main .animated-image-container {
+    max-width: 95vw;
+    max-height: 70vh;
+    border-radius: 10px;
+  }
+
+  .cinematic-modal-main .animated-image-container img,
+  .cinematic-modal-main .animated-image-container video {
+    max-width: 95vw;
+    max-height: 70vh;
+    border-radius: 10px;
+  }
+
+  .cinematic-modal-thumbs {
+    padding: 1rem;
+    gap: 8px;
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+
+  .cinematic-modal-thumb {
+    width: 70px;
+    height: 50px;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .cinematic-header {
+    padding: 0.625rem 0.75rem;
+  }
+
+  .cinematic-logo-text {
+    font-size: 1rem;
+  }
+
+  .cinematic-btn-header {
+    padding: 0.35rem 0.625rem;
+    font-size: 0.7rem;
+  }
+
+  .cinematic-content {
+    padding: 0 0.75rem 3rem;
+    gap: 0.5rem;
+  }
+
+  .cinematic-tag {
+    padding: 3px 8px;
+    font-size: 0.55rem;
+    letter-spacing: 1px;
+    margin-bottom: 0.35rem;
+  }
+
+  .cinematic-title {
+    font-size: 1.65rem;
+    line-height: 1.15;
+    margin-bottom: 0.25rem;
+  }
+
+  .cinematic-subtitle {
+    font-size: 0.8rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .cinematic-stats {
+    gap: 0.875rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .cinematic-stat-value {
+    font-size: 1.2rem;
+  }
+
+  .cinematic-stat-label {
+    font-size: 0.65rem;
+  }
+
+  .cinematic-controls {
+    padding: 0.625rem;
+    border-radius: 12px;
+  }
+
+  .cinematic-controls-title {
+    font-size: 0.55rem;
+    margin-bottom: 0.4rem;
+    letter-spacing: 1.5px;
+  }
+
+  .cinematic-control-row {
+    margin-bottom: 0.35rem;
+  }
+
+  .cinematic-control-label {
+    font-size: 0.65rem;
+    margin-bottom: 0.15rem;
+  }
+
+  .cinematic-select {
+    padding: 0.4rem 0.5rem;
+    font-size: 0.75rem;
+    border-radius: 6px;
+  }
+
+  .cinematic-toggle-row {
+    padding: 0.3rem 0;
+  }
+
+  .cinematic-toggle-info {
+    gap: 0.3rem;
+  }
+
+  .cinematic-toggle-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .cinematic-toggle-label {
+    font-size: 0.8rem;
+  }
+
+  .cinematic-toggle {
+    width: 38px;
+    height: 20px;
+  }
+
+  .cinematic-toggle-thumb {
+    width: 14px;
+    height: 14px;
+    top: 3px;
+  }
+
+  .cinematic-toggle.active .cinematic-toggle-thumb {
+    left: 21px;
+  }
+
+  .cinematic-progress {
+    bottom: 0.75rem;
+    gap: 5px;
+  }
+
+  .cinematic-dot {
+    width: 7px;
+    height: 7px;
+  }
+
+  .cinematic-dot.active {
+    width: 24px;
+    border-radius: 4px;
+  }
+
+  .cinematic-fullscreen-btn {
+    top: 3.25rem;
+    right: 0.75rem;
+    width: 40px;
+    height: 40px;
+  }
+
+  .cinematic-fullscreen-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Fullscreen Modal Small Mobile */
+  .cinematic-modal-close {
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+  }
+
+  .cinematic-modal-main {
+    padding: 0.75rem;
+  }
+
+  .cinematic-modal-main img {
+    max-height: 65vh;
+    border-radius: 8px;
+  }
+
+  .cinematic-modal-main .animated-image-container {
+    max-width: 98vw;
+    max-height: 65vh;
+    border-radius: 8px;
+  }
+
+  .cinematic-modal-main .animated-image-container img,
+  .cinematic-modal-main .animated-image-container video {
+    max-width: 98vw;
+    max-height: 65vh;
+    border-radius: 8px;
+  }
+
+  .cinematic-modal-thumbs {
+    padding: 0.75rem;
+    gap: 6px;
+  }
+
+  .cinematic-modal-thumb {
+    width: 60px;
+    height: 42px;
+    border-radius: 5px;
+  }
+}
+
+/* Extra Small Mobile */
+@media (max-width: 360px) {
+  .cinematic-header {
+    padding: 0.5rem 0.625rem;
+  }
+
+  .cinematic-logo-text {
+    font-size: 0.9rem;
+  }
+
+  .cinematic-btn-header {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.65rem;
+  }
+
+  .cinematic-content {
+    padding: 0 0.625rem 2.5rem;
+  }
+
+  .cinematic-tag {
+    padding: 3px 6px;
+    font-size: 0.5rem;
+  }
+
+  .cinematic-title {
+    font-size: 1.45rem;
+  }
+
+  .cinematic-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .cinematic-stats {
+    gap: 0.625rem;
+  }
+
+  .cinematic-stat-value {
+    font-size: 1.1rem;
+  }
+
+  .cinematic-stat-label {
+    font-size: 0.6rem;
+  }
+
+  .cinematic-controls {
+    padding: 0.5rem;
+    border-radius: 10px;
+  }
+
+  .cinematic-controls-title {
+    font-size: 0.5rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .cinematic-control-row {
+    margin-bottom: 0.3rem;
+  }
+
+  .cinematic-control-label {
+    font-size: 0.6rem;
+    margin-bottom: 0.1rem;
+  }
+
+  .cinematic-select {
+    padding: 0.35rem 0.45rem;
+    font-size: 0.7rem;
+  }
+
+  .cinematic-toggle-row {
+    padding: 0.25rem 0;
+  }
+
+  .cinematic-toggle-label {
+    font-size: 0.75rem;
+  }
+
+  .cinematic-toggle {
+    width: 36px;
+    height: 18px;
+  }
+
+  .cinematic-toggle-thumb {
+    width: 12px;
+    height: 12px;
+    top: 3px;
+  }
+
+  .cinematic-toggle.active .cinematic-toggle-thumb {
+    left: 21px;
+  }
+
+  .cinematic-fullscreen-btn {
+    top: 2.75rem;
+    width: 36px;
+    height: 36px;
+  }
+
+  .cinematic-fullscreen-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .cinematic-progress {
+    bottom: 0.5rem;
+  }
+
+  .cinematic-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .cinematic-dot.active {
+    width: 20px;
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .cinematic-fullscreen-btn {
+    opacity: 1;
+  }
+
+  .cinematic-toggle-row:hover {
+    background: transparent;
+    margin: 0;
+    padding: 0.5rem 0;
+  }
+
+  .cinematic-dot:hover {
+    transform: none;
+  }
+
+  .cinematic-select:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* Landscape Mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  .cinematic-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0.1) 30%,
+      rgba(0, 0, 0, 0.6) 70%,
+      rgba(0, 0, 0, 0.95) 100%
+    );
+  }
+
+  .cinematic-content {
+    flex-direction: row;
+    align-items: flex-end;
+    padding: 0 1rem 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .cinematic-info {
+    max-width: 50%;
+  }
+
+  .cinematic-title {
+    font-size: 1.75rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .cinematic-subtitle {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .cinematic-stats {
+    gap: 1rem;
+  }
+
+  .cinematic-stat-value {
+    font-size: 1.25rem;
+  }
+
+  .cinematic-stat-label {
+    font-size: 0.7rem;
+  }
+
+  .cinematic-controls {
+    max-width: 300px;
+    padding: 1rem;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+  }
+
+  .cinematic-controls-title {
+    margin-bottom: 0.75rem;
+  }
+
+  .cinematic-control-row {
+    margin-bottom: 0.625rem;
+  }
+
+  .cinematic-toggle-row {
+    padding: 0.4rem 0;
+  }
+
+  .cinematic-progress {
+    bottom: 0.5rem;
+  }
+
+  .cinematic-dot {
+    width: 8px;
+    height: 8px;
+  }
+
+  .cinematic-dot.active {
+    width: 24px;
+  }
+
+  .cinematic-nav-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .cinematic-nav-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .cinematic-modal-main img {
+    max-height: 80vh;
+  }
+
+  .cinematic-modal-thumbs {
+    padding: 0.5rem;
+  }
+
+  .cinematic-modal-thumb {
+    width: 50px;
+    height: 35px;
+  }
+}
+
+/* ========================================
+   FLOOR PLAN SECTION - Cinematic Split
+======================================== */
+.cinematic-page .floor-plan-section {
+  min-height: 100vh;
+  padding: 4rem 3rem;
+  background: #0a0a0a;
+  display: block !important;
+}
+
+.cinematic-page .floor-plan-container {
+  display: grid !important;
+  grid-template-columns: 400px 1fr !important;
+  gap: 3rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  min-height: 70vh;
+  align-items: center;
+}
+
+.cinematic-page .floor-plan-left {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center;
+}
+
+.cinematic-page .floor-plan-header {
+  margin-bottom: 2rem;
+  display: block !important;
+}
+
+.cinematic-page .floor-plan-tag {
+  display: block !important;
+  width: fit-content;
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 100px;
+}
+
+.cinematic-page .floor-plan-header h2 {
+  display: block !important;
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: white;
+  margin: 0 0 0.75rem 0;
+  line-height: 1.2;
+}
+
+.cinematic-page .floor-plan-header p {
+  display: block !important;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1rem;
+  margin: 0;
+}
+
+.cinematic-page .floor-plan-stats {
+  display: flex;
+  gap: 2.5rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 2rem;
+}
+
+.cinematic-page .floor-plan-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.cinematic-page .floor-plan-stat-value {
+  font-size: 2rem;
+  font-weight: 300;
+  color: white;
+}
+
+.cinematic-page .floor-plan-stat-label {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.cinematic-page .floor-plan-rooms {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+  max-height: 320px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+
+  /* Custom Scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+.cinematic-page .floor-plan-rooms::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cinematic-page .floor-plan-rooms::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.cinematic-page .floor-plan-rooms::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 3px;
+}
+
+.cinematic-page .floor-plan-rooms::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.cinematic-page .floor-plan-room {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0.8rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+  font-family: inherit;
+  text-align: left;
+}
+
+.cinematic-page .floor-plan-room:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.cinematic-page .floor-plan-room.active {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: white;
+}
+
+.cinematic-page .floor-plan-room-name {
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px;
+}
+
+.cinematic-page .floor-plan-room-area {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.cinematic-page .floor-plan-room.active .floor-plan-room-area {
+  color: white;
+}
+
+.cinematic-page .floor-plan-right {
+  position: relative;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 100%;
+}
+
+.cinematic-page .floor-plan-image {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cinematic-page .floor-plan-image img,
+.cinematic-page .floor-plan-image object {
+  width: 100%;
+  height: auto;
+  max-height: 80vh;
+  object-fit: contain;
+  filter: invert(1) brightness(0.9);
+}
+
+.cinematic-page .floor-plan-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.cinematic-page .floor-plan-room-preview {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  width: 280px;
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  overflow: hidden;
+  animation: floorPlanFadeInUp 0.3s ease;
+}
+
+@keyframes floorPlanFadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.cinematic-page .floor-plan-room-preview img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  filter: none;
+}
+
+.cinematic-page .floor-plan-room-preview-info {
+  padding: 1rem;
+}
+
+.cinematic-page .floor-plan-room-preview-info h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  margin-bottom: 0.25rem;
+}
+
+.cinematic-page .floor-plan-room-preview-info p {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Floor Plan Responsive */
+@media (max-width: 1200px) {
+  .cinematic-page .floor-plan-container {
+    grid-template-columns: 350px 1fr !important;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .cinematic-page .floor-plan-section {
+    padding: 3rem 2rem;
+  }
+
+  .cinematic-page .floor-plan-container {
+    grid-template-columns: 1fr !important;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .cinematic-page .floor-plan-header h2 {
+    font-size: 2rem;
+  }
+
+  .cinematic-page .floor-plan-right {
+    min-height: 350px;
+    justify-content: center;
+  }
+
+  .cinematic-page .floor-plan-image {
+    max-width: 100%;
+  }
+
+  .cinematic-page .floor-plan-room-preview {
+    bottom: 1rem;
+    right: 1rem;
+    width: 240px;
+  }
+}
+
+@media (max-width: 600px) {
+  .cinematic-page .floor-plan-section {
+    padding: 2rem 1rem;
+  }
+
+  .cinematic-page .floor-plan-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .cinematic-page .floor-plan-stats {
+    gap: 1.5rem;
+  }
+
+  .cinematic-page .floor-plan-stat-value {
+    font-size: 1.5rem;
+  }
+
+  .cinematic-page .floor-plan-rooms {
+    grid-template-columns: 1fr 1fr;
+    max-height: 200px;
+    gap: 0.35rem;
+  }
+
+  .cinematic-page .floor-plan-room {
+    padding: 0.5rem 0.6rem;
+  }
+
+  .cinematic-page .floor-plan-room-name {
+    font-size: 0.7rem;
+    max-width: 70px;
+  }
+
+  .cinematic-page .floor-plan-room-area {
+    font-size: 0.65rem;
+  }
+
+  .cinematic-page .floor-plan-room-preview {
+    width: 200px;
+    bottom: 0.5rem;
+    right: 0.5rem;
+  }
+
+  .cinematic-page .floor-plan-room-preview img {
+    height: 120px;
+  }
+
+  .cinematic-page .floor-plan-room-preview-info {
+    padding: 0.75rem;
+  }
+
+  .cinematic-page .floor-plan-room-preview-info h3 {
+    font-size: 0.9rem;
+  }
+
+  .cinematic-page .floor-plan-room-preview-info p {
+    font-size: 0.75rem;
+  }
+}
+
+/* ========================================
+   ROOM DETAIL MODAL - Dark Theme Override
+   (Uses original room-modal-v2 classes from App.css)
+======================================== */
+.cinematic-page .room-modal-overlay-v2 {
+  background: rgba(0, 0, 0, 0.85);
+}
+
+.cinematic-page .room-modal-v2 {
+  background: #0f0f0f;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cinematic-page .room-modal-v2-right {
+  background: #0a0a0a;
+}
+
+.cinematic-page .room-modal-close-v2 {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.cinematic-page .room-modal-close-v2:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.cinematic-page .room-modal-v2-label {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.cinematic-page .room-modal-v2-content h2 {
+  color: #fff;
+}
+
+.cinematic-page .room-modal-v2-area .area-number {
+  color: white;
+}
+
+.cinematic-page .room-modal-v2-area .area-unit {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.cinematic-page .room-modal-v2-description {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.cinematic-page .room-modal-v2-features h4 {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.cinematic-page .room-modal-v2-features li {
+  color: rgba(255, 255, 255, 0.8);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}

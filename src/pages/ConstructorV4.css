@@ -1,0 +1,660 @@
+/* ========== CONSTRUCTOR V4: Reveal on Scroll Style ========== */
+
+.scroll-page {
+  width: 100%;
+  height: 100vh;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  background: #0a0a0a;
+}
+
+.scroll-container {
+  min-height: 300vh;
+}
+
+/* ===== HERO SECTION ===== */
+.scroll-hero-section {
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-parallax-bg {
+  position: absolute;
+  inset: -20%;
+  will-change: transform;
+}
+
+.scroll-parallax-bg .animated-image-container {
+  width: 100%;
+  height: 100%;
+}
+
+.scroll-parallax-bg .animated-image-container img,
+.scroll-parallax-bg .animated-image-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Hide LIVE badge */
+.scroll-page .animated-image-badge {
+  display: none !important;
+}
+
+.scroll-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.scroll-hero-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  z-index: 2;
+}
+
+.scroll-hero-tag {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  backdrop-filter: blur(10px);
+}
+
+.scroll-hero-content h1 {
+  font-size: 5rem;
+  font-weight: 200;
+  margin-bottom: 1rem;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+}
+
+.scroll-hero-content p {
+  font-size: 1.3rem;
+  opacity: 0.8;
+  margin-bottom: 2rem;
+}
+
+.scroll-indicator {
+  position: absolute;
+  bottom: 50px;
+  font-size: 2rem;
+  animation: bounce 2s infinite;
+  cursor: pointer;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(15px); }
+}
+
+/* ===== CONTROLS PANEL (Fixed) ===== */
+.scroll-controls-panel {
+  position: fixed;
+  top: 50%;
+  right: 2rem;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 1.5rem;
+  z-index: 100;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.scroll-controls-panel.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%) translateX(20px);
+}
+
+.scroll-control-group {
+  margin-bottom: 1rem;
+}
+
+.scroll-control-group:last-child {
+  margin-bottom: 0;
+}
+
+.scroll-control-label {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  opacity: 0.7;
+  margin-bottom: 0.5rem;
+}
+
+.scroll-control-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.scroll-control-btn {
+  padding: 0.5rem 0.875rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.scroll-control-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.scroll-control-btn.active {
+  background: white;
+  color: #1a1a1a;
+  border-color: white;
+}
+
+/* Toggles */
+.scroll-toggles {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.scroll-toggle-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.scroll-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.scroll-toggle-btn.active {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: white;
+}
+
+.scroll-toggle-icon {
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scroll-toggle-icon svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* ===== DETAILS SECTION ===== */
+.scroll-details-section {
+  min-height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  padding: 4rem 2rem;
+  background: #111;
+}
+
+.scroll-detail-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 3rem 2rem;
+  border-radius: 24px;
+  text-align: center;
+  color: white;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  min-width: 200px;
+}
+
+.scroll-detail-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-10px);
+}
+
+.scroll-detail-card h2 {
+  font-size: 3rem;
+  font-weight: 300;
+  color: #4ade80;
+  margin-bottom: 0.5rem;
+}
+
+.scroll-detail-card p {
+  opacity: 0.7;
+  font-size: 1rem;
+}
+
+/* ===== GALLERY SECTION ===== */
+.scroll-gallery-section {
+  padding: 4rem 2rem;
+  background: #0a0a0a;
+}
+
+.scroll-gallery-title {
+  text-align: center;
+  color: white;
+  font-size: 2rem;
+  font-weight: 300;
+  margin-bottom: 3rem;
+}
+
+.scroll-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.scroll-gallery-item {
+  border-radius: 16px;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.scroll-gallery-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.scroll-gallery-item.active {
+  box-shadow: 0 0 0 3px #4ade80;
+}
+
+.scroll-gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scroll-gallery-item .animated-image-container {
+  width: 100%;
+  height: 100%;
+}
+
+.scroll-gallery-item .animated-image-container img,
+.scroll-gallery-item .animated-image-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ===== PRICE SECTION ===== */
+.scroll-price-section {
+  padding: 6rem 2rem;
+  background: linear-gradient(to bottom, #0a0a0a, #111);
+  text-align: center;
+  color: white;
+}
+
+.scroll-price-label {
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.scroll-price-value {
+  font-size: 4rem;
+  font-weight: 300;
+  color: #4ade80;
+  margin-bottom: 2rem;
+}
+
+.scroll-cta {
+  background: white;
+  color: #1a1a1a;
+  border: none;
+  padding: 1rem 3rem;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.scroll-cta:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 40px rgba(255, 255, 255, 0.2);
+}
+
+/* ===== FULLSCREEN GALLERY ===== */
+.scroll-fullscreen {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.scroll-fullscreen-close {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.scroll-fullscreen-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.scroll-fullscreen-close svg {
+  width: 24px;
+  height: 24px;
+}
+
+.scroll-fullscreen-content {
+  max-width: 90vw;
+  max-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scroll-fullscreen-content .animated-image-container {
+  max-width: 90vw;
+  max-height: 80vh;
+}
+
+.scroll-fullscreen-content .animated-image-container img,
+.scroll-fullscreen-content .animated-image-container video {
+  max-width: 90vw;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.scroll-fullscreen-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.scroll-fullscreen-nav:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.scroll-fullscreen-nav svg {
+  width: 28px;
+  height: 28px;
+}
+
+.scroll-fullscreen-prev {
+  left: 2rem;
+}
+
+.scroll-fullscreen-next {
+  right: 2rem;
+}
+
+.scroll-fullscreen-counter {
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 100px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.scroll-fullscreen-thumbs {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 90vw;
+  overflow-x: auto;
+}
+
+.scroll-fullscreen-thumb {
+  width: 80px;
+  height: 60px;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  flex-shrink: 0;
+  background: none;
+  padding: 0;
+}
+
+.scroll-fullscreen-thumb:hover {
+  opacity: 0.8;
+}
+
+.scroll-fullscreen-thumb.active {
+  opacity: 1;
+  border-color: white;
+}
+
+.scroll-fullscreen-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ===== CUSTOM SCROLLBAR ===== */
+/* Main page scrollbar */
+.scroll-page::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-page::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.scroll-page::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+.scroll-page::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Firefox scrollbar */
+.scroll-page {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) rgba(255, 255, 255, 0.05);
+}
+
+/* Fullscreen thumbnails scrollbar */
+.scroll-fullscreen-thumbs::-webkit-scrollbar {
+  height: 6px;
+}
+
+.scroll-fullscreen-thumbs::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.scroll-fullscreen-thumbs::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+}
+
+.scroll-fullscreen-thumbs::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Firefox scrollbar for thumbnails */
+.scroll-fullscreen-thumbs {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .scroll-controls-panel {
+    top: auto;
+    bottom: 2rem;
+    right: 50%;
+    transform: translateX(50%);
+    flex-direction: row;
+    padding: 1rem;
+  }
+
+  .scroll-controls-panel.hidden {
+    transform: translateX(50%) translateY(20px);
+  }
+
+  .scroll-control-options {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .scroll-hero-content h1 {
+    font-size: 3.5rem;
+  }
+
+  .scroll-details-section {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .scroll-hero-content h1 {
+    font-size: 2.5rem;
+  }
+
+  .scroll-hero-content p {
+    font-size: 1rem;
+  }
+
+  .scroll-detail-card {
+    padding: 2rem 1.5rem;
+    min-width: 150px;
+  }
+
+  .scroll-detail-card h2 {
+    font-size: 2rem;
+  }
+
+  .scroll-price-value {
+    font-size: 2.5rem;
+  }
+
+  .scroll-controls-panel {
+    display: none;
+  }
+
+  .scroll-fullscreen-nav {
+    width: 45px;
+    height: 45px;
+  }
+
+  .scroll-fullscreen-prev {
+    left: 1rem;
+  }
+
+  .scroll-fullscreen-next {
+    right: 1rem;
+  }
+
+  .scroll-fullscreen-close {
+    top: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+  }
+
+  .scroll-fullscreen-counter {
+    top: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .scroll-fullscreen-thumbs {
+    bottom: 1rem;
+    padding: 0.75rem;
+    gap: 0.5rem;
+  }
+
+  .scroll-fullscreen-thumb {
+    width: 60px;
+    height: 45px;
+  }
+}

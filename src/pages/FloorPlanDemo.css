@@ -1,0 +1,1010 @@
+/* ========== Floor Plan Demo Page ========== */
+
+.fp-demo-page {
+  height: 100vh;
+  background: #0a0a0a;
+  color: white;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Demo Navigation */
+.fp-demo-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 1.5rem 2rem;
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.fp-demo-nav h1 {
+  font-size: 1.25rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.fp-demo-tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.fp-demo-tab {
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.fp-demo-tab:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+.fp-demo-tab.active {
+  background: white;
+  border-color: white;
+  color: #0a0a0a;
+}
+
+/* ========================================
+   VARIANT 1: Cinematic Split
+======================================== */
+.fp-v1 {
+  min-height: calc(100vh - 100px);
+  padding: 3rem;
+  overflow-y: auto;
+}
+
+.fp-v1-container {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 3rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  min-height: 70vh;
+}
+
+.fp-v1-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.fp-v1-header {
+  margin-bottom: 2rem;
+}
+
+.fp-v1-tag {
+  display: inline-block;
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 100px;
+}
+
+.fp-v1-header h2 {
+  font-size: 2.5rem;
+  font-weight: 300;
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+
+.fp-v1-header p {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1rem;
+}
+
+.fp-v1-stats {
+  display: flex;
+  gap: 2.5rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 2rem;
+}
+
+.fp-v1-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.fp-v1-stat-value {
+  font-size: 2rem;
+  font-weight: 300;
+  color: white;
+}
+
+.fp-v1-stat-label {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.fp-v1-rooms {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.fp-v1-room {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.fp-v1-room:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.fp-v1-room.active {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: white;
+}
+
+.fp-v1-room-name {
+  color: white;
+  font-size: 0.95rem;
+}
+
+.fp-v1-room-area {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.85rem;
+}
+
+.fp-v1-room.active .fp-v1-room-area {
+  color: white;
+}
+
+.fp-v1-right {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fp-v1-plan {
+  position: relative;
+  width: 100%;
+  max-width: 700px;
+}
+
+.fp-v1-plan img {
+  width: 100%;
+  height: auto;
+  filter: invert(1) brightness(0.9);
+}
+
+.fp-v1-plan-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.fp-v1-room-preview {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  width: 280px;
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  overflow: hidden;
+  animation: fadeInUp 0.3s ease;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fp-v1-room-preview img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.fp-v1-room-preview-info {
+  padding: 1rem;
+}
+
+.fp-v1-room-preview-info h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.fp-v1-room-preview-info p {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ========================================
+   VARIANT 2: Floating Cards
+======================================== */
+.fp-v2 {
+  min-height: calc(100vh - 100px);
+  padding: 3rem;
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.fp-v2-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto 3rem;
+}
+
+.fp-v2-header h2 {
+  font-size: 3rem;
+  font-weight: 200;
+}
+
+.fp-v2-area-badge {
+  padding: 1rem 2rem;
+  background: white;
+  border-radius: 100px;
+}
+
+.fp-v2-area-badge span {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #0a0a0a;
+}
+
+.fp-v2-content {
+  position: relative;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 600px;
+}
+
+.fp-v2-plan-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.fp-v2-plan {
+  max-width: 600px;
+  filter: invert(1) brightness(0.85);
+  opacity: 0.7;
+}
+
+.fp-v2-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.fp-v2-cards {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.fp-v2-card {
+  position: absolute;
+  width: 180px;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fp-v2-card:hover {
+  transform: scale(1.05);
+  z-index: 10;
+}
+
+.fp-v2-card-1 { top: 5%; left: 5%; }
+.fp-v2-card-2 { top: 5%; right: 5%; }
+.fp-v2-card-3 { top: 40%; left: 0; }
+.fp-v2-card-4 { top: 40%; right: 0; }
+.fp-v2-card-5 { bottom: 5%; left: 10%; }
+.fp-v2-card-6 { bottom: 5%; right: 10%; }
+
+.fp-v2-card-inner {
+  background: rgba(20, 20, 20, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.fp-v2-card-inner img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+}
+
+.fp-v2-card-content {
+  padding: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fp-v2-card-content h4 {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.fp-v2-card-content span {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.fp-v2-card-expand {
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fp-v2-card-expand p {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ========================================
+   VARIANT 3: 3D Perspective
+======================================== */
+.fp-v3 {
+  min-height: calc(100vh - 100px);
+  padding: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1500px;
+  overflow-y: auto;
+}
+
+.fp-v3-scene {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 4rem;
+  max-width: 1400px;
+  width: 100%;
+}
+
+.fp-v3-floor {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fp-v3-plan-container {
+  position: relative;
+  transform: rotateX(15deg) rotateZ(-2deg);
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+}
+
+.fp-v3-plan-container:hover {
+  transform: rotateX(5deg) rotateZ(0deg);
+}
+
+.fp-v3-plan {
+  max-width: 600px;
+  filter: invert(1) brightness(0.9);
+  border-radius: 20px;
+  box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5);
+}
+
+.fp-v3-shadow {
+  position: absolute;
+  bottom: -30px;
+  left: 10%;
+  right: 10%;
+  height: 30px;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.4) 0%, transparent 70%);
+  transform: rotateX(90deg);
+  filter: blur(20px);
+}
+
+.fp-v3-info-panel {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+}
+
+.fp-v3-title {
+  margin-bottom: 2rem;
+}
+
+.fp-v3-eyebrow {
+  display: block;
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 0.5rem;
+}
+
+.fp-v3-title h2 {
+  font-size: 2rem;
+  font-weight: 300;
+}
+
+.fp-v3-total {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.fp-v3-total-number {
+  font-size: 3.5rem;
+  font-weight: 200;
+  color: white;
+  line-height: 1;
+}
+
+.fp-v3-total-label {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.fp-v3-room-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.fp-v3-room-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.fp-v3-room-item:hover,
+.fp-v3-room-item.active {
+  padding-left: 0.5rem;
+}
+
+.fp-v3-room-line {
+  width: 0;
+  height: 2px;
+  background: white;
+  transition: width 0.3s ease;
+}
+
+.fp-v3-room-item:hover .fp-v3-room-line,
+.fp-v3-room-item.active .fp-v3-room-line {
+  width: 20px;
+}
+
+.fp-v3-room-name {
+  flex: 1;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.2s ease;
+}
+
+.fp-v3-room-item:hover .fp-v3-room-name,
+.fp-v3-room-item.active .fp-v3-room-name {
+  color: white;
+}
+
+.fp-v3-room-area {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.fp-v3-room-item:hover .fp-v3-room-area,
+.fp-v3-room-item.active .fp-v3-room-area {
+  color: white;
+}
+
+/* ========================================
+   VARIANT 4: Minimal Luxury
+======================================== */
+.fp-v4 {
+  min-height: calc(100vh - 100px);
+  padding: 3rem;
+  overflow-y: auto;
+}
+
+.fp-v4-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 70vh;
+  align-items: center;
+}
+
+.fp-v4-plan-cell {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fp-v4-plan-frame {
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.fp-v4-plan-frame img {
+  max-width: 500px;
+  filter: invert(1) brightness(0.9);
+}
+
+.fp-v4-badge {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  padding: 1rem 2rem;
+  background: white;
+  border-radius: 100px;
+}
+
+.fp-v4-badge-number {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #0a0a0a;
+}
+
+.fp-v4-badge-unit {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(10, 10, 10, 0.7);
+}
+
+.fp-v4-info-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.fp-v4-header {
+  margin-bottom: 2.5rem;
+}
+
+.fp-v4-line {
+  width: 60px;
+  height: 2px;
+  background: white;
+  margin-bottom: 1.5rem;
+}
+
+.fp-v4-header h2 {
+  font-size: 3rem;
+  font-weight: 200;
+  margin-bottom: 0.75rem;
+}
+
+.fp-v4-header p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.fp-v4-rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.fp-v4-room-card {
+  position: relative;
+  height: 140px;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.fp-v4-room-card:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+.fp-v4-room-card.active {
+  border-color: white;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.15);
+}
+
+.fp-v4-room-card-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
+}
+
+.fp-v4-room-card:hover .fp-v4-room-card-bg {
+  opacity: 0.5;
+}
+
+.fp-v4-room-card-content {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+}
+
+.fp-v4-room-area {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 0.25rem;
+}
+
+.fp-v4-room-name {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* ========================================
+   VARIANT 5: Interactive Grid
+======================================== */
+.fp-v5 {
+  min-height: calc(100vh - 100px);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.fp-v5-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.fp-v5-overline {
+  display: block;
+  font-size: 0.65rem;
+  letter-spacing: 4px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 0.5rem;
+}
+
+.fp-v5-title-group h2 {
+  font-size: 1.75rem;
+  font-weight: 400;
+}
+
+.fp-v5-counter {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.fp-v5-counter-value {
+  font-size: 3rem;
+  font-weight: 200;
+  color: white;
+}
+
+.fp-v5-counter-unit {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.fp-v5-main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+}
+
+.fp-v5-sidebar {
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1rem 0;
+  overflow-y: auto;
+}
+
+.fp-v5-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.fp-v5-sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.fp-v5-sidebar-item.active {
+  background: rgba(255, 255, 255, 0.08);
+  border-left: 2px solid white;
+}
+
+.fp-v5-sidebar-num {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.3);
+  font-family: monospace;
+}
+
+.fp-v5-sidebar-item.active .fp-v5-sidebar-num {
+  color: white;
+}
+
+.fp-v5-sidebar-name {
+  flex: 1;
+  font-size: 0.9rem;
+}
+
+.fp-v5-sidebar-area {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.fp-v5-sidebar-item.active .fp-v5-sidebar-area {
+  color: white;
+}
+
+.fp-v5-plan-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+}
+
+.fp-v5-plan-wrapper {
+  position: relative;
+  max-width: 650px;
+}
+
+.fp-v5-plan-wrapper img {
+  width: 100%;
+  filter: invert(1) brightness(0.9);
+}
+
+.fp-v5-spotlight {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+  pointer-events: none;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.fp-v5-room-detail {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  width: 300px;
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.fp-v5-room-detail img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.fp-v5-room-detail-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.fp-v5-room-detail-info h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.fp-v5-room-detail-info p {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  flex: 1;
+}
+
+.fp-v5-room-detail-area {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+@media (max-width: 1200px) {
+  .fp-v1-container {
+    grid-template-columns: 350px 1fr;
+    gap: 2rem;
+  }
+
+  .fp-v3-scene {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .fp-v3-info-panel {
+    order: -1;
+  }
+
+  .fp-v4-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .fp-v5-main {
+    grid-template-columns: 1fr;
+  }
+
+  .fp-v5-sidebar {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1rem;
+    gap: 0.5rem;
+  }
+
+  .fp-v5-sidebar-item {
+    padding: 0.75rem 1rem;
+    width: auto;
+  }
+}
+
+@media (max-width: 900px) {
+  .fp-v1-container {
+    grid-template-columns: 1fr;
+  }
+
+  .fp-v1-header h2 {
+    font-size: 2rem;
+  }
+
+  .fp-v2-header h2 {
+    font-size: 2rem;
+  }
+
+  .fp-v2-cards {
+    position: static;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .fp-v2-card {
+    position: static !important;
+    width: 100%;
+  }
+
+  .fp-v4-header h2 {
+    font-size: 2rem;
+  }
+
+  .fp-v4-rooms-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .fp-demo-nav {
+    padding: 1rem;
+  }
+
+  .fp-demo-tabs {
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .fp-demo-tab {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .fp-v1,
+  .fp-v2,
+  .fp-v3,
+  .fp-v4,
+  .fp-v5 {
+    padding: 1.5rem;
+    min-height: auto;
+  }
+
+  .fp-v1-stats {
+    gap: 1.5rem;
+  }
+
+  .fp-v1-stat-value {
+    font-size: 1.5rem;
+  }
+
+  .fp-v2-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .fp-v5-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+
+  .fp-v5-sidebar-item {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .fp-v5-sidebar-num {
+    display: none;
+  }
+}

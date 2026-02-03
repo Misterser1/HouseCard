@@ -28,11 +28,28 @@ export function AnimatedImage({
   localVideo
 }: AnimatedImageProps) {
   const [isHovering, setIsHovering] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false); // For mobile tap-to-play
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [status, setStatus] = useState<AnimationStatus>('idle');
   const [progress, setProgress] = useState<ProgressInfo | null>(null);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Detect touch device
+  useEffect(() => {
+    const checkTouch = () => {
+      setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+    };
+    checkTouch();
+  }, []);
+
+  // Reset image loaded state when src changes
+  useEffect(() => {
+    setImageLoaded(false);
+  }, [src]);
 
   // Load cached animation on mount or when props change
   useEffect(() => {
@@ -42,12 +59,14 @@ export function AnimatedImage({
     if (localVideo) {
       setVideoUrl(localVideo);
       setStatus('ready');
+      setVideoLoaded(false); // Reset video loaded state
       return;
     }
 
     // Reset state when localVideo becomes undefined (e.g., switching modes)
     setVideoUrl(null);
     setStatus('idle');
+    setVideoLoaded(false);
 
     const cacheKey = externalSrc || src;
 
@@ -69,17 +88,24 @@ export function AnimatedImage({
     }
   }, [src, externalSrc, localVideo, enableAnimation]);
 
-  // Play/pause video on hover
+  // Play/pause video based on hover (desktop) or isPlaying (mobile)
   useEffect(() => {
     if (!videoRef.current || !videoUrl) return;
 
-    if (isHovering) {
+    const shouldPlay = isTouchDevice ? isPlaying : isHovering;
+
+    if (shouldPlay) {
       videoRef.current.currentTime = 0;
       videoRef.current.play().catch(() => {});
     } else {
       videoRef.current.pause();
     }
-  }, [isHovering, videoUrl]);
+  }, [isHovering, isPlaying, videoUrl, isTouchDevice]);
+
+  // Reset isPlaying when video URL changes (switching images)
+  useEffect(() => {
+    setIsPlaying(false);
+  }, [src, localVideo]);
 
   // Progress callback
   const handleProgress = useCallback((info: ProgressInfo) => {
@@ -125,6 +151,17 @@ export function AnimatedImage({
     setIsHovering(false);
   };
 
+  // Touch handler for mobile - tap to toggle play
+  const handleTouch = (e: React.TouchEvent) => {
+    if (!isTouchDevice || !enableAnimation) return;
+
+    // Only handle if video is ready
+    if (status === 'ready' && videoUrl) {
+      e.preventDefault();
+      setIsPlaying(prev => !prev);
+    }
+  };
+
   // Format time as mm:ss
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -132,29 +169,34 @@ export function AnimatedImage({
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+  // Compute shouldShowVideo once
+  const shouldShowVideo = isTouchDevice ? isPlaying : isHovering;
+
   return (
     <div
       ref={containerRef}
       className={`animated-image-container ${className}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onTouchEnd={handleTouch}
       style={{ position: 'relative', overflow: 'hidden' }}
     >
       {/* Static Image */}
       <img
         src={src}
         alt={alt}
-        className="animated-image-static"
+        className={`animated-image-static ${imageLoaded ? 'loaded' : ''}`}
+        onLoad={() => setImageLoaded(true)}
         style={{
           width: '100%',
           height: '100%',
           objectFit: 'cover',
-          transition: 'opacity 0.3s ease',
-          opacity: isHovering && videoUrl ? 0 : 1,
+          transition: 'opacity 0.4s ease',
+          opacity: shouldShowVideo && videoLoaded ? 0 : 1,
         }}
       />
 
-      {/* Animated Video (shown on hover) */}
+      {/* Animated Video (shown on hover/tap) */}
       {videoUrl && (
         <video
           ref={videoRef}
@@ -163,10 +205,12 @@ export function AnimatedImage({
           muted
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
           className="animated-image-video"
+          onCanPlay={() => setVideoLoaded(true)}
           onError={(e) => {
             console.error('Video load error:', e);
+            setVideoLoaded(false);
             // Try without crossOrigin if it fails
             const video = e.currentTarget;
             if (video.crossOrigin) {
@@ -181,7 +225,7 @@ export function AnimatedImage({
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            opacity: isHovering ? 1 : 0,
+            opacity: shouldShowVideo && videoLoaded ? 1 : 0,
             transition: 'opacity 0.3s ease',
             pointerEvents: 'none',
           }}
@@ -261,7 +305,7 @@ export function AnimatedImage({
       )}
 
       {/* Error State */}
-      {status === 'error' && isHovering && (
+      {status === 'error' && shouldShowVideo && (
         <div
           className="animated-image-error"
           style={{
@@ -296,7 +340,7 @@ export function AnimatedImage({
             position: 'absolute',
             top: '0.75rem',
             left: '0.75rem',
-            background: 'rgba(74, 222, 128, 0.9)',
+            background: shouldShowVideo ? 'rgba(239, 68, 68, 0.9)' : 'rgba(74, 222, 128, 0.9)',
             color: 'white',
             padding: '0.25rem 0.5rem',
             borderRadius: '4px',
@@ -305,23 +349,27 @@ export function AnimatedImage({
             display: 'flex',
             alignItems: 'center',
             gap: '0.25rem',
-            opacity: isHovering ? 0 : 1,
-            transition: 'opacity 0.3s ease',
+            transition: 'opacity 0.3s ease, background 0.3s ease',
           }}
         >
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <polygon points="5 3 19 12 5 21 5 3" />
-          </svg>
-          LIVE
+          {shouldShowVideo ? (
+            <>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="6" y="4" width="4" height="16" />
+                <rect x="14" y="4" width="4" height="16" />
+              </svg>
+              LIVE
+            </>
+          ) : (
+            <>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polygon points="5 3 19 12 5 21 5 3" />
+              </svg>
+              LIVE
+            </>
+          )}
         </div>
       )}
-
-      {/* CSS Animation */}
-      <style>{`
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
     </div>
   );
 }
