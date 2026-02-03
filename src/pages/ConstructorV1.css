@@ -1356,6 +1356,8 @@
 .cinematic-page .floor-plan-header {
   margin-bottom: 2rem;
   display: block !important;
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
 .cinematic-page .floor-plan-tag {
