@@ -1559,6 +1559,125 @@
   color: rgba(255, 255, 255, 0.5);
 }
 
+/* Theme Toggle Button */
+.cinematic-page .theme-toggle-btn {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  font-family: inherit;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cinematic-page .theme-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Light Theme for Floor Plan Section */
+.cinematic-page .floor-plan-section.light-theme {
+  background: #f5f5f5;
+}
+
+.cinematic-page .floor-plan-section.light-theme .floor-plan-tag {
+  color: rgba(0, 0, 0, 0.6);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.cinematic-page .floor-plan-section.light-theme .floor-plan-header h2 {
+  color: #1a1a1a;
+}
+
+.cinematic-page .floor-plan-section.light-theme .floor-plan-header p {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.cinematic-page .floor-plan-section.light-theme .floor-plan-stats {
+  border-top-color: rgba(0, 0, 0, 0.1);
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
+.cinematic-page .floor-plan-section.light-theme .floor-plan-stat-value {
+  color: #1a1a1a;
+}
+
+.cinematic-page .floor-plan-section.light-theme .floor-plan-stat-label {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.cinematic-page .floor-plan-section.light-theme .floor-plan-rooms {
+  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+}
+
+.cinematic-page .floor-plan-section.light-theme .floor-plan-rooms::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.cinematic-page .floor-plan-section.light-theme .floor-plan-rooms::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.cinematic-page .floor-plan-section.light-theme .floor-plan-room {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: #1a1a1a;
+}
+
+.cinematic-page .floor-plan-section.light-theme .floor-plan-room:hover {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.cinematic-page .floor-plan-section.light-theme .floor-plan-room.active {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: #1a1a1a;
+}
+
+.cinematic-page .floor-plan-section.light-theme .floor-plan-room-area {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.cinematic-page .floor-plan-section.light-theme .floor-plan-room.active .floor-plan-room-area {
+  color: #1a1a1a;
+}
+
+.cinematic-page .floor-plan-section.light-theme .floor-plan-image {
+  background: white;
+  border-radius: 16px;
+}
+
+.cinematic-page .floor-plan-section.light-theme .floor-plan-overlay {
+  background: none;
+}
+
+.cinematic-page .floor-plan-section.light-theme .floor-plan-room-preview {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.cinematic-page .floor-plan-section.light-theme .floor-plan-room-preview-info h3 {
+  color: #1a1a1a;
+}
+
+.cinematic-page .floor-plan-section.light-theme .floor-plan-room-preview-info p {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.cinematic-page .floor-plan-section.light-theme .theme-toggle-btn {
+  color: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.cinematic-page .floor-plan-section.light-theme .theme-toggle-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 0, 0, 0.3);
+}
+
 /* Floor Plan Responsive */
 @media (max-width: 1200px) {
   .cinematic-page .floor-plan-container {

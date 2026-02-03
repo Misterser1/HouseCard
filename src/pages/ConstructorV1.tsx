@@ -84,6 +84,7 @@ export function ConstructorV1() {
 
   // Floor plan state
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null)
+  const [isLightTheme, setIsLightTheme] = useState(false)
   const svgRef = useRef<HTMLObjectElement>(null)
 
   // Обработка кликов на комнаты в SVG
@@ -702,13 +703,19 @@ export function ConstructorV1() {
       )}
 
       {/* Floor Plan Section - Cinematic Split */}
-      <section className="floor-plan-section">
+      <section className={`floor-plan-section ${isLightTheme ? 'light-theme' : ''}`}>
         <div className="floor-plan-container">
           <div className="floor-plan-left">
             <div className="floor-plan-header">
               <span className="floor-plan-tag">ПЛАНИРОВКА</span>
               <h2>Продуманное пространство</h2>
               <p>Каждый метр используется максимально эффективно</p>
+              <button
+                className="theme-toggle-btn"
+                onClick={() => setIsLightTheme(!isLightTheme)}
+              >
+                {isLightTheme ? 'Тёмная тема' : 'Светлая тема'}
+              </button>
             </div>
             <div className="floor-plan-stats">
               <div className="floor-plan-stat">
