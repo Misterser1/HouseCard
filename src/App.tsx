@@ -23,6 +23,7 @@ import CardDemo from './pages/CardDemo'
 import RoomModalDemo from './pages/RoomModalDemo'
 import HeroSectionDemo from './pages/HeroSectionDemo'
 import FloorPlanDemo from './pages/FloorPlanDemo'
+import { RoomButtonsDemo } from './pages/RoomButtonsDemo'
 import { useHouseStore } from './store/houseStore'
 import './App.css'
 
@@ -104,6 +105,7 @@ function AppContent() {
   const isConstructorV3 = location.pathname === '/constructor-v3'
   const isConstructorV4 = location.pathname === '/constructor-v4'
   const isConstructorV5 = location.pathname === '/constructor-v5'
+  const isRoomButtonsDemo = location.pathname === '/room-buttons-demo'
 
   // Для конструктора - отдельный layout без общего хедера
   if (isConstructor) {
@@ -200,6 +202,11 @@ function AppContent() {
     return <ConstructorV5 />
   }
 
+  // Для демо кнопок списка комнат
+  if (isRoomButtonsDemo) {
+    return <RoomButtonsDemo />
+  }
+
   return (
     <div className="app">
       <header className="header">
@@ -234,6 +241,7 @@ function AppContent() {
         <Route path="/constructor-v3" element={<ConstructorV3 />} />
         <Route path="/constructor-v4" element={<ConstructorV4 />} />
         <Route path="/constructor-v5" element={<ConstructorV5 />} />
+        <Route path="/room-buttons-demo" element={<RoomButtonsDemo />} />
       </Routes>
 
       {error && (

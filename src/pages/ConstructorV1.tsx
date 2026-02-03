@@ -59,20 +59,20 @@ const Icons = {
 
 // Room data for floor plan (14 помещений по схеме)
 const floorPlanRooms = [
-  { id: 'hallway', name: 'Прихожая', area: 10.87, description: 'Просторная прихожая с местом для верхней одежды и обуви', features: ['Встроенные шкафы', 'Зеркало в полный рост', 'Банкетка'], image: '/rooms/1. Прихожая.jpg' },
-  { id: 'corridor', name: 'Коридор', area: 9.12, description: 'Связующее пространство между комнатами', features: ['Освещение', 'Доступ ко всем комнатам'], image: '/rooms/1. Прихожая.jpg' },
+  { id: 'hallway', name: 'Прихожая', area: 10.87, description: 'Просторная прихожая с местом для верхней одежды и обуви', features: ['Встроенные шкафы', 'Зеркало в полный рост', 'Банкетка'], image: '/rooms/1.%20Прихожая.jpg' },
+  { id: 'corridor', name: 'Коридор', area: 9.12, description: 'Связующее пространство между комнатами', features: ['Освещение', 'Доступ ко всем комнатам'], image: '/rooms/1.%20Прихожая.jpg' },
   { id: 'living-room', name: 'Кухня-гостиная', area: 43.60, description: 'Просторная кухня-гостиная — сердце дома для семейных встреч', features: ['Открытая планировка', 'Зона отдыха', 'Обеденная зона', 'Выход на террасу'], image: '/rooms/3.Кухня-столовая.jpg' },
-  { id: 'bedroom-parents', name: 'Спальня', area: 13.83, description: 'Уютная спальня с выходом в гардеробную', features: ['Большое окно', 'Гардеробная зона', 'Спальное место'], image: '/rooms/5. Спальня.jpg' },
+  { id: 'bedroom-parents', name: 'Спальня', area: 13.83, description: 'Уютная спальня с выходом в гардеробную', features: ['Большое окно', 'Гардеробная зона', 'Спальное место'], image: '/rooms/5.%20Спальня.jpg' },
   { id: 'wardrobe', name: 'Гардероб', area: 6.08, description: 'Вместительная гардеробная комната', features: ['Системы хранения', 'Освещение', 'Зеркало'], image: '/rooms/2.Гардероб.jpg' },
-  { id: 'bedroom-1', name: 'Спальня', area: 16.72, description: 'Главная спальня с панорамным видом', features: ['Большое окно', 'Рабочая зона', 'Выход на террасу'], image: '/rooms/5. Спальня.jpg' },
-  { id: 'bedroom-2', name: 'Спальня', area: 11.88, description: 'Гостевая спальня или детская комната', features: ['Естественное освещение', 'Место для кровати', 'Рабочий уголок'], image: '/rooms/6.Спальня.jpg' },
+  { id: 'bedroom-left', name: 'Спальня', area: 16.72, description: 'Главная спальня с панорамным видом', features: ['Большое окно', 'Рабочая зона', 'Выход на террасу'], image: '/rooms/5.%20Спальня.jpg' },
+  { id: 'bedroom-right', name: 'Спальня', area: 11.88, description: 'Гостевая спальня или детская комната', features: ['Естественное освещение', 'Место для кровати', 'Рабочий уголок'], image: '/rooms/6.Спальня.jpg' },
   { id: 'bathroom-large', name: 'Ванная', area: 8.47, description: 'Основная ванная комната с современным оснащением', features: ['Ванна', 'Душевая кабина', 'Раковина', 'Тёплый пол'], image: '/rooms/7.Ванная.jpg' },
   { id: 'bathroom-small', name: 'С/У', area: 4.63, description: 'Компактный гостевой санузел', features: ['Унитаз', 'Раковина', 'Зеркало'], image: '/rooms/9.Сан.узел.jpg' },
-  { id: 'boiler', name: 'Котельная', area: 6.92, description: 'Техническое помещение для инженерных систем', features: ['Газовый котёл', 'Бойлер', 'Вентиляция'], image: '/rooms/boiler.jpg' },
+  { id: 'boiler', name: 'Котельная', area: 6.92, description: 'Техническое помещение для инженерных систем', features: ['Газовый котёл', 'Бойлер', 'Вентиляция'], image: '/rooms/8.Кладовая.jpg' },
   { id: 'storage', name: 'Кладовая', area: 8.07, description: 'Помещение для хранения вещей и инвентаря', features: ['Стеллажи', 'Освещение', 'Вентиляция'], image: '/rooms/8.Кладовая.jpg' },
-  { id: 'terrace', name: 'Терраса', area: 26.27, description: 'Просторная терраса для отдыха на свежем воздухе', features: ['Зона барбекю', 'Мебель для отдыха', 'Освещение'], image: '/rooms/10. Терраса.jpg' },
+  { id: 'terrace', name: 'Терраса', area: 26.27, description: 'Просторная терраса для отдыха на свежем воздухе', features: ['Зона барбекю', 'Мебель для отдыха', 'Освещение'], image: '/rooms/10.%20Терраса.jpg' },
   { id: 'porch', name: 'Крыльцо', area: 4.50, description: 'Входная группа с навесом', features: ['Навес', 'Освещение', 'Ступени'], image: '/rooms/11.Крыльцо.jpg' },
-  { id: 'kitchen', name: 'Кухня', area: 12.04, description: 'Функциональная рабочая зона кухни', features: ['Современная техника', 'Рабочая поверхность', 'Кухонный остров'], image: '/rooms/4. Кухня.jpg' },
+  { id: 'kitchen', name: 'Кухня', area: 12.04, description: 'Функциональная рабочая зона кухни', features: ['Современная техника', 'Рабочая поверхность', 'Кухонный остров'], image: '/rooms/4.%20Кухня.jpg' },
 ]
 
 export function ConstructorV1() {
@@ -724,15 +724,16 @@ export function ConstructorV1() {
                 <span className="floor-plan-stat-label">этаж</span>
               </div>
             </div>
-            <div className="floor-plan-rooms">
+            <div className="floor-plan-rooms chips-style">
               {floorPlanRooms.map(room => (
                 <button
                   key={room.id}
-                  className={`floor-plan-room ${selectedRoom === room.id ? 'active' : ''}`}
+                  className={`floor-plan-chip ${selectedRoom === room.id ? 'active' : ''}`}
                   onClick={() => setSelectedRoom(selectedRoom === room.id ? null : room.id)}
                 >
-                  <span className="floor-plan-room-name">{room.name}</span>
-                  <span className="floor-plan-room-area">{room.area} м²</span>
+                  <span className="chip-name">{room.name}</span>
+                  <span className="chip-divider">·</span>
+                  <span className="chip-area">{room.area} м²</span>
                 </button>
               ))}
             </div>
