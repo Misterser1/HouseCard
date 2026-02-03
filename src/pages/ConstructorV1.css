@@ -2293,3 +2293,167 @@
 .cinematic-page .floor-plan-section.original-theme .floor-plan-image .room-clickable:hover rect:first-of-type {
   fill: rgba(46, 90, 60, 0.12) !important;
 }
+
+/* ========================================
+   Mobile Controls Panel (like V4)
+   (Shows on mobile instead of cinematic-controls)
+======================================== */
+.mobile-controls-panel {
+  display: none;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-right: none;
+  border-radius: 12px 0 0 12px;
+  padding: 0;
+  z-index: 50;
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+.mobile-controls-panel.hidden {
+  transform: translateY(-50%) translateX(calc(100% + 1px));
+}
+
+.mobile-panel-toggle {
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 44px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-right: none;
+  border-radius: 10px 0 0 10px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
+}
+
+.mobile-panel-toggle:active {
+  transform: translateY(-50%) scale(0.95);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.mobile-panel-toggle svg {
+  width: 12px;
+  height: 12px;
+  opacity: 0.9;
+  margin-left: 2px;
+}
+
+.mobile-panel-content {
+  padding: 0.75rem 0.6rem 0.75rem 2rem;
+}
+
+.mobile-control-group {
+  margin-bottom: 0.6rem;
+}
+
+.mobile-control-group:last-child {
+  margin-bottom: 0;
+}
+
+.mobile-control-label {
+  display: block;
+  font-size: 0.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.6;
+  margin-bottom: 0.3rem;
+  text-align: center;
+}
+
+.mobile-control-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.mobile-control-btn {
+  padding: 0.35rem 0.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.mobile-control-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+.mobile-control-btn.active {
+  background: white;
+  color: #1a1a1a;
+  border-color: white;
+}
+
+.mobile-toggles {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.mobile-toggle-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mobile-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.mobile-toggle-btn.active {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: white;
+}
+
+.mobile-toggle-icon {
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-toggle-icon svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Show mobile panel and hide desktop controls on mobile */
+@media (max-width: 768px) {
+  .mobile-controls-panel {
+    display: block;
+  }
+
+  .cinematic-controls {
+    display: none !important;
+  }
+}

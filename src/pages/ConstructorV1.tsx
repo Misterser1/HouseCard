@@ -374,6 +374,7 @@ export function ConstructorV1() {
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [isMobilePanelHidden, setIsMobilePanelHidden] = useState(false)
 
   // Touch swipe state
   const touchStartX = useRef<number | null>(null)
@@ -460,7 +461,9 @@ export function ConstructorV1() {
         el.classList.contains('cinematic-nav') ||
         el.classList.contains('cinematic-progress') ||
         el.classList.contains('cinematic-fullscreen-btn') ||
-        el.classList.contains('animated-image-badge')
+        el.classList.contains('animated-image-badge') ||
+        el.classList.contains('mobile-controls-panel') ||
+        el.classList.contains('mobile-panel-toggle')
       ) {
         return true
       }
@@ -679,6 +682,100 @@ export function ConstructorV1() {
               <img src={img} alt={`Миниатюра ${idx + 1}`} />
             </button>
           ))}
+        </div>
+
+        {/* Mobile Controls Panel */}
+        <div
+          className={`mobile-controls-panel ${isMobilePanelHidden ? 'hidden' : ''}`}
+          onClick={(e) => e.stopPropagation()}
+          onTouchStart={(e) => e.stopPropagation()}
+          onTouchEnd={(e) => e.stopPropagation()}
+        >
+          <button
+            className="mobile-panel-toggle"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsMobilePanelHidden(!isMobilePanelHidden);
+            }}
+            onTouchStart={(e) => e.stopPropagation()}
+            onTouchEnd={(e) => e.stopPropagation()}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              {isMobilePanelHidden ? (
+                <path d="M15 19l-7-7 7-7" />
+              ) : (
+                <path d="M9 5l7 7-7 7" />
+              )}
+            </svg>
+          </button>
+          <div className="mobile-panel-content">
+            <div className="mobile-control-group">
+              <span className="mobile-control-label">Фасад</span>
+              <div className="mobile-control-options">
+                <button
+                  className={`mobile-control-btn ${facadeStyle === 'brick' ? 'active' : ''}`}
+                  onClick={() => setFacadeStyle('brick')}
+                >
+                  Кирпич
+                </button>
+                <button
+                  className={`mobile-control-btn ${facadeStyle === 'combined' ? 'active' : ''}`}
+                  onClick={() => setFacadeStyle('combined')}
+                >
+                  Комби
+                </button>
+                <button
+                  className={`mobile-control-btn ${facadeStyle === 'ventilated' ? 'active' : ''}`}
+                  onClick={() => setFacadeStyle('ventilated')}
+                >
+                  Вент.
+                </button>
+              </div>
+            </div>
+            <div className="mobile-control-group">
+              <span className="mobile-control-label">Кровля</span>
+              <div className="mobile-control-options">
+                <button
+                  className={`mobile-control-btn ${roofStyle === 'natural' ? 'active' : ''}`}
+                  onClick={() => setRoofStyle('natural')}
+                >
+                  Натур.
+                </button>
+                <button
+                  className={`mobile-control-btn ${roofStyle === 'soft' ? 'active' : ''}`}
+                  onClick={() => setRoofStyle('soft')}
+                >
+                  Мягкая
+                </button>
+                <button
+                  className={`mobile-control-btn ${roofStyle === 'flat' ? 'active' : ''}`}
+                  onClick={() => setRoofStyle('flat')}
+                >
+                  Плоская
+                </button>
+              </div>
+            </div>
+            <div className="mobile-control-group">
+              <div className="mobile-toggles">
+                <button
+                  className={`mobile-toggle-btn ${isExterior ? 'active' : ''}`}
+                  onClick={() => setIsExterior(!isExterior)}
+                >
+                  <span className="mobile-toggle-icon">
+                    {isExterior ? Icons.exterior : Icons.interior}
+                  </span>
+                </button>
+                <button
+                  className={`mobile-toggle-btn ${isDay ? 'active' : ''}`}
+                  onClick={() => setIsDay(!isDay)}
+                >
+                  <span className="mobile-toggle-icon">
+                    {isDay ? Icons.sun : Icons.moon}
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
