@@ -1,0 +1,933 @@
+/* ==========================================
+   Design Demo Page
+   ========================================== */
+
+.design-demo {
+  min-height: 100vh;
+  background:
+    linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 58, 95, 0.9) 50%, rgba(15, 23, 42, 0.95) 100%),
+    url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80') center/cover fixed;
+  padding: 2rem;
+}
+
+.demo-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 2rem;
+}
+
+.demo-back {
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  margin-bottom: 1rem;
+  transition: color 0.3s;
+}
+
+.demo-back:hover {
+  color: #4ade80;
+}
+
+.demo-header h1 {
+  font-size: 2.5rem;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.demo-header p {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.1rem;
+}
+
+/* Demo Section */
+.demo-section {
+  margin-bottom: 4rem;
+}
+
+.demo-section-title {
+  font-size: 1.5rem;
+  color: white;
+  margin-bottom: 1.5rem;
+  padding-left: 1rem;
+  border-left: 4px solid #4ade80;
+}
+
+.demo-grid {
+  display: grid;
+  gap: 2rem;
+}
+
+.cards-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.buttons-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.sections-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Wrapper styles */
+.demo-card-wrapper,
+.demo-btn-wrapper,
+.demo-section-wrapper {
+  position: relative;
+  cursor: pointer;
+  padding: 1.5rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.demo-card-wrapper:hover,
+.demo-btn-wrapper:hover,
+.demo-section-wrapper:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.demo-card-wrapper.selected,
+.demo-btn-wrapper.selected,
+.demo-section-wrapper.selected {
+  border-color: #4ade80;
+  background: rgba(34, 197, 94, 0.1);
+}
+
+.variant-label {
+  display: block;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.selected .variant-label {
+  color: #4ade80;
+}
+
+/* ==========================================
+   Card Variant 1 - Clean White
+   ========================================== */
+.card-v1 {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  position: relative;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+.card-v1-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #22c55e;
+  color: white;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.card-v1-title {
+  font-size: 1.5rem;
+  color: #1e293b;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+}
+
+.card-v1-desc {
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.card-v1-price {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #16a34a;
+  margin-bottom: 1.25rem;
+}
+
+.card-v1-btn {
+  width: 100%;
+  padding: 0.9rem;
+  background: #22c55e;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-bottom: 1.25rem;
+}
+
+.card-v1-btn:hover {
+  background: #16a34a;
+  transform: translateY(-2px);
+}
+
+.card-v1-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 1rem;
+}
+
+.card-v1-features li {
+  color: #64748b;
+  padding: 0.35rem 0;
+  font-size: 0.9rem;
+}
+
+/* ==========================================
+   Card Variant 2 - Gradient Glass
+   ========================================== */
+.card-v2 {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-v2-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #22c55e, #4ade80, #86efac);
+}
+
+.card-v2-title {
+  font-size: 1.5rem;
+  color: white;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+}
+
+.card-v2-desc {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.card-v2-price {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #4ade80;
+  margin-bottom: 1.25rem;
+}
+
+.card-v2-btn {
+  width: 100%;
+  padding: 0.9rem;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+}
+
+.card-v2-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+}
+
+.card-v2-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1rem;
+}
+
+.card-v2-features li {
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0.35rem 0;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card-v2-features li::before {
+  content: '✓';
+  color: #4ade80;
+  font-weight: bold;
+}
+
+/* ==========================================
+   Card Variant 3 - Dark Premium
+   ========================================== */
+.card-v3 {
+  background: linear-gradient(145deg, #1e293b, #0f172a);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-v3-glow {
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.card-v3-title {
+  font-size: 1.5rem;
+  color: white;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+  position: relative;
+}
+
+.card-v3-desc {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.card-v3-price {
+  font-size: 1.75rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #4ade80, #22c55e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.card-v3-btn {
+  width: 100%;
+  padding: 0.9rem;
+  background: transparent;
+  border: 2px solid #4ade80;
+  border-radius: 12px;
+  color: #4ade80;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.card-v3-btn:hover {
+  background: #4ade80;
+  color: #0f172a;
+}
+
+.card-v3-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 1rem;
+  position: relative;
+}
+
+.card-v3-features li {
+  color: rgba(255, 255, 255, 0.5);
+  padding: 0.35rem 0;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card-v3-features li::before {
+  content: '●';
+  color: #4ade80;
+  font-size: 0.5rem;
+}
+
+/* ==========================================
+   Card Variant 4 - Minimal Outline
+   ========================================== */
+.card-v4 {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 2rem;
+  transition: all 0.3s;
+}
+
+.card-v4:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.card-v4-title {
+  font-size: 1.4rem;
+  color: white;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.card-v4-desc {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.card-v4-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  margin: 1rem 0;
+}
+
+.card-v4-price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1.25rem;
+}
+
+.card-v4-btn {
+  width: 100%;
+  padding: 0.9rem;
+  background: transparent;
+  border: none;
+  color: #4ade80;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.card-v4-btn:hover {
+  padding-left: 1rem;
+}
+
+.card-v4-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.card-v4-features li {
+  color: rgba(255, 255, 255, 0.4);
+  padding: 0.35rem 0;
+  font-size: 0.85rem;
+}
+
+/* ==========================================
+   Card Variant 5 - Neon Glow
+   ========================================== */
+.card-v5 {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid #4ade80;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow:
+    0 0 20px rgba(74, 222, 128, 0.2),
+    inset 0 0 30px rgba(74, 222, 128, 0.05);
+  transition: all 0.3s;
+}
+
+.card-v5:hover {
+  box-shadow:
+    0 0 40px rgba(74, 222, 128, 0.3),
+    inset 0 0 40px rgba(74, 222, 128, 0.1);
+}
+
+.card-v5-title {
+  font-size: 1.5rem;
+  color: #4ade80;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
+}
+
+.card-v5-desc {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.card-v5-price {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 1.25rem;
+}
+
+.card-v5-btn {
+  width: 100%;
+  padding: 0.9rem;
+  background: #4ade80;
+  border: none;
+  border-radius: 10px;
+  color: #0f172a;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 0 20px rgba(74, 222, 128, 0.4);
+}
+
+.card-v5-btn:hover {
+  box-shadow: 0 0 30px rgba(74, 222, 128, 0.6);
+  transform: translateY(-2px);
+}
+
+.card-v5-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.card-v5-features li {
+  color: rgba(255, 255, 255, 0.6);
+  padding: 0.35rem 0;
+  font-size: 0.9rem;
+}
+
+/* ==========================================
+   Card Variant 6 - Neumorphism
+   ========================================== */
+.card-v6 {
+  background: linear-gradient(145deg, #1e2a3a, #243447);
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow:
+    8px 8px 20px rgba(0, 0, 0, 0.3),
+    -8px -8px 20px rgba(255, 255, 255, 0.03);
+}
+
+.card-v6-title {
+  font-size: 1.5rem;
+  color: white;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+}
+
+.card-v6-desc {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.card-v6-price {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #4ade80;
+  margin-bottom: 1.25rem;
+}
+
+.card-v6-btn {
+  width: 100%;
+  padding: 0.9rem;
+  background: linear-gradient(145deg, #243447, #1e2a3a);
+  border: none;
+  border-radius: 12px;
+  color: #4ade80;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-bottom: 1.25rem;
+  box-shadow:
+    4px 4px 10px rgba(0, 0, 0, 0.3),
+    -4px -4px 10px rgba(255, 255, 255, 0.02);
+}
+
+.card-v6-btn:hover {
+  box-shadow:
+    inset 4px 4px 10px rgba(0, 0, 0, 0.3),
+    inset -4px -4px 10px rgba(255, 255, 255, 0.02);
+}
+
+.card-v6-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.card-v6-features li {
+  color: rgba(255, 255, 255, 0.5);
+  padding: 0.35rem 0;
+  font-size: 0.9rem;
+}
+
+/* ==========================================
+   Button Variants
+   ========================================== */
+.demo-btn-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+}
+
+/* Button V1 - Gradient */
+.btn-v1 {
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 20px rgba(34, 197, 94, 0.4);
+}
+
+.btn-v1:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(34, 197, 94, 0.5);
+}
+
+/* Button V2 - Outline */
+.btn-v2 {
+  padding: 1rem 2rem;
+  background: transparent;
+  border: 2px solid #4ade80;
+  border-radius: 12px;
+  color: #4ade80;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-v2:hover {
+  background: #4ade80;
+  color: #0f172a;
+}
+
+/* Button V3 - Glass */
+.btn-v3 {
+  padding: 1rem 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-v3:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Button V4 - Neon */
+.btn-v4 {
+  padding: 1rem 2rem;
+  background: transparent;
+  border: 2px solid #4ade80;
+  border-radius: 12px;
+  color: #4ade80;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 0 15px rgba(74, 222, 128, 0.3);
+}
+
+.btn-v4:hover {
+  box-shadow: 0 0 30px rgba(74, 222, 128, 0.5);
+  text-shadow: 0 0 10px rgba(74, 222, 128, 0.8);
+}
+
+/* Button V5 - Minimal */
+.btn-v5 {
+  padding: 1rem 0;
+  background: transparent;
+  border: none;
+  color: #4ade80;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-bottom: 2px solid transparent;
+}
+
+.btn-v5:hover {
+  border-bottom-color: #4ade80;
+}
+
+/* Button V6 - 3D */
+.btn-v6 {
+  padding: 1rem 2rem;
+  background: linear-gradient(180deg, #4ade80 0%, #22c55e 100%);
+  border: none;
+  border-radius: 12px;
+  color: #0f172a;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow:
+    0 6px 0 #16a34a,
+    0 8px 20px rgba(34, 197, 94, 0.3);
+}
+
+.btn-v6:hover {
+  transform: translateY(2px);
+  box-shadow:
+    0 4px 0 #16a34a,
+    0 6px 15px rgba(34, 197, 94, 0.3);
+}
+
+.btn-v6:active {
+  transform: translateY(4px);
+  box-shadow:
+    0 2px 0 #16a34a,
+    0 4px 10px rgba(34, 197, 94, 0.3);
+}
+
+/* ==========================================
+   Section Variants
+   ========================================== */
+
+/* Section V1 - Glass Dark */
+.section-v1 {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 1.5rem;
+}
+
+.section-v1 h3 {
+  color: white;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #4ade80;
+}
+
+.section-v1-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.section-v1-col h4 {
+  color: #4ade80;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.section-v1-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.section-v1-col li {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  padding: 0.3rem 0;
+}
+
+.section-v1-col li::before {
+  content: '✓ ';
+  color: #4ade80;
+}
+
+/* Section V2 - White Cards */
+.section-v2 {
+  padding: 1.5rem;
+}
+
+.section-v2 h3 {
+  color: white;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.section-v2-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.section-v2-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.section-v2-card h4 {
+  color: #1e293b;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.section-v2-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.section-v2-card li {
+  color: #64748b;
+  font-size: 0.8rem;
+  padding: 0.25rem 0;
+}
+
+/* Section V3 - Gradient Border */
+.section-v3 {
+  background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+  border-radius: 20px;
+  padding: 1.5rem;
+  position: relative;
+}
+
+.section-v3::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  padding: 2px;
+  background: linear-gradient(135deg, #22c55e, #4ade80, #22c55e);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.section-v3 h3 {
+  color: white;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.section-v3-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.section-v3-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+}
+
+.section-v3-icon {
+  font-size: 1.5rem;
+}
+
+.section-v3-item h4 {
+  color: white;
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+}
+
+.section-v3-item p {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+/* ==========================================
+   Summary
+   ========================================== */
+.demo-summary {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(30, 41, 59, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  z-index: 100;
+}
+
+.demo-summary h3 {
+  color: white;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.demo-summary-items {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.demo-summary-items span {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+
+/* ==========================================
+   Responsive
+   ========================================== */
+@media (max-width: 1200px) {
+  .cards-grid,
+  .buttons-grid,
+  .sections-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .cards-grid,
+  .buttons-grid,
+  .sections-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .demo-summary {
+    flex-direction: column;
+    gap: 1rem;
+    left: 1rem;
+    right: 1rem;
+    transform: none;
+  }
+
+  .demo-summary-items {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}

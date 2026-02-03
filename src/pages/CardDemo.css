@@ -1,0 +1,598 @@
+.card-demo-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #f8faf8 0%, #e8f0e8 100%);
+  padding: 2rem;
+  padding-bottom: 100px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.card-demo-header {
+  max-width: 1400px;
+  margin: 0 auto 2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.card-demo-header h1 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.75rem;
+  color: #1a2e22;
+  margin: 0;
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #2E5A3C;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.back-link:hover {
+  background: #1a3a24;
+}
+
+.card-variants-grid {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.5rem;
+}
+
+.card-variant {
+  background: white;
+  border-radius: 16px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.card-variant:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(46, 90, 60, 0.15);
+}
+
+.card-variant.selected {
+  border-color: #2E5A3C;
+  box-shadow: 0 12px 32px rgba(46, 90, 60, 0.2);
+}
+
+.card-variant.wide {
+  grid-column: span 2;
+}
+
+.variant-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #7a8a80;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e8ede8;
+}
+
+/* ========== Original Card Base Styles ========== */
+.original-card {
+  background: linear-gradient(180deg, #fafcfa 0%, #f5f8f5 100%);
+  border-radius: 12px;
+  padding: 1.25rem;
+  border: 1px solid #e8ede8;
+}
+
+.original-card.compact {
+  padding: 1rem;
+}
+
+.oc-specs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.oc-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.oc-label {
+  font-size: 0.65rem;
+  color: #8a9a90;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.oc-value-big {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1a2e22;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+.oc-value-med {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #2E5A3C;
+}
+
+/* Icons Grid */
+.oc-icons {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e8ede8;
+}
+
+.oc-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  flex: 1;
+  text-align: center;
+}
+
+.oc-icon span {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2E5A3C;
+}
+
+.oc-icon svg {
+  width: 22px;
+  height: 22px;
+  color: #6a7a70;
+}
+
+.oc-icon small {
+  font-size: 0.65rem;
+  color: #8a9a90;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* Price Section */
+.oc-price-section {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e8ede8;
+  text-align: center;
+}
+
+.oc-price-label {
+  font-size: 0.65rem;
+  color: #8a9a90;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25rem;
+}
+
+.oc-price {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #2E5A3C;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+.oc-price-note {
+  font-size: 0.75rem;
+  color: #7a8a80;
+  margin-top: 0.35rem;
+  font-style: italic;
+}
+
+/* ========== Variant 2: Config Button ========== */
+.oc-config-btn {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, #2E5A3C 0%, #1a3a24 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.oc-config-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(46, 90, 60, 0.3);
+}
+
+.oc-config-btn svg {
+  opacity: 0.9;
+}
+
+/* ========== Variant 3: Chips ========== */
+.oc-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e8ede8;
+}
+
+.oc-chip {
+  font-size: 0.75rem;
+  padding: 0.4rem 0.75rem;
+  background: #e8f0e8;
+  border-radius: 20px;
+  color: #4a5a50;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.oc-chip:hover {
+  background: #d8e8d8;
+  border-color: #c0d0c0;
+}
+
+.oc-chip.active {
+  background: #2E5A3C;
+  color: white;
+  border-color: #2E5A3C;
+}
+
+/* ========== Variant 4: Accordion ========== */
+.oc-accordion {
+  margin-top: 0.75rem;
+  border-top: 1px solid #e8ede8;
+  padding-top: 0.5rem;
+}
+
+.oc-accordion summary {
+  font-size: 0.8rem;
+  color: #2E5A3C;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  font-weight: 500;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.oc-accordion summary::-webkit-details-marker {
+  display: none;
+}
+
+.oc-accordion[open] summary {
+  margin-bottom: 0.5rem;
+}
+
+.oc-acc-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: #f5f8f5;
+  border-radius: 8px;
+}
+
+.oc-acc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #4a5a50;
+}
+
+.oc-stepper {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.oc-stepper button {
+  width: 26px;
+  height: 26px;
+  border: 1px solid #d0d8d0;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #2E5A3C;
+  transition: all 0.15s;
+}
+
+.oc-stepper button:hover {
+  background: #e8f0e8;
+  border-color: #2E5A3C;
+}
+
+.oc-stepper span {
+  width: 28px;
+  text-align: center;
+  font-weight: 600;
+  color: #1a2e22;
+}
+
+.oc-acc-row select {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid #d0d8d0;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  background: white;
+  color: #1a2e22;
+  cursor: pointer;
+}
+
+.oc-acc-row select:focus {
+  outline: none;
+  border-color: #2E5A3C;
+}
+
+/* ========== Variant 5: Clickable Icons ========== */
+.oc-icons.clickable {
+  gap: 0.4rem;
+}
+
+.oc-icon-edit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  flex: 1;
+  text-align: center;
+  padding: 0.5rem 0.25rem;
+  border-radius: 8px;
+  background: #f5f8f5;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  border: 1px solid transparent;
+}
+
+.oc-icon-edit:hover {
+  background: #e8f0e8;
+  border-color: #c0d0c0;
+}
+
+.oc-icon-edit.active {
+  background: #e8f5ec;
+  border-color: #2E5A3C;
+}
+
+.oc-icon-edit span {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2E5A3C;
+}
+
+.oc-icon-edit svg {
+  width: 20px;
+  height: 20px;
+  color: #6a7a70;
+}
+
+.oc-icon-edit small {
+  font-size: 0.6rem;
+  color: #8a9a90;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+}
+
+.oc-edit-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 18px;
+  height: 18px;
+  background: #6a7a70;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.65rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+}
+
+.oc-edit-badge.check {
+  background: #2E5A3C;
+}
+
+/* ========== Variant 6: Split Layout with Side Panel ========== */
+.split-layout {
+  display: flex;
+  gap: 1rem;
+}
+
+.split-layout .original-card {
+  flex: 1;
+}
+
+.side-panel {
+  width: 180px;
+  background: #f5f8f5;
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border: 1px solid #e8ede8;
+}
+
+.sp-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #7a8a80;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e0e8e0;
+}
+
+.sp-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: #4a5a50;
+}
+
+.sp-stepper {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.sp-stepper button {
+  width: 22px;
+  height: 22px;
+  border: 1px solid #d0d8d0;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #2E5A3C;
+}
+
+.sp-stepper button:hover {
+  background: #e8f0e8;
+}
+
+.sp-stepper span {
+  width: 20px;
+  text-align: center;
+  font-weight: 600;
+  color: #1a2e22;
+  font-size: 0.85rem;
+}
+
+.side-panel select {
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #d0d8d0;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  background: white;
+  color: #1a2e22;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 0.25rem;
+}
+
+.sp-checks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e0e8e0;
+}
+
+.sp-checks label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: #4a5a50;
+  cursor: pointer;
+}
+
+.sp-checks input[type="checkbox"] {
+  accent-color: #2E5A3C;
+  width: 14px;
+  height: 14px;
+}
+
+/* ========== Footer ========== */
+.selected-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+  z-index: 100;
+}
+
+.selected-footer span {
+  font-size: 1rem;
+  color: #1a2e22;
+  font-weight: 500;
+}
+
+.apply-btn {
+  padding: 0.75rem 2rem;
+  background: #2E5A3C;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.apply-btn:hover {
+  background: #1a3a24;
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 900px) {
+  .card-variant.wide {
+    grid-column: span 1;
+  }
+
+  .split-layout {
+    flex-direction: column;
+  }
+
+  .side-panel {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .card-demo-page {
+    padding: 1rem;
+    padding-bottom: 100px;
+  }
+
+  .card-demo-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .card-demo-header h1 {
+    font-size: 1.25rem;
+  }
+
+  .card-variants-grid {
+    grid-template-columns: 1fr;
+  }
+}

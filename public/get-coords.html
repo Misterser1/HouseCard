@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SVG Room Coordinates</title>
+    <style>
+        body { font-family: monospace; padding: 20px; }
+        pre { background: #f5f5f5; padding: 15px; overflow-x: auto; }
+        #svg-container { margin: 20px 0; border: 1px solid #ccc; }
+        object { width: 100%; max-height: 600px; }
+    </style>
+</head>
+<body>
+    <h1>SVG Room Coordinates Calculator</h1>
+    <div id="svg-container">
+        <object id="svg" data="/floor-plan.svg" type="image/svg+xml"></object>
+    </div>
+    <h2>Results:</h2>
+    <pre id="output">Loading...</pre>
+
+    <script>
+        const svgObj = document.getElementById('svg');
+
+        svgObj.addEventListener('load', () => {
+            const svgDoc = svgObj.contentDocument;
+            const svgRoot = svgDoc.documentElement;
+            const viewBox = svgRoot.getAttribute('viewBox');
+
+            let output = `ViewBox: ${viewBox}\n\n`;
+            output += `Room coordinates (based on text positions):\n`;
+            output += `${'='.repeat(60)}\n\n`;
+
+            // Find all text elements
+            const texts = svgDoc.querySelectorAll('text');
+            const roomTexts = [];
+
+            texts.forEach(text => {
+                const content = text.textContent.trim();
+                // Skip area measurements and short strings
+                if (!content || content.includes('м') || content.match(/^[0-9.,]+$/) || content.length < 2) {
+                    return;
+                }
+
+                try {
+                    const bbox = text.getBBox();
+                    const ctm = text.getScreenCTM();
+                    const svgCTM = svgRoot.getScreenCTM();
+
+                    if (ctm && svgCTM) {
+                        // Transform to SVG coordinate system
+                        const pt1 = svgRoot.createSVGPoint();
+                        pt1.x = bbox.x;
+                        pt1.y = bbox.y;
+
+                        // Get transformation relative to SVG root
+                        const relCTM = svgCTM.inverse().multiply(ctm);
+                        const transformedPt = pt1.matrixTransform(relCTM);
+
+                        roomTexts.push({
+                            name: content,
+                            x: Math.round(transformedPt.x),
+                            y: Math.round(transformedPt.y),
+                            width: Math.round(bbox.width * relCTM.a),
+                            height: Math.round(bbox.height * relCTM.d)
+                        });
+                    }
+                } catch(e) {
+                    console.error(`Error processing ${content}:`, e);
+                }
+            });
+
+            // Sort by y then x for logical order
+            roomTexts.sort((a, b) => a.y - b.y || a.x - b.x);
+
+            // Output results
+            roomTexts.forEach(room => {
+                output += `${room.name}:\n`;
+                output += `  Text position: x=${room.x}, y=${room.y}\n`;
+                output += `  Text size: ${room.width}x${room.height}\n\n`;
+            });
+
+            output += `\n${'='.repeat(60)}\n`;
+            output += `\nSVG rect elements for clickable areas:\n`;
+            output += `(Approximate - centered on text with padding)\n\n`;
+
+            // Generate rect elements
+            roomTexts.forEach(room => {
+                // Create larger clickable area around text
+                const padX = 40;
+                const padY = 30;
+                const w = Math.max(room.width + padX * 2, 60);
+                const h = Math.max(room.height + padY * 3, 50);
+                const x = room.x - padX;
+                const y = room.y - padY;
+
+                output += `<!-- ${room.name} -->\n`;
+                output += `<rect class="room-clickable" data-room="${room.name}" `;
+                output += `x="${x}" y="${y}" width="${w}" height="${h}" fill="transparent"/>\n\n`;
+            });
+
+            document.getElementById('output').textContent = output;
+            console.log(output);
+        });
+    </script>
+</body>
+</html>

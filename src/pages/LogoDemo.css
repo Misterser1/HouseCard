@@ -1,0 +1,285 @@
+.logo-demo-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #f8faf8 0%, #e8f0e8 100%);
+  padding: 2rem;
+  padding-bottom: 140px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 1000;
+}
+
+.logo-demo-header {
+  max-width: 1400px;
+  margin: 0 auto 2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: white;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #2E5A3C;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: all 0.2s;
+}
+
+.back-link:hover {
+  background: #2E5A3C;
+  color: white;
+}
+
+.logo-demo-header h1 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 2rem;
+  color: #1a2e22;
+  margin: 0;
+}
+
+.logo-grid {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.logo-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 3px solid transparent;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  position: relative;
+}
+
+.logo-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(46, 90, 60, 0.15);
+}
+
+.logo-card.selected {
+  border-color: #2E5A3C;
+  background: linear-gradient(135deg, #f0f8f0 0%, #e8f4e8 100%);
+}
+
+.logo-preview {
+  width: 100%;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fafcfa 0%, #f0f4f0 100%);
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.logo-preview svg {
+  width: 60%;
+  height: 60%;
+  color: #2E5A3C;
+}
+
+.logo-with-text {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: #fafcfa;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+}
+
+.logo-icon-small {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.logo-icon-small svg {
+  width: 100%;
+  height: 100%;
+  color: #2E5A3C;
+}
+
+.logo-brand-text {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2E5A3C;
+  letter-spacing: 0.02em;
+}
+
+.logo-name {
+  font-size: 0.9rem;
+  color: #6a7a70;
+  text-align: center;
+}
+
+.logo-number {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #9aa;
+  background: #f5f7f5;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+/* Selected Preview */
+.selected-preview {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 -8px 32px rgba(0,0,0,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  z-index: 100;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.selected-preview-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.selected-logo-large {
+  width: 48px;
+  height: 48px;
+}
+
+.selected-logo-large svg {
+  width: 100%;
+  height: 100%;
+  color: #2E5A3C;
+}
+
+.selected-brand-text {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #2E5A3C;
+  letter-spacing: 0.02em;
+}
+
+.selected-preview p {
+  color: #6a7a70;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.confirm-btn {
+  padding: 0.875rem 2rem;
+  background: linear-gradient(135deg, #2E5A3C 0%, #3a7a4d 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.confirm-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(46, 90, 60, 0.3);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .logo-demo-page {
+    padding: 1rem;
+  }
+
+  .logo-demo-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .logo-demo-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .logo-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .logo-card {
+    padding: 1rem;
+  }
+
+  .logo-with-text {
+    padding: 0.5rem;
+  }
+
+  .logo-brand-text {
+    font-size: 0.95rem;
+  }
+
+  .selected-preview {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+  }
+
+  .selected-brand-text {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .logo-preview svg {
+    width: 50%;
+    height: 50%;
+  }
+
+  .logo-icon-small {
+    width: 22px;
+    height: 22px;
+  }
+
+  .logo-brand-text {
+    font-size: 0.85rem;
+  }
+
+  .logo-name {
+    font-size: 0.8rem;
+  }
+}
