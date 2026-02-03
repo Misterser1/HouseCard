@@ -1887,55 +1887,57 @@
 }
 
 /* ========================================
-   ROOM DETAIL MODAL - Dark Theme Override
+   ROOM DETAIL MODAL - Original Green Theme
    (Uses original room-modal-v2 classes from App.css)
 ======================================== */
 .cinematic-page .room-modal-overlay-v2 {
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(26, 46, 34, 0.85);
 }
 
 .cinematic-page .room-modal-v2 {
-  background: #0f0f0f;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #fff;
+  border: 1px solid rgba(46, 90, 60, 0.15);
+  box-shadow: 0 25px 50px rgba(46, 90, 60, 0.2);
 }
 
 .cinematic-page .room-modal-v2-right {
-  background: #0a0a0a;
+  background: #f8faf8;
 }
 
 .cinematic-page .room-modal-close-v2 {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(46, 90, 60, 0.1);
+  color: #2E5A3C;
 }
 
 .cinematic-page .room-modal-close-v2:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(46, 90, 60, 0.2);
 }
 
 .cinematic-page .room-modal-v2-label {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(46, 90, 60, 0.6);
 }
 
 .cinematic-page .room-modal-v2-content h2 {
-  color: #fff;
+  color: #1a2e22;
 }
 
 .cinematic-page .room-modal-v2-area .area-number {
-  color: white;
+  color: #2E5A3C;
 }
 
 .cinematic-page .room-modal-v2-area .area-unit {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(46, 90, 60, 0.6);
 }
 
 .cinematic-page .room-modal-v2-description {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(26, 46, 34, 0.7);
 }
 
 .cinematic-page .room-modal-v2-features h4 {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(46, 90, 60, 0.5);
 }
 
 .cinematic-page .room-modal-v2-features li {
-  color: rgba(255, 255, 255, 0.8);
-  border-bottom-color: rgba(255, 255, 255, 0.1);
+  color: #1a2e22;
+  border-bottom-color: rgba(46, 90, 60, 0.1);
 }
