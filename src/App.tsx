@@ -24,6 +24,10 @@ import RoomModalDemo from './pages/RoomModalDemo'
 import HeroSectionDemo from './pages/HeroSectionDemo'
 import FloorPlanDemo from './pages/FloorPlanDemo'
 import { RoomButtonsDemo } from './pages/RoomButtonsDemo'
+import RoomChipsDemo from './pages/RoomChipsDemo'
+import FloorPlanLayoutDemo from './pages/FloorPlanLayoutDemo'
+import PricingSectionDemo from './pages/PricingSectionDemo'
+import InteriorSectionDemo from './pages/InteriorSectionDemo'
 import { useHouseStore } from './store/houseStore'
 import './App.css'
 
@@ -207,6 +211,26 @@ function AppContent() {
     return <RoomButtonsDemo />
   }
 
+  // Для демо вариантов chips комнат
+  if (location.pathname === '/room-chips-demo') {
+    return <RoomChipsDemo />
+  }
+
+  // Для демо вариантов layout планировки
+  if (location.pathname === '/floor-plan-layout-demo') {
+    return <FloorPlanLayoutDemo />
+  }
+
+  // Для демо секции стоимости
+  if (location.pathname === '/pricing-demo') {
+    return <PricingSectionDemo />
+  }
+
+  // Для демо секции интерьера
+  if (location.pathname === '/interior-demo') {
+    return <InteriorSectionDemo />
+  }
+
   return (
     <div className="app">
       <header className="header">
@@ -242,6 +266,10 @@ function AppContent() {
         <Route path="/constructor-v4" element={<ConstructorV4 />} />
         <Route path="/constructor-v5" element={<ConstructorV5 />} />
         <Route path="/room-buttons-demo" element={<RoomButtonsDemo />} />
+        <Route path="/room-chips-demo" element={<RoomChipsDemo />} />
+        <Route path="/floor-plan-layout-demo" element={<FloorPlanLayoutDemo />} />
+        <Route path="/pricing-demo" element={<PricingSectionDemo />} />
+        <Route path="/interior-demo" element={<InteriorSectionDemo />} />
       </Routes>
 
       {error && (

@@ -75,6 +75,24 @@ const floorPlanRooms = [
   { id: 'kitchen', name: 'Кухня', area: 12.04, description: 'Функциональная рабочая зона кухни', features: ['Современная техника', 'Рабочая поверхность', 'Кухонный остров'], image: '/rooms/4.%20Кухня.jpg' },
 ]
 
+// Video mapping for rooms
+const roomVideos: Record<string, string> = {
+  'hallway': '/videos/rooms/1. Прихожая.mp4',
+  'corridor': '/videos/rooms/1. Прихожая.mp4',
+  'living-room': '/videos/rooms/3.Кухня-столовая.mp4',
+  'bedroom-parents': '/videos/rooms/5. Спальня.mp4',
+  'wardrobe': '/videos/rooms/2.Гардероб.mp4',
+  'bedroom-left': '/videos/rooms/5. Спальня.mp4',
+  'bedroom-right': '/videos/rooms/6.Спальня.mp4',
+  'bathroom-large': '/videos/rooms/7.Ванная.mp4',
+  'bathroom-small': '/videos/rooms/9.Сан.узел.mp4',
+  'boiler': '/videos/rooms/8.Кладовая.mp4',
+  'storage': '/videos/rooms/8.Кладовая.mp4',
+  'terrace': '/videos/rooms/9.Терраса.mp4',
+  'porch': '/videos/rooms/11.Крыльцо.mp4',
+  'kitchen': '/videos/rooms/4. Кухня.mp4',
+}
+
 export function ConstructorV1() {
   // Основные параметры проекта
   const [areaLength] = useState(10)
@@ -85,6 +103,9 @@ export function ConstructorV1() {
   // Floor plan state
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null)
   const [hoveredRoom, setHoveredRoom] = useState<string | null>(null)
+
+  // Pricing section state
+  const [activePricingTab, setActivePricingTab] = useState<'price' | 'specs' | 'included'>('price')
   const svgRef = useRef<HTMLObjectElement>(null)
 
   // Обработка кликов на комнаты в SVG
@@ -338,11 +359,9 @@ export function ConstructorV1() {
     ],
   }
 
-  // Выбор изображений
+  // Выбор изображений (только экстерьер в первой секции)
   const houseImagesByConfig = isDay ? houseImagesByConfigDay : houseImagesByConfigNight
-  const houseImages = isExterior
-    ? houseImagesByConfig[facadeStyle][roofStyle]
-    : interiorImagesByFacade[facadeStyle]
+  const houseImages = houseImagesByConfig[facadeStyle][roofStyle]
 
   // Видео для экстерьера
   const houseVideos: Record<string, string> = {
@@ -456,8 +475,8 @@ export function ConstructorV1() {
         tagName === 'select' ||
         tagName === 'input' ||
         tagName === 'label' ||
-        el.classList.contains('cinematic-controls') ||
         el.classList.contains('cinematic-header') ||
+        el.classList.contains('header-controls') ||
         el.classList.contains('cinematic-nav') ||
         el.classList.contains('cinematic-progress') ||
         el.classList.contains('cinematic-fullscreen-btn') ||
@@ -558,7 +577,45 @@ export function ConstructorV1() {
           <Link to="/" className="cinematic-logo">
             <img src="/logo.png" alt="Родные Края" className="cinematic-logo-img" />
           </Link>
+
+          {/* Header Controls */}
+          <div className="header-controls">
+            <div className="header-control-group">
+              <select
+                className="header-select"
+                value={facadeStyle}
+                onChange={(e) => setFacadeStyle(e.target.value as FacadeStyle)}
+              >
+                <option value="brick">Кирпич</option>
+                <option value="combined">Комби</option>
+                <option value="ventilated">Вент. фасад</option>
+              </select>
+            </div>
+            <div className="header-control-group">
+              <select
+                className="header-select"
+                value={roofStyle}
+                onChange={(e) => setRoofStyle(e.target.value as RoofStyle)}
+              >
+                <option value="natural">Натуральная</option>
+                <option value="soft">Мягкая</option>
+                <option value="flat">Плоская</option>
+              </select>
+            </div>
+            <button
+              className={`header-toggle-btn ${isDay ? 'day' : 'night'}`}
+              onClick={() => setIsDay(!isDay)}
+            >
+              <span className="header-toggle-icon">
+                {isDay ? Icons.sun : Icons.moon}
+              </span>
+            </button>
+          </div>
+
           <div className="cinematic-header-right">
+            <button className="cinematic-fullscreen-btn-header" onClick={() => setIsFullscreen(true)}>
+              {Icons.expand}
+            </button>
             <button className="cinematic-btn-header">
               Заказать звонок
             </button>
@@ -574,11 +631,6 @@ export function ConstructorV1() {
             {Icons.chevronRight}
           </button>
         </div>
-
-        {/* Fullscreen Button */}
-        <button className="cinematic-fullscreen-btn" onClick={() => setIsFullscreen(true)}>
-          {Icons.expand}
-        </button>
 
         {/* Main Content */}
         <div className="cinematic-content">
@@ -603,61 +655,6 @@ export function ConstructorV1() {
             </div>
           </div>
 
-          {/* Right - Controls */}
-          <div className="cinematic-controls">
-            <div className="cinematic-controls-title">Настройки</div>
-
-            <div className="cinematic-control-row">
-              <label className="cinematic-control-label">Фасад</label>
-              <select
-                className="cinematic-select"
-                value={facadeStyle}
-                onChange={(e) => setFacadeStyle(e.target.value as FacadeStyle)}
-              >
-                <option value="brick">Кирпичный</option>
-                <option value="combined">Комбинированный</option>
-                <option value="ventilated">Вентилируемый</option>
-              </select>
-            </div>
-
-            <div className="cinematic-control-row">
-              <label className="cinematic-control-label">Кровля</label>
-              <select
-                className="cinematic-select"
-                value={roofStyle}
-                onChange={(e) => setRoofStyle(e.target.value as RoofStyle)}
-              >
-                <option value="natural">Натуральная черепица</option>
-                <option value="soft">Мягкая черепица</option>
-                <option value="flat">Плоская кровля</option>
-              </select>
-            </div>
-
-            {/* Toggles */}
-            <div className="cinematic-toggle-row" onClick={() => setIsExterior(!isExterior)}>
-              <div className="cinematic-toggle-info">
-                <span className="cinematic-toggle-icon">
-                  {isExterior ? Icons.exterior : Icons.interior}
-                </span>
-                <span className="cinematic-toggle-label">{isExterior ? 'Снаружи' : 'Внутри'}</span>
-              </div>
-              <div className={`cinematic-toggle ${isExterior ? 'active' : ''}`}>
-                <div className="cinematic-toggle-thumb" />
-              </div>
-            </div>
-
-            <div className="cinematic-toggle-row" onClick={() => setIsDay(!isDay)}>
-              <div className="cinematic-toggle-info">
-                <span className="cinematic-toggle-icon">
-                  {isDay ? Icons.sun : Icons.moon}
-                </span>
-                <span className="cinematic-toggle-label">{isDay ? 'День' : 'Ночь'}</span>
-              </div>
-              <div className={`cinematic-toggle ${isDay ? 'active' : ''}`}>
-                <div className="cinematic-toggle-thumb" />
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Progress Dots */}
@@ -758,14 +755,6 @@ export function ConstructorV1() {
             <div className="mobile-control-group">
               <div className="mobile-toggles">
                 <button
-                  className={`mobile-toggle-btn ${isExterior ? 'active' : ''}`}
-                  onClick={() => setIsExterior(!isExterior)}
-                >
-                  <span className="mobile-toggle-icon">
-                    {isExterior ? Icons.exterior : Icons.interior}
-                  </span>
-                </button>
-                <button
                   className={`mobile-toggle-btn ${isDay ? 'active' : ''}`}
                   onClick={() => setIsDay(!isDay)}
                 >
@@ -814,13 +803,14 @@ export function ConstructorV1() {
 
       {/* Floor Plan Section - Cinematic Split */}
       <section className="floor-plan-section original-theme">
+        {/* Centered Header */}
+        <div className="floor-plan-header-top">
+          <h2>Планировка</h2>
+          <p>Каждый метр используется максимально эффективно</p>
+        </div>
+
         <div className="floor-plan-container">
           <div className="floor-plan-left">
-            <div className="floor-plan-header">
-              <span className="floor-plan-tag">ПЛАНИРОВКА</span>
-              <h2>Продуманное пространство</h2>
-              <p>Каждый метр используется максимально эффективно</p>
-            </div>
             <div className="floor-plan-stats">
               <div className="floor-plan-stat">
                 <span className="floor-plan-stat-value">{totalArea}</span>
@@ -867,47 +857,156 @@ export function ConstructorV1() {
         </div>
       </section>
 
-      {/* Room Detail Modal - используем оригинальные классы */}
-      {selectedRoom && (
-        <div className="room-modal-overlay-v2" onClick={() => setSelectedRoom(null)}>
-          <div className="room-modal-v2" onClick={e => e.stopPropagation()}>
-            {(() => {
-              const room = floorPlanRooms.find(r => r.id === selectedRoom)
-              if (!room) return null
-              return (
-                <>
-                  <div className="room-modal-v2-left">
-                    <img src={room.image} alt={room.name} />
-                  </div>
-                  <div className="room-modal-v2-right">
-                    <button className="room-modal-close-v2" onClick={() => setSelectedRoom(null)}>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <line x1="18" y1="6" x2="6" y2="18" />
-                        <line x1="6" y1="6" x2="18" y2="18" />
-                      </svg>
-                    </button>
-                    <div className="room-modal-v2-content">
-                      <span className="room-modal-v2-label">Помещение</span>
-                      <h2>{room.name}</h2>
-                      <div className="room-modal-v2-area">
-                        <span className="area-number">{room.area}</span>
-                        <span className="area-unit">м²</span>
-                      </div>
-                      <p className="room-modal-v2-description">{room.description}</p>
-                      <div className="room-modal-v2-features">
-                        <h4>Особенности</h4>
-                        <ul>
-                          {room.features.map((feature, idx) => (
-                            <li key={idx}>{feature}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )
-            })()}
+      {/* Pricing Section - Minimalist with Tabs */}
+      <section className="pricing-section">
+        <div className="pricing-header">
+          <h2>Стоимость</h2>
+          <p>Фиксированная цена строительства под ключ</p>
+        </div>
+        <div className="pricing-container">
+          <div className="pricing-tabs">
+            <button
+              className={`pricing-tab ${activePricingTab === 'price' ? 'active' : ''}`}
+              onClick={() => setActivePricingTab('price')}
+            >
+              Стоимость
+            </button>
+            <button
+              className={`pricing-tab ${activePricingTab === 'specs' ? 'active' : ''}`}
+              onClick={() => setActivePricingTab('specs')}
+            >
+              Характеристики
+            </button>
+            <button
+              className={`pricing-tab ${activePricingTab === 'included' ? 'active' : ''}`}
+              onClick={() => setActivePricingTab('included')}
+            >
+              Что входит
+            </button>
           </div>
+          <div className="pricing-content">
+            {activePricingTab === 'price' && (
+              <div className="pricing-price-content">
+                <div className="pricing-price-main">
+                  <span className="pricing-price-number">12.5</span>
+                  <span className="pricing-price-suffix">
+                    <span>млн</span>
+                    <span>рублей</span>
+                  </span>
+                </div>
+                <p className="pricing-price-desc">
+                  Фиксированная стоимость строительства дома под ключ с отделкой и всеми инженерными коммуникациями
+                </p>
+                <div className="pricing-price-actions">
+                  <button className="pricing-btn-primary">Скачать смету PDF</button>
+                  <button className="pricing-btn-secondary">Рассчитать ипотеку</button>
+                </div>
+              </div>
+            )}
+            {activePricingTab === 'specs' && (
+              <div className="pricing-specs-content">
+                <div className="pricing-spec-row">
+                  <span>Фундамент</span>
+                  <span>Монолитная плита 300мм</span>
+                </div>
+                <div className="pricing-spec-row">
+                  <span>Стены</span>
+                  <span>Газобетон 400мм + утепление</span>
+                </div>
+                <div className="pricing-spec-row">
+                  <span>Кровля</span>
+                  <span>Натуральная черепица</span>
+                </div>
+                <div className="pricing-spec-row">
+                  <span>Окна</span>
+                  <span>Двухкамерные стеклопакеты</span>
+                </div>
+                <div className="pricing-spec-row">
+                  <span>Отопление</span>
+                  <span>Газовый котёл + тёплый пол</span>
+                </div>
+                <div className="pricing-spec-row">
+                  <span>Высота потолков</span>
+                  <span>3.0 м</span>
+                </div>
+              </div>
+            )}
+            {activePricingTab === 'included' && (
+              <div className="pricing-included-content">
+                <div className="pricing-included-grid">
+                  {[
+                    'Архитектурный проект',
+                    'Фундамент под ключ',
+                    'Стены и перегородки',
+                    'Кровельные работы',
+                    'Окна и двери',
+                    'Наружная отделка',
+                    'Инженерные сети',
+                    'Внутренняя отделка',
+                  ].map((item, i) => (
+                    <div key={i} className="pricing-included-item">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Interior Section - Bento Grid Layout with All Rooms */}
+      <section className="interior-section">
+        <div className="interior-header">
+          <h2>Интерьер</h2>
+          <p>Визуализация всех {floorPlanRooms.length} помещений вашего будущего дома</p>
+        </div>
+        <div className="interior-bento-full">
+          {floorPlanRooms.map((room, index) => (
+            <div
+              key={room.id}
+              className={`bento-cell bento-cell-${index + 1}`}
+              onClick={() => setSelectedRoom(room.id)}
+            >
+              <img src={room.image} alt={room.name} />
+              <div className="bento-overlay">
+                <span className="bento-label">{room.name}</span>
+                <span className="bento-area">{room.area} м²</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Room Detail Modal - Animated */}
+      {selectedRoom && (
+        <div className="room-modal-fullscreen" onClick={() => setSelectedRoom(null)}>
+          {(() => {
+            const room = floorPlanRooms.find(r => r.id === selectedRoom)
+            if (!room) return null
+            return (
+              <div className="room-modal-container" onClick={(e) => e.stopPropagation()}>
+                <AnimatedImage
+                  src={room.image}
+                  localVideo={roomVideos[room.id]}
+                  alt={room.name}
+                />
+                <button className="room-modal-close-btn" onClick={() => setSelectedRoom(null)}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+                <div className="room-modal-info">
+                  <h2>{room.name}</h2>
+                  <span className="room-modal-area">{room.area} м²</span>
+                </div>
+              </div>
+            )
+          })()}
         </div>
       )}
     </div>

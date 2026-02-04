@@ -1,0 +1,697 @@
+/* Floor Plan Layout Demo */
+.layout-demo-page {
+  min-height: 100vh;
+  background: #1a1a1a;
+  padding: 2rem;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.layout-demo-page h1 {
+  text-align: center;
+  color: white;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+.full-variant {
+  margin-bottom: 3rem;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+}
+
+.variant-label {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: rgba(0,0,0,0.7);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+}
+
+/* ========================================
+   Variant 1: Minimal Dark
+======================================== */
+.dark-variant {
+  background: #0a0a0a;
+  padding: 3rem;
+}
+
+.v1-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.v1-header h2 {
+  color: white;
+  font-size: 1.75rem;
+  font-weight: 300;
+  margin: 0 0 0.5rem 0;
+}
+
+.v1-stats-inline {
+  display: flex;
+  gap: 0.5rem;
+  color: rgba(255,255,255,0.5);
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+.v1-dot {
+  opacity: 0.3;
+}
+
+.v1-rooms {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem;
+}
+
+.v1-room {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  color: rgba(255,255,255,0.8);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.v1-room:hover, .v1-room.active {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.2);
+}
+
+.v1-area {
+  color: rgba(255,255,255,0.4);
+  font-size: 0.75rem;
+}
+
+.v1-plan {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  height: 350px;
+}
+
+.v1-plan img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ========================================
+   Variant 2: Cards Grid (Light)
+======================================== */
+.light-variant {
+  background: #fafafa;
+  padding: 2.5rem;
+}
+
+.v2-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.v2-top {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.v2-tag {
+  display: inline-block;
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #2E5A3C;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid #2E5A3C;
+  border-radius: 50px;
+  margin-bottom: 0.75rem;
+}
+
+.v2-info h2 {
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.v2-info p {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0.5rem 0 0 0;
+}
+
+.v2-plan {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  height: 280px;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+}
+
+.v2-plan img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.v2-rooms {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+}
+
+.v2-card {
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.v2-card:hover, .v2-card.active {
+  background: #2E5A3C;
+  border-color: #2E5A3C;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(46,90,60,0.2);
+}
+
+.v2-name {
+  font-size: 0.75rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.v2-area {
+  font-size: 0.7rem;
+  color: #888;
+  margin-top: 0.25rem;
+}
+
+.v2-card:hover .v2-name,
+.v2-card.active .v2-name,
+.v2-card:hover .v2-area,
+.v2-card.active .v2-area {
+  color: white;
+}
+
+/* ========================================
+   Variant 3: Side Pills (Green)
+======================================== */
+.green-variant {
+  background: linear-gradient(135deg, #1a2e22 0%, #0f1a14 100%);
+  padding: 2.5rem;
+}
+
+.v3-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2rem;
+}
+
+.v3-sidebar h2 {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin: 0 0 1rem 0;
+}
+
+.v3-meta {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.v3-stat {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.85rem;
+}
+
+.v3-stat strong {
+  color: #4ade80;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.v3-rooms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.v3-pill {
+  padding: 0.4rem 0.75rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50px;
+  color: rgba(255,255,255,0.7);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.v3-pill:hover, .v3-pill.active {
+  background: #4ade80;
+  border-color: #4ade80;
+  color: #0a0a0a;
+}
+
+.v3-pill span {
+  opacity: 0.5;
+  margin-left: 0.25rem;
+}
+
+.v3-plan {
+  background: rgba(255,255,255,0.95);
+  border-radius: 12px;
+  padding: 1.5rem;
+  height: 380px;
+}
+
+.v3-plan img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ========================================
+   Variant 4: Bottom Bar (Cream)
+======================================== */
+.cream-variant {
+  background: #f5f0e8;
+  padding: 0;
+}
+
+.v4-layout {
+  display: flex;
+  flex-direction: column;
+}
+
+.v4-main {
+  padding: 2rem 2.5rem;
+}
+
+.v4-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.v4-header h2 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #2a2a2a;
+  margin: 0;
+}
+
+.v4-badges {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.v4-badge {
+  padding: 0.4rem 0.75rem;
+  background: #2a2a2a;
+  color: white;
+  border-radius: 50px;
+  font-size: 0.75rem;
+}
+
+.v4-plan {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  height: 300px;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+}
+
+.v4-plan img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.v4-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1.25rem 2.5rem;
+  background: #2a2a2a;
+}
+
+.v4-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  border-radius: 6px;
+  color: rgba(255,255,255,0.8);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.v4-chip:hover, .v4-chip.active {
+  background: #f5f0e8;
+  color: #2a2a2a;
+}
+
+.v4-area {
+  opacity: 0.5;
+  font-size: 0.75rem;
+}
+
+/* ========================================
+   Variant 5: Split with Accent
+======================================== */
+.split-variant {
+  background: white;
+  display: flex;
+}
+
+.v5-layout {
+  display: grid;
+  grid-template-columns: 120px 1fr 1.2fr;
+  min-height: 450px;
+}
+
+.v5-accent {
+  background: #2E5A3C;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.v5-number {
+  font-size: 3rem;
+  font-weight: 300;
+}
+
+.v5-unit {
+  font-size: 1rem;
+  opacity: 0.7;
+}
+
+.v5-divider {
+  width: 40px;
+  height: 1px;
+  background: rgba(255,255,255,0.3);
+  margin: 1.5rem 0;
+}
+
+.v5-counts {
+  font-size: 0.8rem;
+  text-align: center;
+  opacity: 0.8;
+  line-height: 1.6;
+}
+
+.v5-content {
+  padding: 1.5rem;
+  background: #fafafa;
+}
+
+.v5-rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.4rem;
+  height: 100%;
+  align-content: start;
+}
+
+.v5-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0.75rem;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.v5-item:hover, .v5-item.active {
+  background: #2E5A3C;
+  border-color: #2E5A3C;
+}
+
+.v5-name {
+  font-size: 0.8rem;
+  color: #333;
+}
+
+.v5-area {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+.v5-item:hover .v5-name,
+.v5-item.active .v5-name,
+.v5-item:hover .v5-area,
+.v5-item.active .v5-area {
+  color: white;
+}
+
+.v5-plan {
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.v5-plan img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ========================================
+   Variant 6: Overlay Style
+======================================== */
+.overlay-variant {
+  background: #111;
+  height: 500px;
+  position: relative;
+}
+
+.v6-layout {
+  height: 100%;
+  position: relative;
+}
+
+.v6-plan-bg {
+  position: absolute;
+  inset: 0;
+  padding: 2rem;
+  opacity: 0.15;
+}
+
+.v6-plan-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: invert(1);
+}
+
+.v6-overlay {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 3rem;
+}
+
+.v6-info h2 {
+  color: white;
+  font-size: 2.5rem;
+  font-weight: 300;
+  margin: 0;
+}
+
+.v6-stats {
+  color: rgba(255,255,255,0.5);
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+.v6-rooms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.v6-tag {
+  padding: 0.6rem 1rem;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 50px;
+  color: white;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.v6-tag:hover, .v6-tag.active {
+  background: white;
+  color: #111;
+}
+
+.v6-more {
+  padding: 0.6rem 1rem;
+  background: #4ade80;
+  border: none;
+  border-radius: 50px;
+  color: #0a0a0a;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ========================================
+   Variant 7: Modern Compact
+======================================== */
+.modern-variant {
+  background: linear-gradient(180deg, #f8f8f8 0%, #fff 100%);
+  padding: 2rem;
+}
+
+.v7-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.v7-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #2E5A3C;
+}
+
+.v7-title-row h2 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.v7-stats {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.v7-big {
+  font-size: 1.75rem;
+  font-weight: 300;
+  color: #2E5A3C;
+}
+
+.v7-small {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.v7-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.35rem;
+}
+
+.v7-cell {
+  padding: 0.5rem;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+}
+
+.v7-cell:hover, .v7-cell.active {
+  background: #2E5A3C;
+  border-color: #2E5A3C;
+}
+
+.v7-cell-name {
+  font-size: 0.7rem;
+  color: #333;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.v7-cell-area {
+  font-size: 0.65rem;
+  color: #888;
+}
+
+.v7-cell:hover .v7-cell-name,
+.v7-cell.active .v7-cell-name,
+.v7-cell:hover .v7-cell-area,
+.v7-cell.active .v7-cell-area {
+  color: white;
+}
+
+.v7-right {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  height: 350px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+
+.v7-right img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Responsive */
+@media (max-width: 1000px) {
+  .v1-layout, .v3-layout, .v5-layout, .v7-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .v2-top {
+    grid-template-columns: 1fr;
+  }
+
+  .v2-rooms {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

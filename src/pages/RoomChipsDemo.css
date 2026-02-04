@@ -1,0 +1,564 @@
+/* Room Chips Demo Page */
+.demo-page {
+  min-height: 100vh;
+  background: #f8f9fa;
+  padding: 2rem;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.demo-page h1 {
+  text-align: center;
+  color: #1a1a1a;
+  margin-bottom: 3rem;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.demo-section {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.demo-section.dark {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+.demo-section.dark h2 {
+  color: white;
+}
+
+.demo-section.neu-bg {
+  background: #e8eef3;
+}
+
+.demo-section h2 {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.chips-variant {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 320px;
+}
+
+/* ========================================
+   Variant 1: Minimal Line
+======================================== */
+.chip-v1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.875rem 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chip-v1:hover {
+  padding-left: 0.5rem;
+  border-color: #2e5a3c;
+}
+
+.chip-v1.active {
+  padding-left: 0.5rem;
+  border-color: #2e5a3c;
+  border-bottom-width: 2px;
+}
+
+.chip-v1 .chip-name {
+  font-size: 0.95rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.chip-v1 .chip-area {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.chip-v1.active .chip-name {
+  color: #2e5a3c;
+}
+
+/* ========================================
+   Variant 2: Gradient Cards
+======================================== */
+.chip-v2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.chip-v2:hover {
+  background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
+  border-color: #a5d6a7;
+  transform: translateX(4px);
+}
+
+.chip-v2.active {
+  background: linear-gradient(135deg, #2e5a3c 0%, #3d7a50 100%);
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(46, 90, 60, 0.3);
+}
+
+.chip-v2 .chip-name {
+  font-size: 0.9rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.chip-v2 .chip-area {
+  font-size: 0.8rem;
+  color: #666;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 0.25rem 0.6rem;
+  border-radius: 20px;
+}
+
+.chip-v2.active .chip-name,
+.chip-v2.active .chip-area {
+  color: white;
+}
+
+.chip-v2.active .chip-area {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ========================================
+   Variant 3: Glass Morphism
+======================================== */
+.chip-v3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.chip-v3:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateX(4px);
+}
+
+.chip-v3.active {
+  background: rgba(76, 175, 80, 0.3);
+  border-color: rgba(76, 175, 80, 0.5);
+}
+
+.chip-v3 .chip-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.chip-v3 .chip-area {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.chip-v3.active .chip-area {
+  opacity: 1;
+}
+
+/* ========================================
+   Variant 4: Outlined with Icon
+======================================== */
+.chip-v4 {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chip-v4:hover {
+  border-color: #2e5a3c;
+}
+
+.chip-v4.active {
+  border-color: #2e5a3c;
+  background: #f1f8e9;
+}
+
+.chip-v4 .chip-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+  border-radius: 8px;
+  color: #666;
+  transition: all 0.2s ease;
+}
+
+.chip-v4 .chip-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.chip-v4.active .chip-icon {
+  background: #2e5a3c;
+  color: white;
+}
+
+.chip-v4 .chip-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+}
+
+.chip-v4 .chip-name {
+  font-size: 0.9rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.chip-v4 .chip-area {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+/* ========================================
+   Variant 5: Pill Tags
+======================================== */
+.variant-5 {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.chip-v5 {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
+  background: #f5f5f5;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chip-v5:hover {
+  background: #e8f5e9;
+}
+
+.chip-v5.active {
+  background: #2e5a3c;
+}
+
+.chip-v5 .chip-name {
+  font-size: 0.85rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.chip-v5 .chip-badge {
+  font-size: 0.75rem;
+  color: white;
+  background: #2e5a3c;
+  padding: 0.3rem 0.6rem;
+  border-radius: 50px;
+  font-weight: 500;
+}
+
+.chip-v5.active .chip-name {
+  color: white;
+}
+
+.chip-v5.active .chip-badge {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ========================================
+   Variant 6: Modern Flat
+======================================== */
+.chip-v6 {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  background: #fafafa;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chip-v6:hover {
+  background: #f0f0f0;
+}
+
+.chip-v6.active {
+  background: #2e5a3c;
+}
+
+.chip-v6 .chip-dot {
+  width: 8px;
+  height: 8px;
+  background: #ccc;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.chip-v6:hover .chip-dot {
+  background: #2e5a3c;
+}
+
+.chip-v6.active .chip-dot {
+  background: #81c784;
+}
+
+.chip-v6 .chip-name {
+  flex: 1;
+  font-size: 0.9rem;
+  color: #333;
+  font-weight: 500;
+  text-align: left;
+}
+
+.chip-v6 .chip-area {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.chip-v6.active .chip-name,
+.chip-v6.active .chip-area {
+  color: white;
+}
+
+/* ========================================
+   Variant 7: Elegant Underline
+======================================== */
+.chip-v7 {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.chip-v7::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #2e5a3c, #4caf50);
+  transition: width 0.3s ease;
+}
+
+.chip-v7:hover::after,
+.chip-v7.active::after {
+  width: 100%;
+}
+
+.chip-v7 .chip-name {
+  font-size: 0.95rem;
+  color: #333;
+  font-weight: 500;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+.chip-v7 .chip-divider {
+  color: #ccc;
+}
+
+.chip-v7 .chip-area {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.chip-v7.active .chip-name {
+  color: #2e5a3c;
+}
+
+/* ========================================
+   Variant 8: Neumorphism
+======================================== */
+.chip-v8 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  background: #e8eef3;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow:
+    6px 6px 12px rgba(163, 177, 198, 0.6),
+    -6px -6px 12px rgba(255, 255, 255, 0.8);
+  transition: all 0.2s ease;
+}
+
+.chip-v8:hover {
+  box-shadow:
+    4px 4px 8px rgba(163, 177, 198, 0.6),
+    -4px -4px 8px rgba(255, 255, 255, 0.8);
+}
+
+.chip-v8.active {
+  box-shadow:
+    inset 4px 4px 8px rgba(163, 177, 198, 0.6),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.8);
+}
+
+.chip-v8 .chip-name {
+  font-size: 0.9rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.chip-v8 .chip-area {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.chip-v8.active .chip-name {
+  color: #2e5a3c;
+}
+
+/* ========================================
+   Variant 9: Compact Row
+======================================== */
+.chip-v9 {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chip-v9:hover {
+  border-color: #2e5a3c;
+  background: #fafafa;
+}
+
+.chip-v9.active {
+  border-color: #2e5a3c;
+  background: #e8f5e9;
+}
+
+.chip-v9 .chip-name {
+  flex: 1;
+  font-size: 0.9rem;
+  color: #333;
+  font-weight: 500;
+  text-align: left;
+}
+
+.chip-v9 .chip-area {
+  font-size: 0.8rem;
+  color: #888;
+  margin-right: 0.75rem;
+}
+
+.chip-v9 .chip-arrow {
+  color: #ccc;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.chip-v9:hover .chip-arrow,
+.chip-v9.active .chip-arrow {
+  color: #2e5a3c;
+  transform: translateX(4px);
+}
+
+/* ========================================
+   Variant 10: Green Theme (Original)
+======================================== */
+.chip-v10 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.chip-v10:hover {
+  background: rgba(46, 90, 60, 0.08);
+  border-color: rgba(46, 90, 60, 0.3);
+}
+
+.chip-v10.active {
+  background: #2e5a3c;
+  border-color: #2e5a3c;
+}
+
+.chip-v10 .chip-name {
+  font-size: 0.85rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.chip-v10 .chip-divider {
+  color: #ccc;
+  font-size: 0.8rem;
+}
+
+.chip-v10 .chip-area {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.chip-v10.active .chip-name,
+.chip-v10.active .chip-divider,
+.chip-v10.active .chip-area {
+  color: white;
+}
+
+/* ========================================
+   Responsive
+======================================== */
+@media (max-width: 768px) {
+  .demo-page {
+    padding: 1rem;
+  }
+
+  .demo-section {
+    padding: 1.5rem;
+  }
+
+  .chips-variant {
+    max-width: 100%;
+  }
+}
