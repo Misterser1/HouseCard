@@ -1,876 +1,673 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import './PricingSectionDemo.css'
 
-const specs = [
-  { label: 'Фундамент', value: 'Монолитная плита 300мм' },
-  { label: 'Стены', value: 'Газобетон 400мм + утепление' },
-  { label: 'Кровля', value: 'Натуральная черепица' },
-  { label: 'Окна', value: 'Двухкамерные стеклопакеты' },
-  { label: 'Отопление', value: 'Газовый котёл + тёплый пол' },
-  { label: 'Высота потолков', value: '3.0 м' },
+const packages = [
+  {
+    name: 'Коробка',
+    price: '8.5',
+    pricePerM: '35 400',
+    description: 'Базовая комплектация',
+    note: 'Только конструктив',
+    features: ['Фундамент монолитная плита', 'Стены из газобетона 400мм', 'Кровля с утеплением', 'Окна ПВХ двухкамерные', 'Входная дверь'],
+    percent: 33,
+  },
+  {
+    name: 'Стандарт',
+    price: '12.5',
+    pricePerM: '52 000',
+    description: 'Оптимальный выбор',
+    note: '',
+    features: ['Всё из "Коробки"', 'Электрика полный монтаж', 'Отопление газовый котёл', 'Водоснабжение и канализация', 'Черновая отделка'],
+    popular: true,
+    percent: 66,
+  },
+  {
+    name: 'Под ключ',
+    price: '18.9',
+    pricePerM: '78 750',
+    description: 'Максимум комфорта',
+    note: 'Заезжай и живи',
+    features: ['Всё из "Стандарта"', 'Чистовая отделка премиум', 'Сантехника и освещение', 'Межкомнатные двери', 'Готов к заселению'],
+    percent: 100,
+  }
 ]
 
-const included = [
-  'Архитектурный проект',
-  'Фундамент под ключ',
-  'Стены и перегородки',
-  'Кровельные работы',
-  'Окна и двери',
-  'Наружная отделка',
-  'Инженерные сети',
-  'Внутренняя отделка',
-]
+const CheckIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+    <polyline points="20 6 9 17 4 12"/>
+  </svg>
+)
+
+const ArrowIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M5 12h14M12 5l7 7-7 7"/>
+  </svg>
+)
 
 export default function PricingSectionDemo() {
-  const [activeVariant, setActiveVariant] = useState(1)
-  const [expandedSection, setExpandedSection] = useState<number | null>(0)
-  const [sliderValue, setSliderValue] = useState(240)
+  const [activePackage, setActivePackage] = useState(1)
+  const [sliderValue, setSliderValue] = useState(66)
+  const [isVisible, setIsVisible] = useState<{[key: string]: boolean}>({})
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 })
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null)
+  const observerRefs = useRef<{[key: string]: HTMLElement | null}>({})
+
+  // Intersection Observer for scroll animations
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(prev => ({ ...prev, [entry.target.id]: true }))
+          }
+        })
+      },
+      { threshold: 0.2 }
+    )
+
+    Object.values(observerRefs.current).forEach((ref) => {
+      if (ref) observer.observe(ref)
+    })
+
+    return () => observer.disconnect()
+  }, [])
+
+  // Update active package based on slider
+  useEffect(() => {
+    if (sliderValue <= 33) setActivePackage(0)
+    else if (sliderValue <= 66) setActivePackage(1)
+    else setActivePackage(2)
+  }, [sliderValue])
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    setMousePos({
+      x: ((e.clientX - rect.left) / rect.width) * 100,
+      y: ((e.clientY - rect.top) / rect.height) * 100,
+    })
+  }
 
   return (
     <div className="pricing-demo-page">
-      <h1>Варианты секции "Стоимость"</h1>
+      <header className="pricing-demo-header">
+        <Link to="/constructor-v1" className="back-link">← Назад к конструктору</Link>
+        <h1>Варианты секции комплектаций</h1>
+        <p>Креативные полноэкранные решения</p>
+      </header>
 
-      {/* Variant 1: Split Card with Gradient */}
-      <section className="pricing-variant v1">
-        <div className="variant-label">1. Разделённая карточка с градиентом</div>
-        <div className="v1-container">
-          <div className="v1-left">
-            <span className="v1-tag">Стоимость проекта</span>
-            <div className="v1-price">
-              <span className="v1-price-value">12.5</span>
-              <span className="v1-price-unit">млн ₽</span>
-            </div>
-            <p className="v1-price-note">Фиксированная цена под ключ</p>
-            <div className="v1-actions">
-              <button className="v1-btn-primary">Получить смету</button>
-              <button className="v1-btn-secondary">Рассчитать ипотеку</button>
-            </div>
+      {/* ============================================
+          VARIANT 1: Morphing Gradient Background
+          ============================================ */}
+      <section
+        className="variant variant-morph"
+        id="v1"
+        ref={el => { observerRefs.current['v1'] = el }}
+      >
+        <div className="variant-label">1. Морфинг градиент</div>
+        <div className="morph-container" onMouseMove={handleMouseMove}>
+          <div
+            className="morph-bg"
+            style={{
+              '--mouse-x': `${mousePos.x}%`,
+              '--mouse-y': `${mousePos.y}%`,
+            } as React.CSSProperties}
+          >
+            <div className="morph-blob morph-blob-1" />
+            <div className="morph-blob morph-blob-2" />
+            <div className="morph-blob morph-blob-3" />
           </div>
-          <div className="v1-right">
-            <h3>Технические характеристики</h3>
-            <div className="v1-specs">
-              {specs.map((spec, i) => (
-                <div key={i} className="v1-spec">
-                  <span className="v1-spec-label">{spec.label}</span>
-                  <span className="v1-spec-value">{spec.value}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Variant 2: Horizontal Cards */}
-      <section className="pricing-variant v2">
-        <div className="variant-label">2. Горизонтальные карточки</div>
-        <div className="v2-header">
-          <h2>Стоимость и характеристики</h2>
-          <p>Всё включено в фиксированную стоимость</p>
-        </div>
-        <div className="v2-cards">
-          <div className="v2-card v2-price-card">
-            <div className="v2-card-icon">₽</div>
-            <div className="v2-card-content">
-              <span className="v2-card-label">Стоимость</span>
-              <span className="v2-card-value">12 500 000 ₽</span>
-              <span className="v2-card-note">под ключ</span>
-            </div>
-          </div>
-          <div className="v2-card">
-            <div className="v2-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <rect x="3" y="3" width="18" height="18" rx="2"/>
-                <path d="M3 9h18M9 21V9"/>
-              </svg>
-            </div>
-            <div className="v2-card-content">
-              <span className="v2-card-label">Площадь</span>
-              <span className="v2-card-value">240 м²</span>
-            </div>
-          </div>
-          <div className="v2-card">
-            <div className="v2-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M3 21h18M5 21V7l7-4 7 4v14"/>
-              </svg>
-            </div>
-            <div className="v2-card-content">
-              <span className="v2-card-label">Этажность</span>
-              <span className="v2-card-value">1 этаж</span>
-            </div>
-          </div>
-          <div className="v2-card">
-            <div className="v2-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="M12 6v6l4 2"/>
-              </svg>
-            </div>
-            <div className="v2-card-content">
-              <span className="v2-card-label">Срок</span>
-              <span className="v2-card-value">6 месяцев</span>
-            </div>
-          </div>
-        </div>
-        <div className="v2-specs-grid">
-          {specs.map((spec, i) => (
-            <div key={i} className="v2-spec">
-              <span className="v2-spec-label">{spec.label}</span>
-              <span className="v2-spec-value">{spec.value}</span>
-            </div>
-          ))}
-        </div>
-      </section>
+          <div className={`morph-content ${isVisible['v1'] ? 'visible' : ''}`}>
+            <h1 className="morph-title">
+              <span>Выберите</span>
+              <span className="morph-title-accent">комплектацию</span>
+            </h1>
 
-      {/* Variant 3: Dark Cinematic */}
-      <section className="pricing-variant v3">
-        <div className="variant-label">3. Тёмный кинематографический</div>
-        <div className="v3-container">
-          <div className="v3-header">
-            <h2>Инвестиция в качество</h2>
-            <p>Премиальные материалы и технологии строительства</p>
-          </div>
-          <div className="v3-content">
-            <div className="v3-price-block">
-              <div className="v3-price-label">Стоимость под ключ</div>
-              <div className="v3-price">
-                <span className="v3-currency">₽</span>
-                <span className="v3-amount">12 500 000</span>
-              </div>
-              <div className="v3-price-breakdown">
-                <div className="v3-breakdown-item">
-                  <span>Строительство</span>
-                  <span>9 800 000 ₽</span>
-                </div>
-                <div className="v3-breakdown-item">
-                  <span>Отделка</span>
-                  <span>2 200 000 ₽</span>
-                </div>
-                <div className="v3-breakdown-item">
-                  <span>Инженерия</span>
-                  <span>500 000 ₽</span>
-                </div>
-              </div>
-              <button className="v3-cta">Получить детальную смету</button>
-            </div>
-            <div className="v3-specs-block">
-              <h3>Характеристики</h3>
-              <div className="v3-specs">
-                {specs.map((spec, i) => (
-                  <div key={i} className="v3-spec">
-                    <span className="v3-spec-label">{spec.label}</span>
-                    <span className="v3-spec-divider"></span>
-                    <span className="v3-spec-value">{spec.value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Variant 4: Minimalist with Tabs */}
-      <section className="pricing-variant v4">
-        <div className="variant-label">4. Минималистичный с табами</div>
-        <div className="v4-container">
-          <div className="v4-tabs">
-            <button className={`v4-tab ${activeVariant === 1 ? 'active' : ''}`} onClick={() => setActiveVariant(1)}>
-              Стоимость
-            </button>
-            <button className={`v4-tab ${activeVariant === 2 ? 'active' : ''}`} onClick={() => setActiveVariant(2)}>
-              Характеристики
-            </button>
-            <button className={`v4-tab ${activeVariant === 3 ? 'active' : ''}`} onClick={() => setActiveVariant(3)}>
-              Что входит
-            </button>
-          </div>
-          <div className="v4-content">
-            {activeVariant === 1 && (
-              <div className="v4-price-content">
-                <div className="v4-price-main">
-                  <span className="v4-price-number">12.5</span>
-                  <span className="v4-price-suffix">
-                    <span>млн</span>
-                    <span>рублей</span>
-                  </span>
-                </div>
-                <p className="v4-price-desc">Фиксированная стоимость строительства дома под ключ с отделкой и всеми инженерными коммуникациями</p>
-                <div className="v4-price-actions">
-                  <button className="v4-btn">Скачать смету PDF</button>
-                  <button className="v4-btn-outline">Рассчитать ипотеку</button>
-                </div>
-              </div>
-            )}
-            {activeVariant === 2 && (
-              <div className="v4-specs-content">
-                {specs.map((spec, i) => (
-                  <div key={i} className="v4-spec-row">
-                    <span>{spec.label}</span>
-                    <span>{spec.value}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-            {activeVariant === 3 && (
-              <div className="v4-included-content">
-                <div className="v4-included-grid">
-                  {included.map((item, i) => (
-                    <div key={i} className="v4-included-item">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <polyline points="20 6 9 17 4 12"/>
-                      </svg>
-                      <span>{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Variant 5: Bento Grid */}
-      <section className="pricing-variant v5">
-        <div className="variant-label">5. Bento сетка</div>
-        <div className="v5-grid">
-          <div className="v5-cell v5-price">
-            <span className="v5-cell-tag">Стоимость</span>
-            <div className="v5-price-value">
-              <span className="v5-big">12.5</span>
-              <span className="v5-small">млн ₽</span>
-            </div>
-            <span className="v5-note">под ключ</span>
-          </div>
-          <div className="v5-cell v5-area">
-            <span className="v5-cell-tag">Площадь</span>
-            <div className="v5-metric">
-              <span className="v5-big">240</span>
-              <span className="v5-small">м²</span>
-            </div>
-          </div>
-          <div className="v5-cell v5-time">
-            <span className="v5-cell-tag">Срок</span>
-            <div className="v5-metric">
-              <span className="v5-big">6</span>
-              <span className="v5-small">мес</span>
-            </div>
-          </div>
-          <div className="v5-cell v5-specs">
-            <span className="v5-cell-tag">Характеристики</span>
-            <div className="v5-specs-list">
-              {specs.slice(0, 4).map((spec, i) => (
-                <div key={i} className="v5-spec">
-                  <span>{spec.label}</span>
-                  <span>{spec.value}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="v5-cell v5-cta">
-            <h3>Готовы начать?</h3>
-            <p>Получите персональное предложение</p>
-            <button className="v5-btn">Связаться</button>
-          </div>
-        </div>
-      </section>
-
-      {/* Variant 6: Timeline Style */}
-      <section className="pricing-variant v6">
-        <div className="variant-label">6. Стиль таймлайн</div>
-        <div className="v6-container">
-          <div className="v6-header">
-            <h2>Стоимость и этапы</h2>
-            <div className="v6-total">
-              <span className="v6-total-label">Итого:</span>
-              <span className="v6-total-value">12 500 000 ₽</span>
-            </div>
-          </div>
-          <div className="v6-timeline">
-            <div className="v6-stage">
-              <div className="v6-stage-marker">1</div>
-              <div className="v6-stage-content">
-                <h4>Проектирование</h4>
-                <p>Архитектурный и инженерный проект</p>
-                <span className="v6-stage-price">500 000 ₽</span>
-              </div>
-            </div>
-            <div className="v6-stage">
-              <div className="v6-stage-marker">2</div>
-              <div className="v6-stage-content">
-                <h4>Фундамент</h4>
-                <p>Монолитная плита с гидроизоляцией</p>
-                <span className="v6-stage-price">1 800 000 ₽</span>
-              </div>
-            </div>
-            <div className="v6-stage">
-              <div className="v6-stage-marker">3</div>
-              <div className="v6-stage-content">
-                <h4>Коробка дома</h4>
-                <p>Стены, перекрытия, кровля</p>
-                <span className="v6-stage-price">5 500 000 ₽</span>
-              </div>
-            </div>
-            <div className="v6-stage">
-              <div className="v6-stage-marker">4</div>
-              <div className="v6-stage-content">
-                <h4>Инженерия</h4>
-                <p>Отопление, электрика, водоснабжение</p>
-                <span className="v6-stage-price">2 000 000 ₽</span>
-              </div>
-            </div>
-            <div className="v6-stage">
-              <div className="v6-stage-marker">5</div>
-              <div className="v6-stage-content">
-                <h4>Отделка</h4>
-                <p>Внутренняя и наружная отделка</p>
-                <span className="v6-stage-price">2 700 000 ₽</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Variant 7: Glass Morphism */}
-      <section className="pricing-variant v7">
-        <div className="variant-label">7. Glass морфизм</div>
-        <div className="v7-bg">
-          <div className="v7-container">
-            <div className="v7-glass-card v7-main">
-              <div className="v7-price-section">
-                <span className="v7-label">Стоимость строительства</span>
-                <div className="v7-price">12 500 000 ₽</div>
-                <span className="v7-sublabel">фиксированная цена под ключ</span>
-              </div>
-              <div className="v7-divider"></div>
-              <div className="v7-stats">
-                <div className="v7-stat">
-                  <span className="v7-stat-value">240</span>
-                  <span className="v7-stat-label">м² площадь</span>
-                </div>
-                <div className="v7-stat">
-                  <span className="v7-stat-value">14</span>
-                  <span className="v7-stat-label">помещений</span>
-                </div>
-                <div className="v7-stat">
-                  <span className="v7-stat-value">6</span>
-                  <span className="v7-stat-label">мес. срок</span>
-                </div>
-              </div>
-            </div>
-            <div className="v7-glass-card v7-specs-card">
-              <h3>Технические характеристики</h3>
-              <div className="v7-specs">
-                {specs.map((spec, i) => (
-                  <div key={i} className="v7-spec">
-                    <span className="v7-spec-label">{spec.label}</span>
-                    <span className="v7-spec-value">{spec.value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Variant 8: Accordion Style */}
-      <section className="pricing-variant v8">
-        <div className="variant-label">8. Аккордеон стиль</div>
-        <div className="v8-container">
-          <div className="v8-header">
-            <div className="v8-price-display">
-              <span className="v8-price-label">Итоговая стоимость</span>
-              <div className="v8-price">12 500 000 ₽</div>
-            </div>
-            <button className="v8-cta">Получить смету</button>
-          </div>
-          <div className="v8-accordions">
-            {[
-              { title: 'Стоимость по этапам', items: [
-                { name: 'Проектирование', price: '500 000 ₽' },
-                { name: 'Фундамент', price: '1 800 000 ₽' },
-                { name: 'Коробка дома', price: '5 500 000 ₽' },
-                { name: 'Инженерия', price: '2 000 000 ₽' },
-                { name: 'Отделка', price: '2 700 000 ₽' },
-              ]},
-              { title: 'Характеристики', items: specs.map(s => ({ name: s.label, price: s.value })) },
-              { title: 'Что входит', items: included.slice(0, 5).map(item => ({ name: item, price: '✓' })) },
-            ].map((section, idx) => (
-              <div key={idx} className={`v8-accordion ${expandedSection === idx ? 'expanded' : ''}`}>
-                <button
-                  className="v8-accordion-header"
-                  onClick={() => setExpandedSection(expandedSection === idx ? null : idx)}
+            <div className="morph-cards">
+              {packages.map((pkg, i) => (
+                <div
+                  key={i}
+                  className={`morph-card ${activePackage === i ? 'active' : ''} ${pkg.popular ? 'popular' : ''}`}
+                  onClick={() => setActivePackage(i)}
+                  style={{ '--index': i } as React.CSSProperties}
                 >
-                  <span>{section.title}</span>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <polyline points="6 9 12 15 18 9"/>
-                  </svg>
-                </button>
-                <div className="v8-accordion-content">
-                  {section.items.map((item, i) => (
-                    <div key={i} className="v8-accordion-item">
-                      <span>{item.name}</span>
-                      <span>{item.price}</span>
+                  <div className="morph-card-bg" />
+                  {pkg.popular && <div className="morph-badge">Хит</div>}
+                  <div className="morph-card-content">
+                    <h3>{pkg.name}</h3>
+                    <div className="morph-price">
+                      <span className="morph-price-value">{pkg.price}</span>
+                      <span className="morph-price-unit">млн ₽</span>
                     </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Variant 9: Magazine Editorial */}
-      <section className="pricing-variant v9">
-        <div className="variant-label">9. Журнальный / Редакционный</div>
-        <div className="v9-container">
-          <div className="v9-editorial">
-            <div className="v9-big-number">12.5</div>
-            <div className="v9-text-block">
-              <span className="v9-currency">миллионов рублей</span>
-              <h2>Ваш новый дом под ключ</h2>
-              <p>Фиксированная стоимость включает все работы от проектирования до финишной отделки с гарантией качества</p>
-            </div>
-          </div>
-          <div className="v9-details">
-            <div className="v9-column">
-              <h3>Технические характеристики</h3>
-              {specs.slice(0, 3).map((spec, i) => (
-                <div key={i} className="v9-detail-row">
-                  <span className="v9-detail-label">{spec.label}</span>
-                  <span className="v9-detail-value">{spec.value}</span>
+                    <p className="morph-desc">{pkg.description}</p>
+                    <ul className="morph-features">
+                      {pkg.features.slice(0, 3).map((f, j) => (
+                        <li key={j}><CheckIcon />{f}</li>
+                      ))}
+                    </ul>
+                    <button className="morph-btn">
+                      Выбрать <ArrowIcon />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
-            <div className="v9-column">
-              <h3>&nbsp;</h3>
-              {specs.slice(3).map((spec, i) => (
-                <div key={i} className="v9-detail-row">
-                  <span className="v9-detail-label">{spec.label}</span>
-                  <span className="v9-detail-value">{spec.value}</span>
-                </div>
-              ))}
-            </div>
-            <div className="v9-column v9-stats-col">
-              <div className="v9-stat-big">
-                <span className="v9-stat-number">240</span>
-                <span className="v9-stat-unit">м²</span>
-              </div>
-              <div className="v9-stat-big">
-                <span className="v9-stat-number">6</span>
-                <span className="v9-stat-unit">месяцев</span>
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* Variant 10: Radial Progress */}
-      <section className="pricing-variant v10">
-        <div className="variant-label">10. Радиальный прогресс</div>
-        <div className="v10-container">
-          <div className="v10-center">
-            <div className="v10-circle">
-              <svg viewBox="0 0 200 200">
-                <circle cx="100" cy="100" r="90" className="v10-circle-bg"/>
-                <circle cx="100" cy="100" r="90" className="v10-circle-progress"/>
-              </svg>
-              <div className="v10-circle-content">
-                <span className="v10-price">12.5</span>
-                <span className="v10-unit">млн ₽</span>
-              </div>
-            </div>
-            <div className="v10-label">Стоимость под ключ</div>
-          </div>
-          <div className="v10-metrics">
-            <div className="v10-metric">
-              <div className="v10-metric-circle">
-                <svg viewBox="0 0 100 100">
-                  <circle cx="50" cy="50" r="45" className="v10-metric-bg"/>
-                  <circle cx="50" cy="50" r="45" className="v10-metric-progress" style={{ strokeDashoffset: 283 * 0.2 }}/>
-                </svg>
-                <span className="v10-metric-value">240</span>
-              </div>
-              <span className="v10-metric-label">м² площадь</span>
-            </div>
-            <div className="v10-metric">
-              <div className="v10-metric-circle">
-                <svg viewBox="0 0 100 100">
-                  <circle cx="50" cy="50" r="45" className="v10-metric-bg"/>
-                  <circle cx="50" cy="50" r="45" className="v10-metric-progress" style={{ strokeDashoffset: 283 * 0.5 }}/>
-                </svg>
-                <span className="v10-metric-value">14</span>
-              </div>
-              <span className="v10-metric-label">комнат</span>
-            </div>
-            <div className="v10-metric">
-              <div className="v10-metric-circle">
-                <svg viewBox="0 0 100 100">
-                  <circle cx="50" cy="50" r="45" className="v10-metric-bg"/>
-                  <circle cx="50" cy="50" r="45" className="v10-metric-progress" style={{ strokeDashoffset: 283 * 0.7 }}/>
-                </svg>
-                <span className="v10-metric-value">6</span>
-              </div>
-              <span className="v10-metric-label">месяцев</span>
-            </div>
-          </div>
-          <div className="v10-specs">
-            {specs.map((spec, i) => (
-              <div key={i} className="v10-spec">
-                <span>{spec.label}</span>
-                <span>{spec.value}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Variant 11: Feature Comparison */}
-      <section className="pricing-variant v11">
-        <div className="variant-label">11. Сравнительная таблица</div>
-        <div className="v11-container">
-          <div className="v11-header">
-            <h2>Что включено в стоимость</h2>
-            <div className="v11-price-badge">12 500 000 ₽</div>
-          </div>
-          <div className="v11-table">
-            <div className="v11-table-header">
-              <span>Категория</span>
-              <span>Описание</span>
-              <span>Статус</span>
-            </div>
-            {[
-              { category: 'Проект', desc: 'Архитектурный и инженерный проект', included: true },
-              { category: 'Фундамент', desc: 'Монолитная плита 300мм с гидроизоляцией', included: true },
-              { category: 'Стены', desc: 'Газобетон 400мм + утепление минватой', included: true },
-              { category: 'Кровля', desc: 'Натуральная черепица Braas', included: true },
-              { category: 'Окна', desc: 'Двухкамерные стеклопакеты VEKA', included: true },
-              { category: 'Инженерия', desc: 'Отопление, электрика, водоснабжение', included: true },
-              { category: 'Отделка', desc: 'Внутренняя и наружная под ключ', included: true },
-              { category: 'Ландшафт', desc: 'Озеленение и благоустройство', included: false },
-            ].map((row, i) => (
-              <div key={i} className={`v11-table-row ${row.included ? '' : 'not-included'}`}>
-                <span className="v11-category">{row.category}</span>
-                <span className="v11-desc">{row.desc}</span>
-                <span className="v11-status">
-                  {row.included ? (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points="20 6 9 17 4 12"/>
-                    </svg>
-                  ) : (
-                    <span className="v11-optional">Опционально</span>
-                  )}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Variant 12: Interactive Slider */}
-      <section className="pricing-variant v12">
-        <div className="variant-label">12. Интерактивный слайдер</div>
-        <div className="v12-container">
-          <div className="v12-left">
-            <h2>Рассчитайте стоимость</h2>
-            <p>Подберите оптимальный вариант под ваш бюджет</p>
-            <div className="v12-slider-block">
-              <div className="v12-slider-header">
-                <span>Площадь дома</span>
-                <span className="v12-slider-value">{sliderValue} м²</span>
-              </div>
-              <input
-                type="range"
-                min="100"
-                max="400"
-                value={sliderValue}
-                onChange={(e) => setSliderValue(Number(e.target.value))}
-                className="v12-slider"
+      {/* ============================================
+          VARIANT 2: Horizontal Scroll Journey
+          ============================================ */}
+      <section
+        className="variant variant-journey"
+        id="v2"
+        ref={el => { observerRefs.current['v2'] = el }}
+      >
+        <div className="variant-label">2. Горизонтальное путешествие</div>
+        <div className="journey-container">
+          <div className="journey-track">
+            <div className="journey-line">
+              <div
+                className="journey-line-fill"
+                style={{ width: `${packages[activePackage].percent}%` }}
               />
-              <div className="v12-slider-labels">
-                <span>100 м²</span>
-                <span>400 м²</span>
-              </div>
             </div>
-            <div className="v12-options">
-              <label className="v12-option">
-                <input type="checkbox" defaultChecked />
-                <span>Отделка под ключ</span>
-              </label>
-              <label className="v12-option">
-                <input type="checkbox" defaultChecked />
-                <span>Инженерные сети</span>
-              </label>
-              <label className="v12-option">
-                <input type="checkbox" />
-                <span>Ландшафтный дизайн</span>
-              </label>
-            </div>
-          </div>
-          <div className="v12-right">
-            <div className="v12-result">
-              <span className="v12-result-label">Расчётная стоимость</span>
-              <div className="v12-result-price">
-                {((sliderValue * 52000) / 1000000).toFixed(1)} млн ₽
-              </div>
-              <div className="v12-result-breakdown">
-                <div className="v12-breakdown-row">
-                  <span>Строительство</span>
-                  <span>{((sliderValue * 40000) / 1000000).toFixed(1)} млн ₽</span>
-                </div>
-                <div className="v12-breakdown-row">
-                  <span>Отделка</span>
-                  <span>{((sliderValue * 9000) / 1000000).toFixed(1)} млн ₽</span>
-                </div>
-                <div className="v12-breakdown-row">
-                  <span>Инженерия</span>
-                  <span>{((sliderValue * 3000) / 1000000).toFixed(1)} млн ₽</span>
-                </div>
-              </div>
-              <button className="v12-cta">Получить точный расчёт</button>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Variant 13: Floating Cards / 3D */}
-      <section className="pricing-variant v13">
-        <div className="variant-label">13. Парящие карточки / 3D эффект</div>
-        <div className="v13-container">
-          <div className="v13-bg-shapes">
-            <div className="v13-shape v13-shape-1"></div>
-            <div className="v13-shape v13-shape-2"></div>
-            <div className="v13-shape v13-shape-3"></div>
-          </div>
-          <div className="v13-cards">
-            <div className="v13-card v13-main-card">
-              <div className="v13-card-glow"></div>
-              <span className="v13-card-label">Стоимость проекта</span>
-              <div className="v13-price">12.5</div>
-              <span className="v13-price-unit">миллионов рублей</span>
-              <button className="v13-btn">Получить смету</button>
-            </div>
-            <div className="v13-card v13-side-card v13-card-area">
-              <span className="v13-side-value">240</span>
-              <span className="v13-side-label">м² площадь</span>
-            </div>
-            <div className="v13-card v13-side-card v13-card-rooms">
-              <span className="v13-side-value">14</span>
-              <span className="v13-side-label">помещений</span>
-            </div>
-            <div className="v13-card v13-side-card v13-card-time">
-              <span className="v13-side-value">6</span>
-              <span className="v13-side-label">месяцев</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Variant 14: Neon Cyberpunk */}
-      <section className="pricing-variant v14">
-        <div className="variant-label">14. Неон / Киберпанк</div>
-        <div className="v14-container">
-          <div className="v14-grid-bg"></div>
-          <div className="v14-content">
-            <div className="v14-header">
-              <div className="v14-glitch-text" data-text="СТОИМОСТЬ">СТОИМОСТЬ</div>
-            </div>
-            <div className="v14-price-block">
-              <span className="v14-currency">₽</span>
-              <span className="v14-price">12 500 000</span>
-            </div>
-            <div className="v14-stats-row">
-              <div className="v14-stat">
-                <span className="v14-stat-value">240</span>
-                <span className="v14-stat-label">ПЛОЩАДЬ М²</span>
-              </div>
-              <div className="v14-stat">
-                <span className="v14-stat-value">14</span>
-                <span className="v14-stat-label">КОМНАТ</span>
-              </div>
-              <div className="v14-stat">
-                <span className="v14-stat-value">6</span>
-                <span className="v14-stat-label">МЕСЯЦЕВ</span>
-              </div>
-            </div>
-            <div className="v14-specs-grid">
-              {specs.map((spec, i) => (
-                <div key={i} className="v14-spec">
-                  <span className="v14-spec-label">{spec.label}</span>
-                  <span className="v14-spec-value">{spec.value}</span>
+            {packages.map((pkg, i) => (
+              <div
+                key={i}
+                className={`journey-stop ${i <= activePackage ? 'passed' : ''} ${i === activePackage ? 'active' : ''}`}
+                style={{ left: `${pkg.percent}%` }}
+                onClick={() => setActivePackage(i)}
+              >
+                <div className="journey-stop-marker">
+                  <span>{i + 1}</span>
                 </div>
-              ))}
-            </div>
-            <button className="v14-btn">
-              <span>ЗАКАЗАТЬ</span>
-              <div className="v14-btn-glow"></div>
+                <div className="journey-stop-content">
+                  {pkg.popular && <span className="journey-badge">★ Популярный</span>}
+                  <h3>{pkg.name}</h3>
+                  <div className="journey-price">{pkg.price} млн ₽</div>
+                  <p>{pkg.description}</p>
+                  <div className={`journey-details ${i === activePackage ? 'show' : ''}`}>
+                    {pkg.features.map((f, j) => (
+                      <div key={j} className="journey-feature">
+                        <CheckIcon /><span>{f}</span>
+                      </div>
+                    ))}
+                    <button className="journey-btn">Выбрать</button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="journey-nav">
+            <button
+              className="journey-nav-btn"
+              onClick={() => setActivePackage(Math.max(0, activePackage - 1))}
+              disabled={activePackage === 0}
+            >
+              ←
+            </button>
+            <span className="journey-nav-label">
+              Этап {activePackage + 1} из {packages.length}
+            </span>
+            <button
+              className="journey-nav-btn"
+              onClick={() => setActivePackage(Math.min(2, activePackage + 1))}
+              disabled={activePackage === 2}
+            >
+              →
             </button>
           </div>
         </div>
       </section>
 
-      {/* Variant 15: Newspaper/Print Style */}
-      <section className="pricing-variant v15">
-        <div className="variant-label">15. Газетный / Печатный стиль</div>
-        <div className="v15-container">
-          <div className="v15-masthead">
-            <div className="v15-date">МОСКВА • {new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase()}</div>
-            <h1 className="v15-title">СТРОИТЕЛЬНАЯ ГАЗЕТА</h1>
-            <div className="v15-edition">СПЕЦИАЛЬНЫЙ ВЫПУСК</div>
-          </div>
-          <div className="v15-content">
-            <div className="v15-main-story">
-              <h2 className="v15-headline">Дом мечты за 12,5 миллионов рублей</h2>
-              <p className="v15-lead">Фиксированная стоимость строительства под ключ включает все работы от проектирования до финишной отделки</p>
-              <div className="v15-columns">
-                <div className="v15-column">
-                  <p>Общая площадь дома составляет 240 квадратных метров, что позволяет комфортно разместить все необходимые помещения.</p>
-                  <p>В проект входит 14 помещений, включая 4 спальни, просторную гостиную и современную кухню-столовую.</p>
+      {/* ============================================
+          VARIANT 3: Interactive Price Slider
+          ============================================ */}
+      <section
+        className="variant variant-slider"
+        id="v3"
+        ref={el => { observerRefs.current['v3'] = el }}
+      >
+        <div className="variant-label">3. Интерактивный слайдер</div>
+        <div className="slider-container">
+          <div className="slider-left">
+            <h1>Настройте уровень готовности</h1>
+            <p>Передвигайте ползунок для выбора комплектации</p>
+
+            <div className="slider-control">
+              <div className="slider-track-wrapper">
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={sliderValue}
+                  onChange={(e) => setSliderValue(Number(e.target.value))}
+                  className="slider-input"
+                />
+                <div className="slider-track">
+                  <div
+                    className="slider-fill"
+                    style={{ width: `${sliderValue}%` }}
+                  />
                 </div>
-                <div className="v15-column">
-                  <p>Срок строительства — 6 месяцев с момента подписания договора и получения разрешительной документации.</p>
-                  <p>Все материалы премиум-класса включены в стоимость.</p>
+                <div
+                  className="slider-thumb"
+                  style={{ left: `${sliderValue}%` }}
+                >
+                  <span className="slider-thumb-value">{sliderValue}%</span>
                 </div>
               </div>
+
+              <div className="slider-labels">
+                <span className={activePackage === 0 ? 'active' : ''}>Коробка</span>
+                <span className={activePackage === 1 ? 'active' : ''}>Стандарт</span>
+                <span className={activePackage === 2 ? 'active' : ''}>Под ключ</span>
+              </div>
             </div>
-            <div className="v15-sidebar">
-              <div className="v15-box">
-                <h3>ХАРАКТЕРИСТИКИ</h3>
-                {specs.slice(0, 4).map((spec, i) => (
-                  <div key={i} className="v15-spec-row">
-                    <span>{spec.label}:</span> {spec.value}
+
+            <div className="slider-stats">
+              <div className="slider-stat">
+                <span className="slider-stat-value">{packages[activePackage].price}</span>
+                <span className="slider-stat-label">млн ₽</span>
+              </div>
+              <div className="slider-stat">
+                <span className="slider-stat-value">{packages[activePackage].pricePerM}</span>
+                <span className="slider-stat-label">₽ за м²</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="slider-right">
+            <div className="slider-card">
+              <div className="slider-card-header">
+                <h2>{packages[activePackage].name}</h2>
+                {packages[activePackage].popular && (
+                  <span className="slider-popular">Рекомендуем</span>
+                )}
+              </div>
+              <p className="slider-card-desc">{packages[activePackage].description}</p>
+
+              <div className="slider-features">
+                {packages[activePackage].features.map((f, i) => (
+                  <div
+                    key={i}
+                    className="slider-feature"
+                    style={{ '--delay': `${i * 0.1}s` } as React.CSSProperties}
+                  >
+                    <div className="slider-feature-icon"><CheckIcon /></div>
+                    <span>{f}</span>
                   </div>
                 ))}
               </div>
-              <div className="v15-price-box">
-                <span className="v15-price-label">ЦЕНА</span>
-                <span className="v15-price-value">12 500 000 ₽</span>
-              </div>
+
+              {packages[activePackage].note && (
+                <div className="slider-note">{packages[activePackage].note}</div>
+              )}
+
+              <button className="slider-cta">
+                Оформить заказ
+                <ArrowIcon />
+              </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Variant 16: Dashboard Analytics */}
-      <section className="pricing-variant v16">
-        <div className="variant-label">16. Дашборд / Аналитика</div>
-        <div className="v16-container">
-          <div className="v16-topbar">
-            <span className="v16-project-name">Проект «Загородный дом»</span>
-            <span className="v16-status">● В работе</span>
+      {/* ============================================
+          VARIANT 4: 3D Cards Perspective
+          ============================================ */}
+      <section
+        className="variant variant-3d"
+        id="v4"
+        ref={el => { observerRefs.current['v4'] = el }}
+      >
+        <div className="variant-label">4. 3D перспектива</div>
+        <div className="perspective-container">
+          <div className="perspective-header">
+            <h1>Выберите комплектацию</h1>
+            <p>Наведите на карточку для подробностей</p>
           </div>
-          <div className="v16-grid">
-            <div className="v16-widget v16-main-metric">
-              <span className="v16-widget-label">Общая стоимость</span>
-              <div className="v16-metric-value">₽ 12 500 000</div>
-              <div className="v16-metric-change positive">+0% к смете</div>
-            </div>
-            <div className="v16-widget">
-              <span className="v16-widget-label">Площадь</span>
-              <div className="v16-widget-value">240 м²</div>
-            </div>
-            <div className="v16-widget">
-              <span className="v16-widget-label">Помещений</span>
-              <div className="v16-widget-value">14</div>
-            </div>
-            <div className="v16-widget">
-              <span className="v16-widget-label">Срок</span>
-              <div className="v16-widget-value">6 мес</div>
-            </div>
-            <div className="v16-widget v16-chart-widget">
-              <span className="v16-widget-label">Распределение бюджета</span>
-              <div className="v16-bars">
-                <div className="v16-bar">
-                  <div className="v16-bar-fill" style={{ width: '78%' }}></div>
-                  <span className="v16-bar-label">Строительство</span>
-                  <span className="v16-bar-value">78%</span>
-                </div>
-                <div className="v16-bar">
-                  <div className="v16-bar-fill" style={{ width: '18%' }}></div>
-                  <span className="v16-bar-label">Отделка</span>
-                  <span className="v16-bar-value">18%</span>
-                </div>
-                <div className="v16-bar">
-                  <div className="v16-bar-fill" style={{ width: '4%' }}></div>
-                  <span className="v16-bar-label">Инженерия</span>
-                  <span className="v16-bar-value">4%</span>
-                </div>
-              </div>
-            </div>
-            <div className="v16-widget v16-specs-widget">
-              <span className="v16-widget-label">Спецификация</span>
-              <div className="v16-specs-list">
-                {specs.map((spec, i) => (
-                  <div key={i} className="v16-spec-item">
-                    <span>{spec.label}</span>
-                    <span>{spec.value}</span>
+
+          <div className="perspective-cards">
+            {packages.map((pkg, i) => (
+              <div
+                key={i}
+                className={`perspective-card ${pkg.popular ? 'featured' : ''} ${hoveredCard === i ? 'hovered' : ''}`}
+                onMouseEnter={() => setHoveredCard(i)}
+                onMouseLeave={() => setHoveredCard(null)}
+                style={{ '--index': i } as React.CSSProperties}
+              >
+                <div className="perspective-card-inner">
+                  <div className="perspective-card-front">
+                    {pkg.popular && <div className="perspective-badge">★</div>}
+                    <div className="perspective-icon">
+                      <span>{i + 1}</span>
+                    </div>
+                    <h3>{pkg.name}</h3>
+                    <div className="perspective-price">
+                      <span>{pkg.price}</span> млн ₽
+                    </div>
+                    <p>{pkg.description}</p>
                   </div>
-                ))}
+                  <div className="perspective-card-back">
+                    <h4>Что входит:</h4>
+                    <ul>
+                      {pkg.features.map((f, j) => (
+                        <li key={j}><CheckIcon />{f}</li>
+                      ))}
+                    </ul>
+                    <button className="perspective-btn">Выбрать</button>
+                  </div>
+                </div>
+                <div className="perspective-shadow" />
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================
+          VARIANT 5: Stacked Magazine Style
+          ============================================ */}
+      <section
+        className="variant variant-magazine"
+        id="v5"
+        ref={el => { observerRefs.current['v5'] = el }}
+      >
+        <div className="variant-label">5. Журнальный стиль</div>
+        <div className={`magazine-container ${isVisible['v5'] ? 'visible' : ''}`}>
+          <div className="magazine-hero">
+            <div className="magazine-hero-content">
+              <span className="magazine-tag">Комплектации 2024</span>
+              <h1>
+                <span>Три уровня</span>
+                <span className="magazine-accent">готовности</span>
+                <span>вашего дома</span>
+              </h1>
+            </div>
+            <div className="magazine-hero-visual">
+              <div className="magazine-circle magazine-circle-1" />
+              <div className="magazine-circle magazine-circle-2" />
+              <div className="magazine-circle magazine-circle-3" />
+            </div>
+          </div>
+
+          <div className="magazine-grid">
+            {packages.map((pkg, i) => (
+              <article
+                key={i}
+                className={`magazine-item magazine-item-${i + 1} ${pkg.popular ? 'featured' : ''}`}
+              >
+                <div className="magazine-item-number">{String(i + 1).padStart(2, '0')}</div>
+                <div className="magazine-item-content">
+                  {pkg.popular && <span className="magazine-popular">Выбор клиентов</span>}
+                  <h2>{pkg.name}</h2>
+                  <div className="magazine-price-tag">
+                    <span className="magazine-price">{pkg.price}</span>
+                    <span className="magazine-price-sub">млн ₽</span>
+                  </div>
+                  <p className="magazine-desc">{pkg.description}</p>
+                  <div className="magazine-features">
+                    {pkg.features.map((f, j) => (
+                      <span key={j} className="magazine-feature">{f}</span>
+                    ))}
+                  </div>
+                  <button className="magazine-btn">
+                    Подробнее <ArrowIcon />
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================
+          VARIANT 6: Radial/Circular Layout
+          ============================================ */}
+      <section
+        className="variant variant-radial"
+        id="v6"
+        ref={el => { observerRefs.current['v6'] = el }}
+      >
+        <div className="variant-label">6. Радиальный выбор</div>
+        <div className="radial-container">
+          <div className="radial-center">
+            <div className="radial-center-content">
+              <span className="radial-center-label">Ваш выбор</span>
+              <h2>{packages[activePackage].name}</h2>
+              <div className="radial-center-price">
+                {packages[activePackage].price} <span>млн ₽</span>
+              </div>
+              <button className="radial-center-btn">Оформить</button>
+            </div>
+            <div className="radial-ring radial-ring-1" />
+            <div className="radial-ring radial-ring-2" />
+            <div className="radial-ring radial-ring-3" />
+          </div>
+
+          <div className="radial-items">
+            {packages.map((pkg, i) => {
+              const angle = -90 + (i * 120)
+              const radian = (angle * Math.PI) / 180
+              const x = Math.cos(radian) * 280
+              const y = Math.sin(radian) * 280
+
+              return (
+                <div
+                  key={i}
+                  className={`radial-item ${activePackage === i ? 'active' : ''} ${pkg.popular ? 'popular' : ''}`}
+                  style={{
+                    transform: `translate(${x}px, ${y}px)`,
+                    '--index': i
+                  } as React.CSSProperties}
+                  onClick={() => setActivePackage(i)}
+                >
+                  <div className="radial-item-connector" style={{
+                    transform: `rotate(${angle + 180}deg)`,
+                    width: activePackage === i ? '180px' : '0px'
+                  }} />
+                  <div className="radial-item-content">
+                    {pkg.popular && <span className="radial-badge">★</span>}
+                    <span className="radial-item-num">{String(i + 1).padStart(2, '0')}</span>
+                    <h3>{pkg.name}</h3>
+                    <span className="radial-item-price">{pkg.price} млн</span>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
+          <div className={`radial-details ${isVisible['v6'] ? 'visible' : ''}`}>
+            <h4>В комплектацию входит:</h4>
+            <div className="radial-features">
+              {packages[activePackage].features.map((f, i) => (
+                <div
+                  key={i}
+                  className="radial-feature"
+                  style={{ '--delay': `${i * 0.1}s` } as React.CSSProperties}
+                >
+                  <CheckIcon />
+                  <span>{f}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Variant 17: Ticket/Receipt Style */}
-      <section className="pricing-variant v17">
-        <div className="variant-label">17. Билет / Квитанция</div>
-        <div className="v17-wrapper">
-          <div className="v17-ticket">
-            <div className="v17-ticket-header">
-              <div className="v17-logo">HB</div>
-              <div className="v17-company">
-                <span className="v17-company-name">HOUSEBUILDER</span>
-                <span className="v17-company-sub">СТРОИТЕЛЬНАЯ КОМПАНИЯ</span>
+      {/* ============================================
+          VARIANT 7: Split Comparison with House Image
+          ============================================ */}
+      <section
+        className="variant variant-split"
+        id="v7"
+        ref={el => { observerRefs.current['v7'] = el }}
+      >
+        <div className="variant-label">7. Разделённое сравнение</div>
+        <div className="split-container">
+          {/* Background house image */}
+          <div className="split-house-bg">
+            <img
+              src="/houses/combined/flat/house1.jpg"
+              alt="Дом"
+              className="split-house-img"
+            />
+            <div className="split-house-overlay" />
+          </div>
+
+          {/* Package panels */}
+          <div className="split-panels">
+            {packages.map((pkg, i) => (
+              <div
+                key={i}
+                className={`split-panel ${activePackage === i ? 'expanded' : ''} ${pkg.popular ? 'featured' : ''}`}
+                onClick={() => setActivePackage(i)}
+              >
+                <div className="split-panel-glass" />
+                <div className="split-panel-content">
+                  <div className="split-panel-header">
+                    {pkg.popular && <span className="split-badge">Рекомендуем</span>}
+                    <span className="split-number">{String(i + 1).padStart(2, '0')}</span>
+                    <h2>{pkg.name}</h2>
+                    <p>{pkg.description}</p>
+                  </div>
+
+                  <div className="split-panel-price">
+                    <span className="split-price-value">{pkg.price}</span>
+                    <span className="split-price-unit">млн ₽</span>
+                  </div>
+
+                  <div className="split-panel-details">
+                    <ul className="split-features">
+                      {pkg.features.map((f, j) => (
+                        <li key={j}>
+                          <CheckIcon />
+                          <span>{f}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <button className="split-btn">
+                      Выбрать комплектацию
+                      <ArrowIcon />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Completion indicator */}
+                <div className="split-completion">
+                  <div className="split-completion-bar">
+                    <div
+                      className="split-completion-fill"
+                      style={{ height: `${pkg.percent}%` }}
+                    />
+                  </div>
+                  <span className="split-completion-text">{pkg.percent}%</span>
+                </div>
               </div>
-            </div>
-            <div className="v17-tear-line">
-              <div className="v17-circle v17-circle-left"></div>
-              <div className="v17-dashed"></div>
-              <div className="v17-circle v17-circle-right"></div>
-            </div>
-            <div className="v17-ticket-body">
-              <div className="v17-ticket-row">
-                <span>Проект</span>
-                <span>Загородный дом 240м²</span>
-              </div>
-              <div className="v17-ticket-row">
-                <span>Комплектация</span>
-                <span>Под ключ</span>
-              </div>
-              <div className="v17-ticket-row">
-                <span>Площадь</span>
-                <span>240 м²</span>
-              </div>
-              <div className="v17-ticket-row">
-                <span>Помещений</span>
-                <span>14</span>
-              </div>
-              <div className="v17-ticket-row">
-                <span>Срок строительства</span>
-                <span>6 месяцев</span>
-              </div>
-            </div>
-            <div className="v17-tear-line">
-              <div className="v17-circle v17-circle-left"></div>
-              <div className="v17-dashed"></div>
-              <div className="v17-circle v17-circle-right"></div>
-            </div>
-            <div className="v17-ticket-footer">
-              <div className="v17-total">
-                <span className="v17-total-label">ИТОГО К ОПЛАТЕ</span>
-                <span className="v17-total-value">12 500 000 ₽</span>
-              </div>
-              <div className="v17-barcode">
-                {[...Array(30)].map((_, i) => (
-                  <div key={i} className="v17-barcode-line" style={{ height: `${20 + Math.random() * 20}px` }}></div>
-                ))}
-              </div>
-              <span className="v17-barcode-number">HB-2024-00142-PRJ</span>
-            </div>
+            ))}
+          </div>
+
+          {/* Floor plan overlay */}
+          <div className={`split-floorplan ${activePackage === 2 ? 'show' : ''}`}>
+            <img src="/floor-plan.png" alt="План дома" />
           </div>
         </div>
       </section>
 
+      {/* ============================================
+          VARIANT 8: Animated Counter Display
+          ============================================ */}
+      <section
+        className="variant variant-counter"
+        id="v8"
+        ref={el => { observerRefs.current['v8'] = el }}
+      >
+        <div className="variant-label">8. Счётчик с анимацией</div>
+        <div className="counter-container">
+          <div className="counter-bg">
+            <div className="counter-grid" />
+          </div>
+
+          <div className="counter-content">
+            <div className="counter-header">
+              <h1>Стоимость строительства</h1>
+              <p>Проект дома 240 м²</p>
+            </div>
+
+            <div className="counter-display">
+              <div className="counter-main">
+                <div className="counter-value">
+                  <span className="counter-num">{packages[activePackage].price}</span>
+                  <span className="counter-unit">млн ₽</span>
+                </div>
+                <div className="counter-label">{packages[activePackage].name}</div>
+              </div>
+
+              <div className="counter-meter">
+                <svg viewBox="0 0 200 200" className="counter-svg">
+                  <circle
+                    cx="100"
+                    cy="100"
+                    r="90"
+                    className="counter-circle-bg"
+                  />
+                  <circle
+                    cx="100"
+                    cy="100"
+                    r="90"
+                    className="counter-circle-fill"
+                    style={{
+                      strokeDasharray: `${packages[activePackage].percent * 5.65} 565`
+                    }}
+                  />
+                </svg>
+                <div className="counter-meter-value">
+                  {packages[activePackage].percent}%
+                </div>
+              </div>
+            </div>
+
+            <div className="counter-selector">
+              {packages.map((pkg, i) => (
+                <button
+                  key={i}
+                  className={`counter-option ${activePackage === i ? 'active' : ''} ${pkg.popular ? 'popular' : ''}`}
+                  onClick={() => setActivePackage(i)}
+                >
+                  {pkg.popular && <span className="counter-star">★</span>}
+                  <span className="counter-option-name">{pkg.name}</span>
+                  <span className="counter-option-price">{pkg.price} млн</span>
+                </button>
+              ))}
+            </div>
+
+            <div className="counter-features">
+              {packages[activePackage].features.map((f, i) => (
+                <div
+                  key={i}
+                  className="counter-feature"
+                  style={{ '--delay': `${i * 0.05}s` } as React.CSSProperties}
+                >
+                  <CheckIcon />
+                  <span>{f}</span>
+                </div>
+              ))}
+            </div>
+
+            <button className="counter-cta">
+              Получить смету
+              <ArrowIcon />
+            </button>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }

@@ -28,6 +28,9 @@ import RoomChipsDemo from './pages/RoomChipsDemo'
 import FloorPlanLayoutDemo from './pages/FloorPlanLayoutDemo'
 import PricingSectionDemo from './pages/PricingSectionDemo'
 import InteriorSectionDemo from './pages/InteriorSectionDemo'
+import { InteriorDemo } from './pages/InteriorDemo'
+import { SocialDemo } from './pages/SocialDemo'
+import { TransitionDemo } from './pages/TransitionDemo'
 import { useHouseStore } from './store/houseStore'
 import './App.css'
 
@@ -231,6 +234,16 @@ function AppContent() {
     return <InteriorSectionDemo />
   }
 
+  // Для демо секции соцсетей
+  if (location.pathname === '/social-demo') {
+    return <SocialDemo />
+  }
+
+  // Для демо переходов между секциями
+  if (location.pathname === '/transition-demo') {
+    return <TransitionDemo />
+  }
+
   return (
     <div className="app">
       <header className="header">
@@ -270,6 +283,9 @@ function AppContent() {
         <Route path="/floor-plan-layout-demo" element={<FloorPlanLayoutDemo />} />
         <Route path="/pricing-demo" element={<PricingSectionDemo />} />
         <Route path="/interior-demo" element={<InteriorSectionDemo />} />
+        <Route path="/interior-variants" element={<InteriorDemo />} />
+        <Route path="/social-demo" element={<SocialDemo />} />
+        <Route path="/transition-demo" element={<TransitionDemo />} />
       </Routes>
 
       {error && (

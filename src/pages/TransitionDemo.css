@@ -1,0 +1,1114 @@
+/* ========================================
+   TRANSITION DEMO PAGE
+======================================== */
+.transition-demo-page {
+  min-height: 100vh;
+  background: #f0f2f0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.transition-demo-label {
+  text-align: center;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #2E5A3C;
+  background: rgba(255, 255, 255, 0.8);
+  position: sticky;
+  top: 52px;
+  z-index: 90;
+  border-bottom: 1px solid rgba(46, 90, 60, 0.1);
+}
+
+.transition-demo-container {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* ========================================
+   MOCK SECTIONS
+======================================== */
+.mock-section {
+  background: #f8faf8;
+  position: relative;
+}
+
+/* Mock Interior */
+.mock-interior {
+  padding: 2rem 2rem 0;
+}
+
+.mock-interior-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 140px);
+  gap: 8px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.mock-cell {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.mock-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mock-cell-1 {
+  grid-column: span 2;
+}
+
+.mock-cell-label {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.75rem;
+  font-size: 0.75rem;
+  color: white;
+  background: rgba(0,0,0,0.4);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+
+/* Mock Social */
+.mock-social {
+  padding: 0 2rem 2rem;
+}
+
+.mock-social-content {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+.mock-video-placeholder {
+  aspect-ratio: 16/9;
+  background: #e0e4e0;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(46, 90, 60, 0.3);
+}
+
+.mock-social-info {
+  padding: 1.5rem;
+  background: rgba(255,255,255,0.7);
+  border-radius: 16px;
+  border: 1px solid rgba(46, 90, 60, 0.1);
+  text-align: center;
+}
+
+.mock-stat {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #1a2e22, #2E5A3C);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.mock-stat-label {
+  font-size: 0.85rem;
+  color: rgba(26, 46, 34, 0.5);
+  margin-bottom: 1rem;
+}
+
+.mock-social-links {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.mock-link {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.8);
+  border: 1px solid rgba(46,90,60,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #2E5A3C;
+}
+
+/* ========================================
+   V1: Gradient + line
+======================================== */
+.trans-v1 {
+  background: #f8faf8;
+  padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.trans-v1-gradient {
+  width: 100%;
+  height: 40px;
+  background: linear-gradient(to bottom, #f8faf8, #f0f4f0);
+}
+
+.trans-v1-gradient-bottom {
+  background: linear-gradient(to bottom, #f0f4f0, #f8faf8);
+}
+
+.trans-v1-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.5rem 0;
+}
+
+.trans-v1-line::before,
+.trans-v1-line::after {
+  content: '';
+  flex: 1;
+  max-width: 140px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(46, 90, 60, 0.2), transparent);
+}
+
+.trans-v1-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(46, 90, 60, 0.25);
+  margin: 0 1rem;
+  flex-shrink: 0;
+}
+
+/* ========================================
+   V2: Single SVG wave
+======================================== */
+.trans-v2 {
+  position: relative;
+  height: 80px;
+  background: #f8faf8;
+  margin-top: -1px;
+}
+
+.trans-v2-wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+}
+
+.trans-v2-wave path {
+  fill: #f0f4f0;
+}
+
+/* ========================================
+   V3: Multi-layer waves
+======================================== */
+.trans-v3 {
+  position: relative;
+  height: 120px;
+  background: #f8faf8;
+  margin-top: -1px;
+}
+
+.trans-v3-waves {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 120px;
+}
+
+.trans-v3-wave-1 {
+  fill: rgba(46, 90, 60, 0.06);
+}
+
+.trans-v3-wave-2 {
+  fill: rgba(46, 90, 60, 0.04);
+}
+
+.trans-v3-wave-3 {
+  fill: #f8faf8;
+}
+
+/* ========================================
+   V4: Diamond ornament
+======================================== */
+.trans-v4 {
+  background: #f8faf8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  gap: 0;
+}
+
+.trans-v4-line-left,
+.trans-v4-line-right {
+  flex: 1;
+  max-width: 200px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(46, 90, 60, 0.15));
+}
+
+.trans-v4-line-right {
+  background: linear-gradient(90deg, rgba(46, 90, 60, 0.15), transparent);
+}
+
+.trans-v4-diamond {
+  color: rgba(46, 90, 60, 0.3);
+  margin: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: trans-v4-spin 12s linear infinite;
+}
+
+@keyframes trans-v4-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ========================================
+   V5: Overlap (section наложение)
+======================================== */
+.trans-v5 {
+  position: relative;
+  height: 60px;
+  background: #f8faf8;
+  z-index: 2;
+}
+
+.trans-v5-overlap {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120%;
+  height: 90px;
+  background: #f8faf8;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  box-shadow: 0 -10px 30px rgba(46, 90, 60, 0.05);
+}
+
+/* ========================================
+   V6: Blur gradient strip
+======================================== */
+.trans-v6 {
+  position: relative;
+  height: 80px;
+  background: #f8faf8;
+}
+
+.trans-v6-blur {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(46, 90, 60, 0.04),
+    rgba(46, 90, 60, 0.08) 50%,
+    rgba(46, 90, 60, 0.04)
+  );
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* ========================================
+   V7: Zigzag
+======================================== */
+.trans-v7 {
+  position: relative;
+  height: 40px;
+  background: #f8faf8;
+}
+
+.trans-v7-zigzag {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+}
+
+.trans-v7-zigzag path {
+  fill: rgba(46, 90, 60, 0.05);
+}
+
+/* ========================================
+   V8: Soft shadow with spacing
+======================================== */
+.trans-v8 {
+  background: #f8faf8;
+  position: relative;
+  height: 80px;
+}
+
+.trans-v8-shadow-top {
+  position: absolute;
+  top: 0;
+  left: 5%;
+  right: 5%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(46, 90, 60, 0.1) 30%, rgba(46, 90, 60, 0.1) 70%, transparent);
+  box-shadow: 0 4px 20px rgba(46, 90, 60, 0.06);
+}
+
+.trans-v8-space {
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    #f8faf8,
+    #f4f7f4 30%,
+    #f4f7f4 70%,
+    #f8faf8
+  );
+}
+
+.trans-v8-shadow-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 5%;
+  right: 5%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(46, 90, 60, 0.1) 30%, rgba(46, 90, 60, 0.1) 70%, transparent);
+  box-shadow: 0 -4px 20px rgba(46, 90, 60, 0.06);
+}
+
+/* ========================================
+   V9: Diagonal cut
+======================================== */
+.trans-v9 {
+  position: relative;
+  height: 80px;
+  background: #f8faf8;
+  margin-top: -1px;
+}
+
+.trans-v9-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+}
+
+.trans-v9-fill {
+  fill: rgba(46, 90, 60, 0.04);
+}
+
+/* ========================================
+   V10: Leaf / branch divider
+======================================== */
+.trans-v10 {
+  background: #f8faf8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 2rem;
+}
+
+.trans-v10-line {
+  flex: 1;
+  max-width: 160px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(46, 90, 60, 0.15));
+}
+
+.trans-v10-line:last-child {
+  background: linear-gradient(90deg, rgba(46, 90, 60, 0.15), transparent);
+}
+
+.trans-v10-icon {
+  margin: 0 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.9;
+}
+
+/* ========================================
+   V11: Three dots
+======================================== */
+.trans-v11 {
+  background: #f8faf8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 2rem;
+  gap: 0.75rem;
+}
+
+.trans-v11-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(46, 90, 60, 0.2);
+}
+
+.trans-v11-dot:nth-child(2) {
+  width: 7px;
+  height: 7px;
+  background: rgba(46, 90, 60, 0.3);
+}
+
+/* ========================================
+   V12: Gradient accent strip
+======================================== */
+.trans-v12 {
+  background: #f8faf8;
+  padding: 2rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.trans-v12-strip {
+  width: 100%;
+  max-width: 600px;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(46, 90, 60, 0.08) 20%,
+    rgba(46, 90, 60, 0.15) 50%,
+    rgba(46, 90, 60, 0.08) 80%,
+    transparent 100%
+  );
+}
+
+/* ========================================
+   V13: Arch
+======================================== */
+.trans-v13 {
+  position: relative;
+  height: 100px;
+  background: #f8faf8;
+  margin-top: -1px;
+}
+
+.trans-v13-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+}
+
+.trans-v13-svg path {
+  fill: rgba(46, 90, 60, 0.04);
+}
+
+/* ========================================
+   V15: Green gradient band
+======================================== */
+.trans-v15 {
+  height: 80px;
+  background: linear-gradient(
+    to bottom,
+    #f8faf8 0%,
+    #e8f0e8 30%,
+    #dce8dc 50%,
+    #e8f0e8 70%,
+    #f8faf8 100%
+  );
+}
+
+/* ========================================
+   V16: Warm sand tone
+======================================== */
+.trans-v16 {
+  height: 80px;
+  background: linear-gradient(
+    to bottom,
+    #f8faf8 0%,
+    #f5f0e8 30%,
+    #f0ebe0 50%,
+    #f5f0e8 70%,
+    #f8faf8 100%
+  );
+}
+
+/* ========================================
+   V17: Green accent strip
+======================================== */
+.trans-v17 {
+  height: 60px;
+  background: #f8faf8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trans-v17-line {
+  width: 60%;
+  max-width: 500px;
+  height: 2px;
+  border-radius: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #c8d8c8 15%,
+    #2E5A3C 50%,
+    #c8d8c8 85%,
+    transparent 100%
+  );
+  opacity: 0.4;
+}
+
+/* ========================================
+   V18: Soft fog / mist
+======================================== */
+.trans-v18 {
+  height: 100px;
+  background: linear-gradient(
+    to bottom,
+    #f8faf8 0%,
+    rgba(46, 90, 60, 0.06) 20%,
+    rgba(46, 90, 60, 0.1) 50%,
+    rgba(46, 90, 60, 0.06) 80%,
+    #f8faf8 100%
+  );
+  position: relative;
+}
+
+.trans-v18::before {
+  content: '';
+  position: absolute;
+  inset: 20% 10%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(46, 90, 60, 0.06) 0%,
+    transparent 70%
+  );
+}
+
+/* ========================================
+   V19: Two-tone split
+======================================== */
+.trans-v19 {
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+}
+
+.trans-v19-top {
+  flex: 1;
+  background: linear-gradient(to bottom, #f8faf8, #eef2ee);
+}
+
+.trans-v19-bottom {
+  flex: 1;
+  background: linear-gradient(to bottom, #f2f0ed, #f8faf8);
+}
+
+/* ========================================
+   V20: Nature gradient (earth tones)
+======================================== */
+.trans-v20 {
+  height: 90px;
+  background: linear-gradient(
+    to bottom,
+    #f8faf8 0%,
+    #eef3ec 15%,
+    #e4ece0 35%,
+    #e8e6df 50%,
+    #ece9e2 65%,
+    #f2f0ec 85%,
+    #f8faf8 100%
+  );
+}
+
+/* ========================================
+   V21: Sage mist — мягкий шалфей
+======================================== */
+.trans-v21 {
+  height: 100px;
+  background: linear-gradient(
+    to bottom,
+    #f8faf8 0%,
+    #e6ede6 20%,
+    #d8e4d8 40%,
+    #d5e0d5 50%,
+    #d8e4d8 60%,
+    #e6ede6 80%,
+    #f8faf8 100%
+  );
+}
+
+/* ========================================
+   V22: Linen cream — льняной крем
+======================================== */
+.trans-v22 {
+  height: 90px;
+  background: linear-gradient(
+    to bottom,
+    #f8faf8 0%,
+    #f6f3ee 15%,
+    #f0ead8 35%,
+    #ede5d0 50%,
+    #f0ead8 65%,
+    #f6f3ee 85%,
+    #f8faf8 100%
+  );
+}
+
+/* ========================================
+   V23: Olive dew — оливковая роса
+======================================== */
+.trans-v23 {
+  height: 80px;
+  background: linear-gradient(
+    to bottom,
+    #f8faf8 0%,
+    #eef0e4 25%,
+    #e2e8d4 50%,
+    #eef0e4 75%,
+    #f8faf8 100%
+  );
+}
+
+/* ========================================
+   V24: Frost white — морозный белый
+======================================== */
+.trans-v24 {
+  height: 70px;
+  background: linear-gradient(
+    to bottom,
+    #f8faf8 0%,
+    #f0f4f6 20%,
+    #e8eef2 40%,
+    #e5ecf0 50%,
+    #e8eef2 60%,
+    #f0f4f6 80%,
+    #f8faf8 100%
+  );
+}
+
+/* ========================================
+   V25: Forest floor — лесная подстилка
+======================================== */
+.trans-v25 {
+  height: 100px;
+  background: linear-gradient(
+    to bottom,
+    #f8faf8 0%,
+    #e8ede4 12%,
+    #dce4d6 25%,
+    #d6ddd0 38%,
+    #d8dbd2 50%,
+    #dde0d6 62%,
+    #e4e8de 75%,
+    #eef0ea 88%,
+    #f8faf8 100%
+  );
+}
+
+/* ========================================
+   V26: Pearl — жемчужный
+======================================== */
+.trans-v26 {
+  height: 80px;
+  background: linear-gradient(
+    to bottom,
+    #f8faf8 0%,
+    #f2f4f0 15%,
+    #eceee8 30%,
+    #e8ebe4 45%,
+    #eaece6 55%,
+    #eceee8 70%,
+    #f2f4f0 85%,
+    #f8faf8 100%
+  );
+}
+
+/* ========================================
+   V27: Clay warm — тёплая глина
+======================================== */
+.trans-v27 {
+  height: 90px;
+  background: linear-gradient(
+    to bottom,
+    #f8faf8 0%,
+    #f4ede6 15%,
+    #ece2d6 30%,
+    #e6dacb 50%,
+    #ece2d6 70%,
+    #f4ede6 85%,
+    #f8faf8 100%
+  );
+}
+
+/* ========================================
+   V28: Eucalyptus — эвкалипт (голубовато-зелёный)
+======================================== */
+.trans-v28 {
+  height: 80px;
+  background: linear-gradient(
+    to bottom,
+    #f8faf8 0%,
+    #e8f0ec 20%,
+    #d8e8e0 40%,
+    #d4e4dc 50%,
+    #d8e8e0 60%,
+    #e8f0ec 80%,
+    #f8faf8 100%
+  );
+}
+
+/* ========================================
+   V29-V38: Section background color variants
+   (перекрашенная секция информации)
+======================================== */
+
+/* V29: Мятный крем */
+.social-bg-29 {
+  background: #eef5f0 !important;
+}
+.social-bg-29 .mock-video-placeholder {
+  background: #dceade;
+}
+.social-bg-29 .mock-social-info {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(46, 90, 60, 0.08);
+}
+
+/* V30: Тёплый лён */
+.social-bg-30 {
+  background: #f5f1ea !important;
+}
+.social-bg-30 .mock-video-placeholder {
+  background: #e8e0d4;
+}
+.social-bg-30 .mock-social-info {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(160, 130, 90, 0.1);
+}
+
+/* V31: Светлый шалфей */
+.social-bg-31 {
+  background: #e8ede8 !important;
+}
+.social-bg-31 .mock-video-placeholder {
+  background: #d5ddd5;
+}
+.social-bg-31 .mock-social-info {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(46, 90, 60, 0.1);
+}
+
+/* V32: Слоновая кость */
+.social-bg-32 {
+  background: #f8f6f0 !important;
+}
+.social-bg-32 .mock-video-placeholder {
+  background: #ece8de;
+}
+.social-bg-32 .mock-social-info {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(180, 160, 120, 0.1);
+}
+
+/* V33: Прохладный серый */
+.social-bg-33 {
+  background: #eff1f0 !important;
+}
+.social-bg-33 .mock-video-placeholder {
+  background: #dfe2e0;
+}
+.social-bg-33 .mock-social-info {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(100, 120, 110, 0.1);
+}
+
+/* V34: Оливковый свет */
+.social-bg-34 {
+  background: #f0f2e8 !important;
+}
+.social-bg-34 .mock-video-placeholder {
+  background: #e0e4d4;
+}
+.social-bg-34 .mock-social-info {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(100, 120, 60, 0.1);
+}
+
+/* V35: Пепельная роза */
+.social-bg-35 {
+  background: #f4f0ef !important;
+}
+.social-bg-35 .mock-video-placeholder {
+  background: #e6deda;
+}
+.social-bg-35 .mock-social-info {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(160, 120, 110, 0.1);
+}
+
+/* V36: Лесной туман */
+.social-bg-36 {
+  background: #e6ece8 !important;
+}
+.social-bg-36 .mock-video-placeholder {
+  background: #d0dbd4;
+}
+.social-bg-36 .mock-social-info {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(46, 90, 60, 0.12);
+}
+
+/* V37: Тёплый камень */
+.social-bg-37 {
+  background: #f0ece6 !important;
+}
+.social-bg-37 .mock-video-placeholder {
+  background: #e0d8ce;
+}
+.social-bg-37 .mock-social-info {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(140, 120, 90, 0.1);
+}
+
+/* V38: Голубой лёд */
+.social-bg-38 {
+  background: #edf2f4 !important;
+}
+.social-bg-38 .mock-video-placeholder {
+  background: #dae4e8;
+}
+.social-bg-38 .mock-social-info {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(80, 120, 140, 0.1);
+}
+
+/* ========================================
+   V39-V48: Distinctive backgrounds
+======================================== */
+
+/* V39: Тёмный лес — dark green */
+.social-bg-39 {
+  background: #1a2e22 !important;
+}
+.social-bg-39 .mock-video-placeholder {
+  background: #243d2e;
+  color: rgba(255, 255, 255, 0.2);
+}
+.social-bg-39 .mock-social-info {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+.social-bg-39 .mock-stat {
+  background: linear-gradient(135deg, #8fc9a0, #b8dcc6);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.social-bg-39 .mock-stat-label {
+  color: rgba(255, 255, 255, 0.5);
+}
+.social-bg-39 .mock-link {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* V40: Крафт текстура */
+.social-bg-40 {
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(160, 130, 90, 0.03) 2px,
+      rgba(160, 130, 90, 0.03) 4px
+    ),
+    linear-gradient(135deg, #f2ebe0, #ede4d6) !important;
+}
+.social-bg-40 .mock-video-placeholder {
+  background: #ddd4c4;
+}
+.social-bg-40 .mock-social-info {
+  background: rgba(255, 255, 255, 0.5);
+  border-color: rgba(160, 130, 90, 0.12);
+}
+
+/* V41: Бетон — concrete */
+.social-bg-41 {
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(0,0,0,0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(0,0,0,0.02) 0%, transparent 40%),
+    radial-gradient(ellipse at 60% 80%, rgba(0,0,0,0.03) 0%, transparent 50%),
+    #e8e8e6 !important;
+}
+.social-bg-41 .mock-video-placeholder {
+  background: #d8d8d4;
+}
+.social-bg-41 .mock-social-info {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+/* V42: Зелёный градиент вниз */
+.social-bg-42 {
+  background: linear-gradient(to bottom, #f8faf8 0%, #e0ece0 40%, #d0e0d0 100%) !important;
+}
+.social-bg-42 .mock-video-placeholder {
+  background: #c8d8c8;
+}
+.social-bg-42 .mock-social-info {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(46, 90, 60, 0.1);
+}
+
+/* V43: Тёплое дерево — wood tone */
+.social-bg-43 {
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 20px,
+      rgba(140, 100, 60, 0.02) 20px,
+      rgba(140, 100, 60, 0.02) 22px
+    ),
+    linear-gradient(to bottom, #f0e8dc, #e8dcc8) !important;
+}
+.social-bg-43 .mock-video-placeholder {
+  background: #d8ccb8;
+}
+.social-bg-43 .mock-social-info {
+  background: rgba(255, 255, 255, 0.55);
+  border-color: rgba(140, 100, 60, 0.1);
+}
+
+/* V44: Ночной зелёный — deep green */
+.social-bg-44 {
+  background: linear-gradient(135deg, #0f1f16 0%, #1a3326 50%, #0f1f16 100%) !important;
+}
+.social-bg-44 .mock-video-placeholder {
+  background: #1e3a28;
+  color: rgba(255, 255, 255, 0.15);
+}
+.social-bg-44 .mock-social-info {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+.social-bg-44 .mock-stat {
+  background: linear-gradient(135deg, #6db88a, #a0d4b4);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.social-bg-44 .mock-stat-label {
+  color: rgba(255, 255, 255, 0.4);
+}
+.social-bg-44 .mock-link {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* V45: Льняная ткань — linen fabric */
+.social-bg-45 {
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 1px,
+      rgba(180, 160, 120, 0.04) 1px,
+      rgba(180, 160, 120, 0.04) 2px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 1px,
+      rgba(180, 160, 120, 0.04) 1px,
+      rgba(180, 160, 120, 0.04) 2px
+    ),
+    #f4f0e8 !important;
+}
+.social-bg-45 .mock-video-placeholder {
+  background: #e2dace;
+}
+.social-bg-45 .mock-social-info {
+  background: rgba(255, 255, 255, 0.55);
+  border-color: rgba(180, 160, 120, 0.1);
+}
+
+/* V46: Облачный белый — cloud */
+.social-bg-46 {
+  background:
+    radial-gradient(ellipse at 30% 40%, rgba(46, 90, 60, 0.04) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 60%, rgba(46, 90, 60, 0.03) 0%, transparent 50%),
+    #f0f4f0 !important;
+}
+.social-bg-46 .mock-video-placeholder {
+  background: #e0e6e0;
+}
+.social-bg-46 .mock-social-info {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(46, 90, 60, 0.08);
+}
+
+/* V47: Светлый мрамор — marble */
+.social-bg-47 {
+  background:
+    radial-gradient(ellipse at 15% 30%, rgba(180, 180, 170, 0.15) 0%, transparent 40%),
+    radial-gradient(ellipse at 85% 70%, rgba(180, 180, 170, 0.1) 0%, transparent 35%),
+    radial-gradient(ellipse at 50% 10%, rgba(200, 190, 180, 0.08) 0%, transparent 50%),
+    linear-gradient(135deg, #f2f0ec, #eae8e4, #f0eee8) !important;
+}
+.social-bg-47 .mock-video-placeholder {
+  background: #dfdbd4;
+}
+.social-bg-47 .mock-social-info {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(160, 150, 140, 0.1);
+}
+
+/* V48: Терраццо — terrazzo dots */
+.social-bg-48 {
+  background:
+    radial-gradient(circle 3px at 10% 20%, rgba(46, 90, 60, 0.12) 50%, transparent 50%),
+    radial-gradient(circle 2px at 30% 60%, rgba(160, 130, 90, 0.1) 50%, transparent 50%),
+    radial-gradient(circle 4px at 55% 15%, rgba(46, 90, 60, 0.08) 50%, transparent 50%),
+    radial-gradient(circle 2px at 70% 45%, rgba(180, 160, 120, 0.1) 50%, transparent 50%),
+    radial-gradient(circle 3px at 85% 75%, rgba(46, 90, 60, 0.1) 50%, transparent 50%),
+    radial-gradient(circle 2px at 20% 85%, rgba(160, 140, 100, 0.08) 50%, transparent 50%),
+    radial-gradient(circle 3px at 45% 40%, rgba(100, 120, 100, 0.06) 50%, transparent 50%),
+    radial-gradient(circle 2px at 65% 80%, rgba(46, 90, 60, 0.1) 50%, transparent 50%),
+    radial-gradient(circle 4px at 90% 25%, rgba(180, 160, 120, 0.06) 50%, transparent 50%),
+    #f4f2ee !important;
+}
+.social-bg-48 .mock-video-placeholder {
+  background: #e4e0da;
+}
+.social-bg-48 .mock-social-info {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(140, 120, 90, 0.1);
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+@media (max-width: 768px) {
+  .mock-interior-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 100px);
+  }
+
+  .mock-cell-1 {
+    grid-column: span 2;
+  }
+
+  .mock-social-content {
+    grid-template-columns: 1fr;
+  }
+}

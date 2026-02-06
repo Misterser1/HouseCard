@@ -1,5 +1,7 @@
-import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
+import { useState, useEffect, useMemo, useRef, useCallback, Suspense } from 'react'
 import { Link } from 'react-router-dom'
+import { Canvas } from '@react-three/fiber'
+import { OrbitControls, useGLTF, Environment } from '@react-three/drei'
 import { AnimatedImage } from '../components/AnimatedImage'
 import './ConstructorV1.css'
 
@@ -93,6 +95,11 @@ const roomVideos: Record<string, string> = {
   'kitchen': '/videos/rooms/4. Кухня.mp4',
 }
 
+function FloorPlan3DModel() {
+  const { scene } = useGLTF('/floor-plan.glb')
+  return <primitive object={scene} scale={1} />
+}
+
 export function ConstructorV1() {
   // Основные параметры проекта
   const [areaLength] = useState(10)
@@ -103,9 +110,8 @@ export function ConstructorV1() {
   // Floor plan state
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null)
   const [hoveredRoom, setHoveredRoom] = useState<string | null>(null)
+  const [is3DView, setIs3DView] = useState(false)
 
-  // Pricing section state
-  const [activePricingTab, setActivePricingTab] = useState<'price' | 'specs' | 'included'>('price')
   const svgRef = useRef<HTMLObjectElement>(null)
 
   // Обработка кликов на комнаты в SVG
@@ -161,11 +167,15 @@ export function ConstructorV1() {
   }, [handleSvgRoomClick])
 
   // Параметры дома
-  const [isExterior, setIsExterior] = useState(true)
+  const [isExterior, _setIsExterior] = useState(true)
   const [roofStyle, setRoofStyle] = useState<RoofStyle>('natural')
   const [_wallMaterial] = useState<WallMaterial>('brick')
   const [facadeStyle, setFacadeStyle] = useState<FacadeStyle>('brick')
   const [isDay, setIsDay] = useState(true)
+
+  // Custom dropdown states
+  const [facadeDropdownOpen, setFacadeDropdownOpen] = useState(false)
+  const [roofDropdownOpen, setRoofDropdownOpen] = useState(false)
 
   // Галерея изображений (ДЕНЬ)
   const houseImagesByConfigDay: Record<FacadeStyle, Record<RoofStyle, string[]>> = {
@@ -384,7 +394,9 @@ export function ConstructorV1() {
     '/houses/interior/brick/9.Терраса.jpg': '/videos/rooms/9.Терраса.mp4',
   }
 
-  const getCurrentVideo = (imagePath: string): string | undefined => {
+  // @ts-expect-error Reserved for future use
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const _getCurrentVideo = (imagePath: string): string | undefined => {
     if (!isExterior) {
       return interiorVideos[imagePath]
     }
@@ -401,10 +413,24 @@ export function ConstructorV1() {
   const touchStartTime = useRef<number | null>(null)
   const touchTarget = useRef<EventTarget | null>(null)
   const [isTouchDevice, setIsTouchDevice] = useState(false)
+  const [activePricingPackage, setActivePricingPackage] = useState(1)
 
   // Detect touch device
   useEffect(() => {
     setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0)
+  }, [])
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement
+      if (!target.closest('.custom-dropdown')) {
+        setFacadeDropdownOpen(false)
+        setRoofDropdownOpen(false)
+      }
+    }
+    document.addEventListener('click', handleClickOutside)
+    return () => document.removeEventListener('click', handleClickOutside)
   }, [])
 
   // Безопасный индекс (всегда в пределах массива)
@@ -563,9 +589,8 @@ export function ConstructorV1() {
         <div className="cinematic-slide active" key={`${facadeStyle}-${roofStyle}-${isExterior}-${isDay}-${safeImageIndex}`}>
           <AnimatedImage
             src={houseImages[safeImageIndex]}
-            localVideo={getCurrentVideo(houseImages[safeImageIndex])}
             alt={`Вид ${safeImageIndex + 1}`}
-            enableAnimation={true}
+            enableAnimation={false}
           />
         </div>
 
@@ -580,28 +605,102 @@ export function ConstructorV1() {
 
           {/* Header Controls */}
           <div className="header-controls">
-            <div className="header-control-group">
-              <select
-                className="header-select"
-                value={facadeStyle}
-                onChange={(e) => setFacadeStyle(e.target.value as FacadeStyle)}
+            {/* Facade Dropdown */}
+            <div className="custom-dropdown">
+              <button
+                className={`custom-dropdown-trigger ${facadeDropdownOpen ? 'open' : ''}`}
+                onClick={() => {
+                  setFacadeDropdownOpen(!facadeDropdownOpen)
+                  setRoofDropdownOpen(false)
+                }}
               >
-                <option value="brick">Кирпич</option>
-                <option value="combined">Комби</option>
-                <option value="ventilated">Вент. фасад</option>
-              </select>
+                <span className="dropdown-label">
+                  {facadeStyle === 'brick' ? 'Кирпич' : facadeStyle === 'combined' ? 'Комби' : 'Вент. фасад'}
+                </span>
+                <span className="dropdown-arrow">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <polyline points="6 9 12 15 18 9"/>
+                  </svg>
+                </span>
+              </button>
+              <div className={`custom-dropdown-menu ${facadeDropdownOpen ? 'open' : ''}`}>
+                <div className="dropdown-menu-inner">
+                  {[
+                    { value: 'brick', label: 'Кирпич' },
+                    { value: 'combined', label: 'Комби' },
+                    { value: 'ventilated', label: 'Вент. фасад' }
+                  ].map((option, index) => (
+                    <button
+                      key={option.value}
+                      className={`dropdown-option ${facadeStyle === option.value ? 'active' : ''}`}
+                      style={{ animationDelay: `${index * 0.05}s` }}
+                      onClick={() => {
+                        setFacadeStyle(option.value as FacadeStyle)
+                        setFacadeDropdownOpen(false)
+                      }}
+                    >
+                      <span className="option-check">
+                        {facadeStyle === option.value && (
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                            <polyline points="20 6 9 17 4 12"/>
+                          </svg>
+                        )}
+                      </span>
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
-            <div className="header-control-group">
-              <select
-                className="header-select"
-                value={roofStyle}
-                onChange={(e) => setRoofStyle(e.target.value as RoofStyle)}
+
+            {/* Roof Dropdown */}
+            <div className="custom-dropdown">
+              <button
+                className={`custom-dropdown-trigger ${roofDropdownOpen ? 'open' : ''}`}
+                onClick={() => {
+                  setRoofDropdownOpen(!roofDropdownOpen)
+                  setFacadeDropdownOpen(false)
+                }}
               >
-                <option value="natural">Натуральная</option>
-                <option value="soft">Мягкая</option>
-                <option value="flat">Плоская</option>
-              </select>
+                <span className="dropdown-label">
+                  {roofStyle === 'natural' ? 'Натуральная' : roofStyle === 'soft' ? 'Мягкая' : 'Плоская'}
+                </span>
+                <span className="dropdown-arrow">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <polyline points="6 9 12 15 18 9"/>
+                  </svg>
+                </span>
+              </button>
+              <div className={`custom-dropdown-menu ${roofDropdownOpen ? 'open' : ''}`}>
+                <div className="dropdown-menu-inner">
+                  {[
+                    { value: 'natural', label: 'Натуральная' },
+                    { value: 'soft', label: 'Мягкая' },
+                    { value: 'flat', label: 'Плоская' }
+                  ].map((option, index) => (
+                    <button
+                      key={option.value}
+                      className={`dropdown-option ${roofStyle === option.value ? 'active' : ''}`}
+                      style={{ animationDelay: `${index * 0.05}s` }}
+                      onClick={() => {
+                        setRoofStyle(option.value as RoofStyle)
+                        setRoofDropdownOpen(false)
+                      }}
+                    >
+                      <span className="option-check">
+                        {roofStyle === option.value && (
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                            <polyline points="20 6 9 17 4 12"/>
+                          </svg>
+                        )}
+                      </span>
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
+
             <button
               className={`header-toggle-btn ${isDay ? 'day' : 'night'}`}
               onClick={() => setIsDay(!isDay)}
@@ -636,7 +735,6 @@ export function ConstructorV1() {
         <div className="cinematic-content">
           {/* Left - Info */}
           <div className="cinematic-info">
-            <span className="cinematic-tag">Премиум класс</span>
             <h1 className="cinematic-title">Родные Края</h1>
             <p className="cinematic-subtitle">Дом площадью {totalArea} м² в окружении природы</p>
             <div className="cinematic-stats">
@@ -782,9 +880,8 @@ export function ConstructorV1() {
           >
             <AnimatedImage
               src={houseImages[safeImageIndex]}
-              localVideo={getCurrentVideo(houseImages[safeImageIndex])}
               alt="Полноэкранный просмотр"
-              enableAnimation={true}
+              enableAnimation={false}
             />
           </div>
           <div className="cinematic-modal-thumbs">
@@ -810,150 +907,214 @@ export function ConstructorV1() {
         </div>
 
         <div className="floor-plan-container">
-          <div className="floor-plan-left">
-            <div className="floor-plan-stats">
-              <div className="floor-plan-stat">
-                <span className="floor-plan-stat-value">{totalArea}</span>
-                <span className="floor-plan-stat-label">м² общая</span>
+          {!is3DView && (
+            <div className="floor-plan-left">
+              <div className="floor-plan-stats">
+                <div className="floor-plan-stat">
+                  <span className="floor-plan-stat-value">{totalArea}</span>
+                  <span className="floor-plan-stat-label">м² общая</span>
+                </div>
+                <div className="floor-plan-stat">
+                  <span className="floor-plan-stat-value">{floorPlanRooms.length}</span>
+                  <span className="floor-plan-stat-label">помещений</span>
+                </div>
+                <div className="floor-plan-stat">
+                  <span className="floor-plan-stat-value">1</span>
+                  <span className="floor-plan-stat-label">этаж</span>
+                </div>
               </div>
-              <div className="floor-plan-stat">
-                <span className="floor-plan-stat-value">{floorPlanRooms.length}</span>
-                <span className="floor-plan-stat-label">помещений</span>
-              </div>
-              <div className="floor-plan-stat">
-                <span className="floor-plan-stat-value">1</span>
-                <span className="floor-plan-stat-label">этаж</span>
+              <div className="floor-plan-rooms chips-style">
+                {floorPlanRooms.map(room => (
+                  <button
+                    key={room.id}
+                    className={`floor-plan-chip ${selectedRoom === room.id ? 'active' : ''} ${hoveredRoom === room.id ? 'hovered' : ''}`}
+                    onClick={() => setSelectedRoom(selectedRoom === room.id ? null : room.id)}
+                    onMouseEnter={() => highlightRoom(room.id, true)}
+                    onMouseLeave={() => highlightRoom(room.id, false)}
+                  >
+                    <span className="chip-name">{room.name}</span>
+                    <span className="chip-divider">·</span>
+                    <span className="chip-area">{room.area} м²</span>
+                  </button>
+                ))}
               </div>
             </div>
-            <div className="floor-plan-rooms chips-style">
-              {floorPlanRooms.map(room => (
-                <button
-                  key={room.id}
-                  className={`floor-plan-chip ${selectedRoom === room.id ? 'active' : ''} ${hoveredRoom === room.id ? 'hovered' : ''}`}
-                  onClick={() => setSelectedRoom(selectedRoom === room.id ? null : room.id)}
-                  onMouseEnter={() => highlightRoom(room.id, true)}
-                  onMouseLeave={() => highlightRoom(room.id, false)}
+          )}
+          <div className={`floor-plan-right ${is3DView ? 'full-width' : ''}`}>
+            <button
+              className={`floor-plan-view-toggle ${is3DView ? 'is-3d' : ''}`}
+              onClick={() => setIs3DView(!is3DView)}
+            >
+              <span className={`view-toggle-option ${!is3DView ? 'active' : ''}`}>2D</span>
+              <span className={`view-toggle-option ${is3DView ? 'active' : ''}`}>3D</span>
+              <span className="view-toggle-slider" />
+            </button>
+            {is3DView ? (
+              <div className="floor-plan-3d-container">
+                <Canvas
+                  camera={{ position: [10, 10, 10], fov: 50 }}
+                  style={{ background: 'transparent' }}
                 >
-                  <span className="chip-name">{room.name}</span>
-                  <span className="chip-divider">·</span>
-                  <span className="chip-area">{room.area} м²</span>
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="floor-plan-right">
-            <div className="floor-plan-image">
-              <object
-                ref={svgRef}
-                type="image/svg+xml"
-                data="/floor-plan.svg"
-                aria-label="План дома"
-              >
-                План дома
-              </object>
-              <div className="floor-plan-overlay" />
-            </div>
+                  <ambientLight intensity={0.6} />
+                  <directionalLight position={[10, 15, 10]} intensity={1} castShadow />
+                  <directionalLight position={[-5, 5, -5]} intensity={0.3} />
+                  <Suspense fallback={null}>
+                    <FloorPlan3DModel />
+                    <Environment preset="apartment" />
+                  </Suspense>
+                  <OrbitControls
+                    enablePan
+                    enableZoom
+                    enableRotate
+                    minDistance={3}
+                    maxDistance={30}
+                    maxPolarAngle={Math.PI / 2.1}
+                  />
+                </Canvas>
+                <div className="floor-plan-3d-hint">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/>
+                    <path d="M12 8v4M12 16h.01"/>
+                  </svg>
+                  Зажмите ЛКМ для вращения, колёсико для масштаба
+                </div>
+              </div>
+            ) : (
+              <div className="floor-plan-image">
+                <object
+                  ref={svgRef}
+                  type="image/svg+xml"
+                  data="/floor-plan.svg"
+                  aria-label="План дома"
+                >
+                  План дома
+                </object>
+                <div className="floor-plan-overlay" />
+              </div>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Pricing Section - Minimalist with Tabs */}
-      <section className="pricing-section">
-        <div className="pricing-header">
-          <h2>Стоимость</h2>
-          <p>Фиксированная цена строительства под ключ</p>
-        </div>
-        <div className="pricing-container">
-          <div className="pricing-tabs">
-            <button
-              className={`pricing-tab ${activePricingTab === 'price' ? 'active' : ''}`}
-              onClick={() => setActivePricingTab('price')}
-            >
-              Стоимость
-            </button>
-            <button
-              className={`pricing-tab ${activePricingTab === 'specs' ? 'active' : ''}`}
-              onClick={() => setActivePricingTab('specs')}
-            >
-              Характеристики
-            </button>
-            <button
-              className={`pricing-tab ${activePricingTab === 'included' ? 'active' : ''}`}
-              onClick={() => setActivePricingTab('included')}
-            >
-              Что входит
-            </button>
+      {/* Pricing Section - Split Comparison with House Image */}
+      <section className="pricing-section pricing-split">
+        <div className="pricing-split-container">
+          {/* Background house image */}
+          <div className="pricing-split-house-bg">
+            <img
+              src={houseImages[safeImageIndex]}
+              alt="Дом"
+              className="pricing-split-house-img"
+            />
+            <div className="pricing-split-house-overlay" />
           </div>
-          <div className="pricing-content">
-            {activePricingTab === 'price' && (
-              <div className="pricing-price-content">
-                <div className="pricing-price-main">
-                  <span className="pricing-price-number">12.5</span>
-                  <span className="pricing-price-suffix">
-                    <span>млн</span>
-                    <span>рублей</span>
-                  </span>
-                </div>
-                <p className="pricing-price-desc">
-                  Фиксированная стоимость строительства дома под ключ с отделкой и всеми инженерными коммуникациями
-                </p>
-                <div className="pricing-price-actions">
-                  <button className="pricing-btn-primary">Скачать смету PDF</button>
-                  <button className="pricing-btn-secondary">Рассчитать ипотеку</button>
-                </div>
-              </div>
-            )}
-            {activePricingTab === 'specs' && (
-              <div className="pricing-specs-content">
-                <div className="pricing-spec-row">
-                  <span>Фундамент</span>
-                  <span>Монолитная плита 300мм</span>
-                </div>
-                <div className="pricing-spec-row">
-                  <span>Стены</span>
-                  <span>Газобетон 400мм + утепление</span>
-                </div>
-                <div className="pricing-spec-row">
-                  <span>Кровля</span>
-                  <span>Натуральная черепица</span>
-                </div>
-                <div className="pricing-spec-row">
-                  <span>Окна</span>
-                  <span>Двухкамерные стеклопакеты</span>
-                </div>
-                <div className="pricing-spec-row">
-                  <span>Отопление</span>
-                  <span>Газовый котёл + тёплый пол</span>
-                </div>
-                <div className="pricing-spec-row">
-                  <span>Высота потолков</span>
-                  <span>3.0 м</span>
-                </div>
-              </div>
-            )}
-            {activePricingTab === 'included' && (
-              <div className="pricing-included-content">
-                <div className="pricing-included-grid">
-                  {[
-                    'Архитектурный проект',
-                    'Фундамент под ключ',
-                    'Стены и перегородки',
-                    'Кровельные работы',
-                    'Окна и двери',
-                    'Наружная отделка',
-                    'Инженерные сети',
-                    'Внутренняя отделка',
-                  ].map((item, i) => (
-                    <div key={i} className="pricing-included-item">
+
+          {/* Package panels */}
+          <div className="pricing-split-panels">
+            {[
+              {
+                name: 'Коробка',
+                description: 'Базовая комплектация',
+                price: '8.5',
+                pricePerM: '35 400',
+                percent: 33,
+                popular: false,
+                features: [
+                  'Фундамент монолитная плита',
+                  'Стены из газобетона 400мм',
+                  'Кровля с утеплением',
+                  'Окна ПВХ двухкамерные',
+                  'Входная дверь',
+                ],
+              },
+              {
+                name: 'Стандарт',
+                description: 'Рекомендуемый выбор',
+                price: '12.5',
+                pricePerM: '52 000',
+                percent: 66,
+                popular: true,
+                features: [
+                  'Всё из "Коробки"',
+                  'Электрика полный монтаж',
+                  'Отопление газовый котёл',
+                  'Водоснабжение и канализация',
+                  'Черновая отделка',
+                ],
+              },
+              {
+                name: 'Под ключ',
+                description: 'Максимальная комплектация',
+                price: '18.9',
+                pricePerM: '78 750',
+                percent: 100,
+                popular: false,
+                features: [
+                  'Всё из "Стандарта"',
+                  'Чистовая отделка премиум',
+                  'Сантехника и освещение',
+                  'Межкомнатные двери',
+                  'Готов к заселению',
+                ],
+              },
+            ].map((pkg, i) => (
+              <div
+                key={i}
+                className={`pricing-split-panel ${activePricingPackage === i ? 'expanded' : ''} ${pkg.popular ? 'featured' : ''}`}
+                onClick={() => setActivePricingPackage(i)}
+              >
+                <div className="pricing-split-panel-glass" />
+                <div className="pricing-split-panel-content">
+                  <div className="pricing-split-panel-header">
+                    {pkg.popular && <span className="pricing-split-badge">Рекомендуем</span>}
+                    <span className="pricing-split-number">{String(i + 1).padStart(2, '0')}</span>
+                    <h3>{pkg.name}</h3>
+                    <p>{pkg.description}</p>
+                  </div>
+
+                  <div className="pricing-split-panel-price">
+                    <span className="pricing-split-price-value">{pkg.price}</span>
+                    <span className="pricing-split-price-unit">млн ₽</span>
+                  </div>
+
+                  <div className="pricing-split-panel-details">
+                    <ul className="pricing-split-features">
+                      {pkg.features.map((f, j) => (
+                        <li key={j}>
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                            <polyline points="20 6 9 17 4 12"/>
+                          </svg>
+                          <span>{f}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <button className="pricing-split-btn">
+                      Выбрать комплектацию
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <polyline points="20 6 9 17 4 12"/>
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
                       </svg>
-                      <span>{item}</span>
-                    </div>
-                  ))}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Completion indicator */}
+                <div className="pricing-split-completion">
+                  <div className="pricing-split-completion-bar">
+                    <div
+                      className="pricing-split-completion-fill"
+                      style={{ height: `${pkg.percent}%` }}
+                    />
+                  </div>
+                  <span className="pricing-split-completion-text">{pkg.percent}%</span>
                 </div>
               </div>
-            )}
+            ))}
+          </div>
+
+          {/* Floor plan overlay */}
+          <div className={`pricing-split-floorplan ${activePricingPackage === 2 ? 'show' : ''}`}>
+            <img src="/floor-plan.png" alt="План дома" />
           </div>
         </div>
       </section>
@@ -981,6 +1142,9 @@ export function ConstructorV1() {
         </div>
       </section>
 
+      {/* Social / YouTube / Contacts Section */}
+      <SocialSection />
+
       {/* Room Detail Modal - Animated */}
       {selectedRoom && (
         <div className="room-modal-fullscreen" onClick={() => setSelectedRoom(null)}>
@@ -991,8 +1155,9 @@ export function ConstructorV1() {
               <div className="room-modal-container" onClick={(e) => e.stopPropagation()}>
                 <AnimatedImage
                   src={room.image}
-                  localVideo={roomVideos[room.id]}
                   alt={room.name}
+                  enableAnimation={true}
+                  localVideo={roomVideos[selectedRoom]}
                 />
                 <button className="room-modal-close-btn" onClick={() => setSelectedRoom(null)}>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -1010,5 +1175,147 @@ export function ConstructorV1() {
         </div>
       )}
     </div>
+  )
+}
+
+/* ============================================
+   Social Section — Stacked Layers + Parallax
+============================================ */
+const SocialIcons: Record<string, React.ReactNode> = {
+  youtube: (
+    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+    </svg>
+  ),
+  telegram: (
+    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+      <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+    </svg>
+  ),
+  vk: (
+    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+      <path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.391 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.864-.525-2.05-1.727-1.033-1-1.49-1.135-1.744-1.135-.356 0-.458.102-.458.593v1.575c0 .424-.135.678-1.253.678-1.846 0-3.896-1.118-5.335-3.202C4.624 10.857 4.03 8.57 4.03 8.096c0-.254.102-.491.593-.491h1.744c.44 0 .61.203.78.678.847 2.49 2.27 4.675 2.863 4.675.22 0 .322-.102.322-.66V9.721c-.068-1.186-.695-1.287-.695-1.71 0-.203.17-.407.44-.407h2.744c.373 0 .508.203.508.643v3.473c0 .372.17.508.271.508.22 0 .407-.136.813-.542 1.254-1.406 2.151-3.574 2.151-3.574.119-.254.322-.491.763-.491h1.744c.525 0 .644.27.525.643-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.05.17.49-.085.744-.576.744z"/>
+    </svg>
+  ),
+  instagram: (
+    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+      <path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 1 0 0-12.324zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405a1.441 1.441 0 1 1-2.88 0 1.441 1.441 0 0 1 2.88 0z"/>
+    </svg>
+  ),
+  whatsapp: (
+    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+    </svg>
+  ),
+  dzen: (
+    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+      <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 2.824c1.456 0 2.852.334 4.104.954C14.402 6.092 6.092 14.402 3.778 16.104A9.143 9.143 0 0 1 2.824 12c0-5.064 4.112-9.176 9.176-9.176zm0 18.352c-1.456 0-2.852-.334-4.104-.954 1.702-2.314 10.012-10.624 12.326-12.326.62 1.252.954 2.648.954 4.104 0 5.064-4.112 9.176-9.176 9.176z"/>
+    </svg>
+  ),
+}
+
+const socialLinks = [
+  { id: 'youtube', name: 'YouTube', url: '#', color: '#FF0000', followers: '12.5K' },
+  { id: 'telegram', name: 'Telegram', url: '#', color: '#26A5E4', followers: '8.2K' },
+  { id: 'vk', name: 'ВКонтакте', url: '#', color: '#0077FF', followers: '15.3K' },
+  { id: 'instagram', name: 'Instagram', url: '#', color: '#E4405F', followers: '22.1K' },
+  { id: 'whatsapp', name: 'WhatsApp', url: '#', color: '#25D366' },
+  { id: 'dzen', name: 'Дзен', url: '#', color: '#000', followers: '5.7K' },
+]
+
+const companyStats = [
+  { label: 'Построено домов', value: '340+' },
+  { label: 'Лет на рынке', value: '12' },
+  { label: 'Довольных клиентов', value: '98%' },
+  { label: 'Проектов в работе', value: '28' },
+]
+
+function SocialSection() {
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+  const sectionRef = useRef<HTMLElement>(null)
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!sectionRef.current) return
+    const rect = sectionRef.current.getBoundingClientRect()
+    setMousePos({
+      x: ((e.clientX - rect.left) / rect.width - 0.5) * 2,
+      y: ((e.clientY - rect.top) / rect.height - 0.5) * 2,
+    })
+  }, [])
+
+  return (
+    <section className="social-parallax" ref={sectionRef} onMouseMove={handleMouseMove}>
+      <div className="social-parallax-blobs">
+        <div
+          className="social-parallax-blob social-parallax-blob-1"
+          style={{ transform: `translate(${mousePos.x * 30}px, ${mousePos.y * 30}px)` }}
+        />
+        <div
+          className="social-parallax-blob social-parallax-blob-2"
+          style={{ transform: `translate(${mousePos.x * -20}px, ${mousePos.y * -20}px)` }}
+        />
+        <div
+          className="social-parallax-blob social-parallax-blob-3"
+          style={{ transform: `translate(${mousePos.x * 15}px, ${mousePos.y * -15}px)` }}
+        />
+      </div>
+
+      <div className="social-parallax-layers">
+        {/* Layer 1: Video */}
+        <div
+          className="social-parallax-layer social-parallax-video"
+          style={{ transform: `translate(${mousePos.x * 8}px, ${mousePos.y * 8}px)` }}
+        >
+          <video
+            className="social-parallax-player"
+            controls
+            playsInline
+            preload="metadata"
+            poster="https://rodniekraya.ru/wp-content/uploads/youtube/8680/0-1-e1724787007971.jpg"
+            src="https://rodniekraya.ru/wp-content/uploads/youtube/8680/videoplayback-2.mp4"
+          />
+        </div>
+
+        {/* Layer 2: Info card */}
+        <div
+          className="social-parallax-layer social-parallax-info"
+          style={{ transform: `translate(${mousePos.x * -12}px, ${mousePos.y * -12}px)` }}
+        >
+          <h2>HouseCard</h2>
+          <p className="social-parallax-tagline">Дома, в которых хочется жить</p>
+          <div className="social-parallax-stats">
+            {companyStats.map(s => (
+              <div key={s.label} className="social-parallax-stat">
+                <span className="social-parallax-stat-val">{s.value}</span>
+                <span className="social-parallax-stat-lbl">{s.label}</span>
+              </div>
+            ))}
+          </div>
+          <div className="social-parallax-contact">
+            <a href="tel:+79991234567">+7 (999) 123-45-67</a>
+            <span>info@housecard.ru</span>
+          </div>
+        </div>
+
+        {/* Layer 3: Social cards */}
+        <div
+          className="social-parallax-layer social-parallax-socials"
+          style={{ transform: `translate(${mousePos.x * 16}px, ${mousePos.y * 16}px)` }}
+        >
+          {socialLinks.map((s, i) => (
+            <a
+              key={s.id}
+              href={s.url}
+              className="social-parallax-link"
+              style={{ '--accent': s.color, '--i': i } as React.CSSProperties}
+            >
+              <span className="social-parallax-link-icon" style={{ color: s.color }}>{SocialIcons[s.id]}</span>
+              <span className="social-parallax-link-name">{s.name}</span>
+              {s.followers && <span className="social-parallax-link-count">{s.followers}</span>}
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
   )
 }
