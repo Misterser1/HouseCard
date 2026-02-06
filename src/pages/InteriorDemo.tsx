@@ -2,8 +2,10 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import './InteriorDemo.css'
 
+type Room = { id: string; name: string; area: number; image: string }
+
 // Room data - 14 rooms
-const rooms = [
+const rooms: Room[] = [
   { id: 'hallway', name: 'Прихожая', area: 10.87, image: '/rooms/1.%20Прихожая.jpg' },
   { id: 'wardrobe', name: 'Гардероб', area: 6.08, image: '/rooms/2.Гардероб.jpg' },
   { id: 'living-room', name: 'Кухня-гостиная', area: 43.60, image: '/rooms/3.Кухня-столовая.jpg' },
@@ -223,7 +225,7 @@ export function InteriorDemo() {
 }
 
 // Separate component for Variant 5 with its own state
-function InteriorV5({ rooms }: { rooms: typeof rooms }) {
+function InteriorV5({ rooms }: { rooms: Room[] }) {
   const [activeTab, setActiveTab] = useState('all')
 
   const categories = [
@@ -273,7 +275,7 @@ function InteriorV5({ rooms }: { rooms: typeof rooms }) {
 }
 
 // Variant 7: Carousel with large preview
-function InteriorV7({ rooms }: { rooms: typeof rooms }) {
+function InteriorV7({ rooms }: { rooms: Room[] }) {
   const [activeIndex, setActiveIndex] = useState(0)
 
   return (
@@ -323,7 +325,7 @@ function InteriorV7({ rooms }: { rooms: typeof rooms }) {
 }
 
 // Variant 8: Split screen with list
-function InteriorV8({ rooms }: { rooms: typeof rooms }) {
+function InteriorV8({ rooms }: { rooms: Room[] }) {
   const [activeIndex, setActiveIndex] = useState(0)
 
   return (
@@ -359,7 +361,7 @@ function InteriorV8({ rooms }: { rooms: typeof rooms }) {
 }
 
 // Variant 9: Accordion Strips (вертикальные полоски)
-function InteriorV9({ rooms }: { rooms: typeof rooms }) {
+function InteriorV9({ rooms }: { rooms: Room[] }) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
 
   return (
@@ -386,7 +388,7 @@ function InteriorV9({ rooms }: { rooms: typeof rooms }) {
 }
 
 // Variant 10: Circular Wheel
-function InteriorV10({ rooms }: { rooms: typeof rooms }) {
+function InteriorV10({ rooms }: { rooms: Room[] }) {
   const [activeIndex, setActiveIndex] = useState(0)
   const displayRooms = rooms.slice(0, 8)
 
@@ -428,7 +430,7 @@ function InteriorV10({ rooms }: { rooms: typeof rooms }) {
 }
 
 // Variant 12: Stacked Cards
-function InteriorV12({ rooms }: { rooms: typeof rooms }) {
+function InteriorV12({ rooms }: { rooms: Room[] }) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const displayRooms = rooms.slice(0, 6)
 
