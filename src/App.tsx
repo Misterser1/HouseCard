@@ -31,6 +31,7 @@ import InteriorSectionDemo from './pages/InteriorSectionDemo'
 import { InteriorDemo } from './pages/InteriorDemo'
 import { SocialDemo } from './pages/SocialDemo'
 import { TransitionDemo } from './pages/TransitionDemo'
+import { FontDemo } from './pages/FontDemo'
 import { useHouseStore } from './store/houseStore'
 import './App.css'
 
@@ -244,6 +245,10 @@ function AppContent() {
     return <TransitionDemo />
   }
 
+  if (location.pathname === '/font-demo') {
+    return <FontDemo />
+  }
+
   return (
     <div className="app">
       <header className="header">
@@ -286,6 +291,7 @@ function AppContent() {
         <Route path="/interior-variants" element={<InteriorDemo />} />
         <Route path="/social-demo" element={<SocialDemo />} />
         <Route path="/transition-demo" element={<TransitionDemo />} />
+        <Route path="/font-demo" element={<FontDemo />} />
       </Routes>
 
       {error && (

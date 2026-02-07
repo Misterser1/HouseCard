@@ -1,0 +1,266 @@
+.font-demo-page {
+  min-height: 100vh;
+  background: #f8faf8;
+}
+
+.font-demo-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: white;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid rgba(46, 90, 60, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.font-demo-back {
+  color: #2E5A3C;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.font-demo-back:hover {
+  background: rgba(46, 90, 60, 0.1);
+}
+
+.font-demo-nav h1 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a2e22;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.font-demo-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: auto;
+  overflow-x: auto;
+}
+
+.font-demo-tab {
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(46, 90, 60, 0.2);
+  background: white;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #2E5A3C;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.font-demo-tab:hover {
+  background: rgba(46, 90, 60, 0.05);
+}
+
+.font-demo-tab.active {
+  background: #2E5A3C;
+  color: white;
+  border-color: #2E5A3C;
+}
+
+.font-demo-label {
+  text-align: center;
+  padding: 1rem 2rem;
+  background: rgba(255, 255, 255, 0.8);
+  position: sticky;
+  top: 62px;
+  z-index: 90;
+  border-bottom: 1px solid rgba(46, 90, 60, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.font-demo-label-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2E5A3C;
+}
+
+.font-demo-label-desc {
+  font-size: 0.85rem;
+  color: rgba(26, 46, 34, 0.5);
+}
+
+/* Preview */
+.font-demo-preview {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Hero preview */
+.font-preview-hero {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, #0f1f16, #1a3326);
+  border-radius: 20px;
+  margin-bottom: 2rem;
+}
+
+.font-preview-tag {
+  display: inline-block;
+  font-size: 0.65rem;
+  letter-spacing: 4px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 1rem;
+  padding: 0.5rem 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 100px;
+}
+
+.font-preview-hero h1 {
+  font-size: 4rem;
+  font-weight: 400;
+  color: white;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.font-preview-subtitle {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0;
+  font-style: italic;
+}
+
+/* Section headers */
+.font-preview-sections {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.font-preview-section {
+  padding: 2rem;
+  background: white;
+  border-radius: 16px;
+  border: 1px solid rgba(46, 90, 60, 0.08);
+}
+
+.font-preview-section h2 {
+  font-size: 2rem;
+  font-weight: 300;
+  color: #1a2e22;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.font-preview-section p {
+  font-size: 0.85rem;
+  color: rgba(26, 46, 34, 0.5);
+  margin: 0;
+}
+
+/* UI elements */
+.font-preview-ui {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.font-preview-card {
+  padding: 1.5rem;
+  background: white;
+  border-radius: 16px;
+  border: 1px solid rgba(46, 90, 60, 0.08);
+}
+
+.font-preview-card h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #1a2e22;
+  margin: 0 0 1rem;
+}
+
+.font-preview-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.font-preview-option {
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  color: #333;
+  background: #f5f5f5;
+  cursor: default;
+}
+
+.font-preview-option.active {
+  background: #2E5A3C;
+  color: white;
+}
+
+.font-preview-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.font-preview-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.font-preview-stat-val {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2E5A3C;
+}
+
+.font-preview-stat-lbl {
+  font-size: 0.7rem;
+  color: rgba(26, 46, 34, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Weights */
+.font-preview-weights {
+  padding: 2rem;
+  background: white;
+  border-radius: 16px;
+  border: 1px solid rgba(46, 90, 60, 0.08);
+}
+
+.font-preview-weights h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #1a2e22;
+  margin: 0 0 1.5rem;
+}
+
+.font-preview-weight-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.font-preview-weight-list span {
+  font-size: 1.5rem;
+  color: #1a2e22;
+}
+
+@media (max-width: 768px) {
+  .font-preview-sections,
+  .font-preview-ui {
+    grid-template-columns: 1fr;
+  }
+
+  .font-preview-hero h1 {
+    font-size: 2.5rem;
+  }
+}

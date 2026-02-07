@@ -97,7 +97,7 @@ const roomVideos: Record<string, string> = {
 
 function FloorPlan3DModel() {
   const { scene } = useGLTF('/floor-plan.glb')
-  return <primitive object={scene} scale={1} />
+  return <primitive object={scene} scale={1} position={[-8.5, 0, 0]} />
 }
 
 export function ConstructorV1() {
@@ -164,7 +164,7 @@ export function ConstructorV1() {
     if (svgObject.contentDocument) handleLoad()
 
     return () => svgObject.removeEventListener('load', handleLoad)
-  }, [handleSvgRoomClick])
+  }, [handleSvgRoomClick, is3DView])
 
   // Параметры дома
   const [isExterior, _setIsExterior] = useState(true)
@@ -941,18 +941,18 @@ export function ConstructorV1() {
             </div>
           )}
           <div className={`floor-plan-right ${is3DView ? 'full-width' : ''}`}>
-            <button
-              className={`floor-plan-view-toggle ${is3DView ? 'is-3d' : ''}`}
-              onClick={() => setIs3DView(!is3DView)}
-            >
-              <span className={`view-toggle-option ${!is3DView ? 'active' : ''}`}>2D</span>
-              <span className={`view-toggle-option ${is3DView ? 'active' : ''}`}>3D</span>
-              <span className="view-toggle-slider" />
-            </button>
             {is3DView ? (
               <div className="floor-plan-3d-container">
+                <button
+                  className={`floor-plan-view-toggle ${is3DView ? 'is-3d' : ''}`}
+                  onClick={() => setIs3DView(!is3DView)}
+                >
+                  <span className={`view-toggle-option ${!is3DView ? 'active' : ''}`}>2D</span>
+                  <span className={`view-toggle-option ${is3DView ? 'active' : ''}`}>3D</span>
+                  <span className="view-toggle-slider" />
+                </button>
                 <Canvas
-                  camera={{ position: [10, 10, 10], fov: 50 }}
+                  camera={{ position: [0, 10, -25], fov: 50 }}
                   style={{ background: 'transparent' }}
                 >
                   <ambientLight intensity={0.6} />
@@ -969,18 +969,34 @@ export function ConstructorV1() {
                     minDistance={3}
                     maxDistance={30}
                     maxPolarAngle={Math.PI / 2.1}
+                    target={[0, 0, 0]}
                   />
                 </Canvas>
-                <div className="floor-plan-3d-hint">
+                <div className="floor-plan-3d-hint desktop-hint">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/>
                     <path d="M12 8v4M12 16h.01"/>
                   </svg>
                   Зажмите ЛКМ для вращения, колёсико для масштаба
                 </div>
+                <div className="floor-plan-3d-hint mobile-hint">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/>
+                    <path d="M12 8v4M12 16h.01"/>
+                  </svg>
+                  Проведите пальцем для вращения, двумя — для масштаба
+                </div>
               </div>
             ) : (
               <div className="floor-plan-image">
+                <button
+                  className={`floor-plan-view-toggle ${is3DView ? 'is-3d' : ''}`}
+                  onClick={() => setIs3DView(!is3DView)}
+                >
+                  <span className={`view-toggle-option ${!is3DView ? 'active' : ''}`}>2D</span>
+                  <span className={`view-toggle-option ${is3DView ? 'active' : ''}`}>3D</span>
+                  <span className="view-toggle-slider" />
+                </button>
                 <object
                   ref={svgRef}
                   type="image/svg+xml"
@@ -1208,8 +1224,8 @@ const SocialIcons: Record<string, React.ReactNode> = {
     </svg>
   ),
   dzen: (
-    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-      <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 2.824c1.456 0 2.852.334 4.104.954C14.402 6.092 6.092 14.402 3.778 16.104A9.143 9.143 0 0 1 2.824 12c0-5.064 4.112-9.176 9.176-9.176zm0 18.352c-1.456 0-2.852-.334-4.104-.954 1.702-2.314 10.012-10.624 12.326-12.326.62 1.252.954 2.648.954 4.104 0 5.064-4.112 9.176-9.176 9.176z"/>
+    <svg viewBox="0 0 169 169" fill="currentColor" width="20" height="20">
+      <path d="M148.369 82.73c0-.64-.52-1.17-1.16-1.2-22.963-.87-36.938-3.8-46.715-13.576-9.797-9.797-12.716-23.783-13.586-46.795-.02-.64-.55-1.16-1.2-1.16h-2.679c-.64 0-1.17.52-1.2 1.16-.87 23.003-3.789 36.999-13.586 46.795-9.787 9.787-23.752 12.706-46.715 13.576-.64.02-1.16.55-1.16 1.2v2.679c0 .64.52 1.17 1.16 1.2 22.963.87 36.938 3.799 46.715 13.576 9.777 9.777 12.696 23.723 13.576 46.645.02.64.55 1.16 1.2 1.16h2.689c.64 0 1.17-.52 1.2-1.16.88-22.922 3.799-36.868 13.576-46.645 9.787-9.787 23.752-12.706 46.715-13.576.64-.02 1.16-.55 1.16-1.2v-2.679z"/>
     </svg>
   ),
 }
@@ -1316,6 +1332,7 @@ function SocialSection() {
           ))}
         </div>
       </div>
+      <div className="social-copyright">&copy; 2026 HouseCard. Все права защищены.</div>
     </section>
   )
 }
