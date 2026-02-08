@@ -1,0 +1,315 @@
+/* ========== Transition Demo V2 ========== */
+.tdv2-page {
+  min-height: 100vh;
+  font-family: 'Manrope', sans-serif;
+  background: #f8faf8;
+}
+
+/* Nav */
+.tdv2-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  background: #1a2e22;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.tdv2-back {
+  color: white;
+  display: flex;
+  text-decoration: none;
+}
+
+.tdv2-nav h1 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Tabs */
+.tdv2-tabs {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  background: white;
+  border-bottom: 1px solid rgba(26, 46, 34, 0.06);
+  overflow-x: auto;
+  position: sticky;
+  top: 52px;
+  z-index: 99;
+}
+
+.tdv2-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(26, 46, 34, 0.12);
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.tdv2-tab.active {
+  background: #1a2e22;
+  color: white;
+  border-color: #1a2e22;
+}
+
+.tdv2-tab-num {
+  font-weight: 700;
+  font-size: 0.75rem;
+  opacity: 0.5;
+}
+
+.tdv2-tab-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+/* ===== Interior Mini Section ===== */
+.tdv2-interior {
+  background: #f8faf8;
+  padding: 2rem 1.5rem 0;
+}
+
+.tdv2-interior-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.tdv2-room {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  aspect-ratio: 1;
+}
+
+.tdv2-room.wide {
+  grid-column: span 2;
+  aspect-ratio: 2 / 1;
+}
+
+.tdv2-room img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tdv2-room-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.4rem 0.6rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: 0.65rem;
+  color: white;
+  font-weight: 500;
+}
+
+/* ===== Transition Variants ===== */
+.tdv2-transition {
+  position: relative;
+  z-index: 2;
+}
+
+/* --- V1: Soft Gradient --- */
+.tdv2-t1-gradient {
+  height: 160px;
+  background: linear-gradient(
+    to bottom,
+    #f8faf8 0%,
+    #f2f7f4 25%,
+    #eaf2ed 50%,
+    #e4efe8 75%,
+    #dce9e1 100%
+  );
+}
+
+/* --- V2: Wave SVG --- */
+.tdv2-t2 {
+  background: #f8faf8;
+}
+
+.tdv2-t2-wave {
+  display: block;
+  width: 100%;
+  height: 80px;
+}
+
+.tdv2-t2-fill {
+  height: 40px;
+  background: #e4efe8;
+}
+
+/* --- V3: Diagonal Cut --- */
+.tdv2-t3-diagonal {
+  height: 100px;
+  background: linear-gradient(to bottom right, #f8faf8 49.5%, #e4efe8 50.5%);
+}
+
+/* --- V4: Thin Line + Space --- */
+.tdv2-t4-space {
+  height: 80px;
+  background: #f8faf8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3rem;
+}
+
+.tdv2-t4-line {
+  width: 100%;
+  max-width: 200px;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(46, 90, 60, 0.2) 50%,
+    transparent 100%
+  );
+}
+
+/* --- V5: Shadow Overlap --- */
+.tdv2-t5 {
+  height: 0;
+}
+
+.tdv2-social.overlap {
+  margin-top: -30px;
+  position: relative;
+  z-index: 1;
+}
+
+.tdv2-social.overlap::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(to bottom, rgba(248, 250, 248, 0.9) 0%, transparent 100%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ===== Social Mini Section ===== */
+.tdv2-social {
+  background: linear-gradient(180deg, #e4efe8 0%, #f0f5f2 30%, #f8faf8 100%);
+  padding: 3rem 1.5rem 2rem;
+}
+
+.tdv2-social-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.tdv2-social-info {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  border: 1px solid rgba(26, 46, 34, 0.06);
+  box-shadow: 0 4px 24px rgba(26, 46, 34, 0.05);
+}
+
+.tdv2-social-info h2 {
+  font-size: 2rem;
+  font-weight: 200;
+  color: #1a2e22;
+  margin: 0 0 0.25rem;
+}
+
+.tdv2-social-info p {
+  color: rgba(26, 46, 34, 0.45);
+  margin: 0 0 1.5rem;
+  font-size: 0.9rem;
+}
+
+.tdv2-social-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.tdv2-social-stat-val {
+  font-size: 1.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #2e5a3c, #4a8c64);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: block;
+}
+
+.tdv2-social-stat-lbl {
+  font-size: 0.65rem;
+  color: rgba(26, 46, 34, 0.4);
+  text-transform: uppercase;
+}
+
+.tdv2-social-links {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.tdv2-social-link {
+  padding: 0.6rem 1.2rem;
+  background: white;
+  border: 1px solid rgba(26, 46, 34, 0.08);
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #1a2e22;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 2px 8px rgba(26, 46, 34, 0.04);
+}
+
+.tdv2-social-link:hover {
+  border-color: var(--accent);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--accent) 12%, transparent);
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .tdv2-interior-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tdv2-social-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tdv2-tabs {
+    gap: 0.35rem;
+    padding: 0.75rem;
+  }
+
+  .tdv2-tab {
+    padding: 0.4rem 0.6rem;
+  }
+
+  .tdv2-tab-label {
+    font-size: 0.7rem;
+  }
+}

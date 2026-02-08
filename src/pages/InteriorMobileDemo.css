@@ -1,0 +1,645 @@
+/* ========== Interior Mobile Demo Page ========== */
+.imob-page {
+  min-height: 100vh;
+  background: #f8faf8;
+  font-family: 'Manrope', sans-serif;
+  max-width: 480px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Navigation */
+.imob-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #1a2e22;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.imob-back {
+  color: white;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.imob-nav h1 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Variant Tabs */
+.imob-tabs {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: white;
+  border-bottom: 1px solid rgba(26, 46, 34, 0.08);
+  position: sticky;
+  top: 52px;
+  z-index: 99;
+}
+
+.imob-tab {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid rgba(26, 46, 34, 0.15);
+  background: white;
+  color: #1a2e22;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.imob-tab.active {
+  background: #1a2e22;
+  color: white;
+  border-color: #1a2e22;
+}
+
+/* Variant Label */
+.imob-variant-label {
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  color: rgba(26, 46, 34, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  background: white;
+}
+
+/* Common Section */
+.imob-section {
+  padding-bottom: 2rem;
+}
+
+/* ============================================
+   VARIANT 1: Swipeable Card Carousel
+============================================ */
+.imob-v1-header {
+  padding: 1.5rem 1rem 0.75rem;
+  text-align: center;
+}
+
+.imob-v1-header h2 {
+  font-size: 1.75rem;
+  font-weight: 300;
+  color: #1a2e22;
+  margin: 0 0 0.25rem;
+}
+
+.imob-v1-header p {
+  font-size: 0.8rem;
+  color: rgba(26, 46, 34, 0.5);
+  margin: 0;
+}
+
+.imob-v1-scroll {
+  display: flex;
+  gap: 12px;
+  padding: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.imob-v1-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.imob-v1-card {
+  flex: 0 0 78%;
+  scroll-snap-align: start;
+  border-radius: 16px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.imob-v1-card.active {
+  box-shadow: 0 8px 24px rgba(26, 46, 34, 0.12);
+}
+
+.imob-v1-img {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.imob-v1-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imob-v1-badge {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  background: rgba(26, 46, 34, 0.85);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.3rem 0.5rem;
+  border-radius: 6px;
+  letter-spacing: 0.05em;
+}
+
+.imob-v1-info {
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.imob-v1-info h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1a2e22;
+  margin: 0;
+}
+
+.imob-v1-info span {
+  font-size: 0.8rem;
+  color: rgba(26, 46, 34, 0.5);
+  font-weight: 500;
+}
+
+.imob-v1-progress {
+  margin: 0.75rem 1rem 0;
+  height: 2px;
+  background: rgba(26, 46, 34, 0.08);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.imob-v1-progress-bar {
+  height: 100%;
+  background: #2e5a3c;
+  border-radius: 1px;
+  transition: width 0.3s ease;
+}
+
+.imob-v1-counter {
+  text-align: center;
+  font-size: 0.7rem;
+  color: rgba(26, 46, 34, 0.4);
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+/* ============================================
+   VARIANT 2: Stories-style
+============================================ */
+.imob-v2-header {
+  padding: 1.5rem 1rem 0.75rem;
+  text-align: center;
+}
+
+.imob-v2-header h2 {
+  font-size: 1.75rem;
+  font-weight: 300;
+  color: #1a2e22;
+  margin: 0 0 0.25rem;
+}
+
+.imob-v2-header p {
+  font-size: 0.8rem;
+  color: rgba(26, 46, 34, 0.5);
+  margin: 0;
+}
+
+.imob-v2-stories-row {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.imob-v2-stories-row::-webkit-scrollbar {
+  display: none;
+}
+
+.imob-v2-story-btn {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+}
+
+.imob-v2-story-ring {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg, #2e5a3c, #4ade80, #2e5a3c);
+  overflow: hidden;
+}
+
+.imob-v2-story-btn.active .imob-v2-story-ring {
+  background: linear-gradient(135deg, #f59e0b, #ef4444, #f59e0b);
+}
+
+.imob-v2-story-ring img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+}
+
+.imob-v2-story-btn span {
+  font-size: 0.6rem;
+  color: #1a2e22;
+  font-weight: 500;
+  max-width: 64px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Fullscreen Story Viewer */
+.imob-v2-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imob-v2-fullscreen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imob-v2-progress-bars {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  gap: 3px;
+  z-index: 10;
+}
+
+.imob-v2-progress-track {
+  flex: 1;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.imob-v2-progress-fill {
+  height: 100%;
+  background: white;
+  transition: width 0.06s linear;
+}
+
+.imob-v2-story-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 3rem 1.25rem 1.5rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
+  z-index: 10;
+}
+
+.imob-v2-story-info h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: white;
+  margin: 0 0 0.25rem;
+}
+
+.imob-v2-story-info span {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.imob-v2-story-nav {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  z-index: 5;
+}
+
+.imob-v2-story-prev,
+.imob-v2-story-next {
+  flex: 1;
+}
+
+/* ============================================
+   VARIANT 3: Compact Bento Grid (Mobile)
+============================================ */
+.imob-v3-header {
+  padding: 1.5rem 1rem 0.75rem;
+  text-align: center;
+}
+
+.imob-v3-header h2 {
+  font-size: 1.75rem;
+  font-weight: 300;
+  color: #1a2e22;
+  margin: 0 0 0.25rem;
+}
+
+.imob-v3-header p {
+  font-size: 0.8rem;
+  color: rgba(26, 46, 34, 0.5);
+  margin: 0;
+}
+
+.imob-v3-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  padding: 0.75rem 0.5rem;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "a1 a1 a2"
+    "a3 a4 a4"
+    "a5 a5 a6"
+    "a7 a8 a8"
+    "a9 a9 a10"
+    "a11 a12 a12"
+    "a13 a13 a14";
+}
+
+.imob-v3-cell {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 1;
+}
+
+/* Large cells spanning 2 columns */
+.imob-v3-cell-1 { grid-area: a1; aspect-ratio: 2/1.2; }
+.imob-v3-cell-2 { grid-area: a2; }
+.imob-v3-cell-3 { grid-area: a3; }
+.imob-v3-cell-4 { grid-area: a4; aspect-ratio: 2/1.2; }
+.imob-v3-cell-5 { grid-area: a5; aspect-ratio: 2/1.2; }
+.imob-v3-cell-6 { grid-area: a6; }
+.imob-v3-cell-7 { grid-area: a7; }
+.imob-v3-cell-8 { grid-area: a8; aspect-ratio: 2/1.2; }
+.imob-v3-cell-9 { grid-area: a9; aspect-ratio: 2/1.2; }
+.imob-v3-cell-10 { grid-area: a10; }
+.imob-v3-cell-11 { grid-area: a11; }
+.imob-v3-cell-12 { grid-area: a12; aspect-ratio: 2/1.2; }
+.imob-v3-cell-13 { grid-area: a13; aspect-ratio: 2/1.2; }
+.imob-v3-cell-14 { grid-area: a14; }
+
+.imob-v3-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imob-v3-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.4rem 0.5rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.imob-v3-name {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: white;
+}
+
+.imob-v3-area {
+  font-size: 0.55rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ============================================
+   VARIANT 4: Vertical Cards with Alternating Layout
+============================================ */
+.imob-v4-header {
+  padding: 1.5rem 1rem 0.75rem;
+  text-align: center;
+}
+
+.imob-v4-header h2 {
+  font-size: 1.75rem;
+  font-weight: 300;
+  color: #1a2e22;
+  margin: 0 0 0.25rem;
+}
+
+.imob-v4-header p {
+  font-size: 0.8rem;
+  color: rgba(26, 46, 34, 0.5);
+  margin: 0;
+}
+
+.imob-v4-list {
+  padding: 0.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.imob-v4-card {
+  display: flex;
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+  height: 100px;
+}
+
+.imob-v4-card.right {
+  flex-direction: row-reverse;
+}
+
+.imob-v4-img {
+  position: relative;
+  width: 40%;
+  flex-shrink: 0;
+}
+
+.imob-v4-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imob-v4-num {
+  position: absolute;
+  top: 0.4rem;
+  left: 0.4rem;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: white;
+  background: rgba(26, 46, 34, 0.7);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+}
+
+.imob-v4-card.right .imob-v4-num {
+  left: auto;
+  right: 0.4rem;
+}
+
+.imob-v4-info {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.imob-v4-info h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1a2e22;
+  margin: 0 0 0.25rem;
+}
+
+.imob-v4-area {
+  font-size: 0.75rem;
+  color: rgba(26, 46, 34, 0.5);
+  font-weight: 500;
+}
+
+/* ============================================
+   VARIANT 5: Accordion
+============================================ */
+.imob-v5-header {
+  padding: 1.5rem 1rem 0.75rem;
+  text-align: center;
+}
+
+.imob-v5-header h2 {
+  font-size: 1.75rem;
+  font-weight: 300;
+  color: #1a2e22;
+  margin: 0 0 0.25rem;
+}
+
+.imob-v5-header p {
+  font-size: 0.8rem;
+  color: rgba(26, 46, 34, 0.5);
+  margin: 0;
+}
+
+.imob-v5-list {
+  padding: 0.5rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.imob-v5-item {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.imob-v5-item.open {
+  box-shadow: 0 4px 16px rgba(26, 46, 34, 0.1);
+}
+
+.imob-v5-trigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.imob-v5-trigger-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.imob-v5-num {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: rgba(26, 46, 34, 0.3);
+  min-width: 1.5rem;
+}
+
+.imob-v5-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1a2e22;
+}
+
+.imob-v5-trigger-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.imob-v5-area {
+  font-size: 0.75rem;
+  color: rgba(26, 46, 34, 0.4);
+  font-weight: 500;
+}
+
+.imob-v5-chevron {
+  transition: transform 0.3s ease;
+  color: rgba(26, 46, 34, 0.3);
+}
+
+.imob-v5-item.open .imob-v5-chevron {
+  transform: rotate(180deg);
+}
+
+.imob-v5-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.imob-v5-item.open .imob-v5-content {
+  max-height: 300px;
+}
+
+.imob-v5-img-wrapper {
+  padding: 0 0.75rem 0.75rem;
+}
+
+.imob-v5-img-wrapper img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+}

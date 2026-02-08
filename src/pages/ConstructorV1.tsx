@@ -107,10 +107,77 @@ export function ConstructorV1() {
   const [rooms] = useState(4)
   const [bathrooms] = useState(2)
 
+  // Interior stories state (mobile)
+  const [storyIndex, setStoryIndex] = useState<number | null>(null)
+  const [storyProgress, setStoryProgress] = useState(0)
+
   // Floor plan state
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null)
   const [hoveredRoom, setHoveredRoom] = useState<string | null>(null)
   const [is3DView, setIs3DView] = useState(false)
+
+  // Swipe for floor plan 2D/3D toggle on mobile
+  const floorPlanTouchStartX = useRef(0)
+  const floorPlanTouchStartY = useRef(0)
+
+  const handleFloorPlanSwipeStart = (e: React.TouchEvent) => {
+    floorPlanTouchStartX.current = e.touches[0].clientX
+    floorPlanTouchStartY.current = e.touches[0].clientY
+  }
+
+  const handleFloorPlanSwipeEnd = (e: React.TouchEvent) => {
+    const touch = e.changedTouches[0]
+    const deltaX = touch.clientX - floorPlanTouchStartX.current
+    const deltaY = touch.clientY - floorPlanTouchStartY.current
+
+    // Horizontal swipe → switch view
+    if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
+      if (deltaX < 0 && !is3DView) {
+        setIs3DView(true)
+      } else if (deltaX > 0 && is3DView) {
+        setIs3DView(false)
+      }
+      return
+    }
+
+    // Tap (no significant movement) → pass click through to SVG room
+    if (Math.abs(deltaX) < 10 && Math.abs(deltaY) < 10 && !is3DView) {
+      const svgObject = svgRef.current
+      if (!svgObject?.contentDocument) return
+
+      const rect = svgObject.getBoundingClientRect()
+      const x = touch.clientX - rect.left
+      const y = touch.clientY - rect.top
+
+      const element = svgObject.contentDocument.elementFromPoint(x, y)
+      if (element) {
+        const roomEl = (element.closest('.room-clickable') || element) as SVGElement
+        const roomId = roomEl.getAttribute('data-room')
+        if (roomId) {
+          handleSvgRoomClick(roomId)
+        }
+      }
+    }
+  }
+
+  // Story auto-progress (mobile interior)
+  useEffect(() => {
+    if (storyIndex === null) return
+    setStoryProgress(0)
+    const timer = setInterval(() => {
+      setStoryProgress(prev => {
+        if (prev >= 100) {
+          setStoryIndex(i => {
+            if (i === null) return null
+            return i < floorPlanRooms.length - 1 ? i + 1 : null
+          })
+          return 0
+        }
+        return prev + 2
+      })
+    }, 60)
+    return () => clearInterval(timer)
+  }, [storyIndex])
 
   const svgRef = useRef<HTMLObjectElement>(null)
 
@@ -471,6 +538,25 @@ export function ConstructorV1() {
     })
   }, [allImages])
 
+  // Scroll reveal animations
+  const pageRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const root = pageRef.current
+    if (!root) return
+    const els = root.querySelectorAll('.scroll-reveal, .scroll-reveal-scale, .scroll-reveal-left')
+    if (!els.length) return
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view')
+          observer.unobserve(entry.target)
+        }
+      })
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' })
+    els.forEach(el => observer.observe(el))
+    return () => observer.disconnect()
+  }, [])
+
   // Вычисляемые значения
   const totalArea = areaLength * areaWidth * 2
 
@@ -578,7 +664,7 @@ export function ConstructorV1() {
   }
 
   return (
-    <div className="cinematic-page">
+    <div className="cinematic-page" ref={pageRef}>
       <div
         className="cinematic-hero"
         onTouchStart={handleTouchStart}
@@ -901,15 +987,14 @@ export function ConstructorV1() {
       {/* Floor Plan Section - Cinematic Split */}
       <section className="floor-plan-section original-theme">
         {/* Centered Header */}
-        <div className="floor-plan-header-top">
+        <div className="floor-plan-header-top scroll-reveal">
           <h2>Планировка</h2>
           <p>Каждый метр используется максимально эффективно</p>
         </div>
 
         <div className="floor-plan-container">
-          {!is3DView && (
-            <div className="floor-plan-left">
-              <div className="floor-plan-stats">
+          <div className={`floor-plan-left ${is3DView ? 'hidden-desktop' : ''}`}>
+              <div className="floor-plan-stats scroll-reveal">
                 <div className="floor-plan-stat">
                   <span className="floor-plan-stat-value">{totalArea}</span>
                   <span className="floor-plan-stat-label">м² общая</span>
@@ -923,7 +1008,7 @@ export function ConstructorV1() {
                   <span className="floor-plan-stat-label">этаж</span>
                 </div>
               </div>
-              <div className="floor-plan-rooms chips-style">
+              <div className="floor-plan-rooms chips-style scroll-reveal" style={{ '--i': 1 } as React.CSSProperties}>
                 {floorPlanRooms.map(room => (
                   <button
                     key={room.id}
@@ -939,8 +1024,11 @@ export function ConstructorV1() {
                 ))}
               </div>
             </div>
-          )}
-          <div className={`floor-plan-right ${is3DView ? 'full-width' : ''}`}>
+          <div
+            className={`floor-plan-right ${is3DView ? 'full-width' : ''}`}
+            onTouchStart={handleFloorPlanSwipeStart}
+            onTouchEnd={handleFloorPlanSwipeEnd}
+          >
             {is3DView ? (
               <div className="floor-plan-3d-container">
                 <button
@@ -986,6 +1074,12 @@ export function ConstructorV1() {
                   </svg>
                   Проведите пальцем для вращения, двумя — для масштаба
                 </div>
+                <div className="floor-plan-swipe-hint swipe-hint-right">
+                  <span>2D</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </div>
               </div>
             ) : (
               <div className="floor-plan-image">
@@ -1006,6 +1100,13 @@ export function ConstructorV1() {
                   План дома
                 </object>
                 <div className="floor-plan-overlay" />
+                <div className="floor-plan-swipe-layer" />
+                <div className="floor-plan-swipe-hint">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <polyline points="15 18 9 12 15 6" />
+                  </svg>
+                  <span>3D</span>
+                </div>
               </div>
             )}
           </div>
@@ -1026,10 +1127,10 @@ export function ConstructorV1() {
           </div>
 
           {/* Package panels */}
-          <div className="pricing-split-panels">
+          <div className="pricing-split-panels scroll-reveal">
             {[
               {
-                name: 'Коробка',
+                name: 'Холодный контур',
                 description: 'Базовая комплектация',
                 price: '8.5',
                 pricePerM: '35 400',
@@ -1044,14 +1145,14 @@ export function ConstructorV1() {
                 ],
               },
               {
-                name: 'Стандарт',
+                name: 'Тёплый контур',
                 description: 'Рекомендуемый выбор',
                 price: '12.5',
                 pricePerM: '52 000',
                 percent: 66,
                 popular: true,
                 features: [
-                  'Всё из "Коробки"',
+                  'Всё из "Холодного контура"',
                   'Электрика полный монтаж',
                   'Отопление газовый котёл',
                   'Водоснабжение и канализация',
@@ -1059,14 +1160,14 @@ export function ConstructorV1() {
                 ],
               },
               {
-                name: 'Под ключ',
+                name: 'Вайт бокс',
                 description: 'Максимальная комплектация',
                 price: '18.9',
                 pricePerM: '78 750',
                 percent: 100,
                 popular: false,
                 features: [
-                  'Всё из "Стандарта"',
+                  'Всё из "Тёплого контура"',
                   'Чистовая отделка премиум',
                   'Сантехника и освещение',
                   'Межкомнатные двери',
@@ -1137,11 +1238,28 @@ export function ConstructorV1() {
 
       {/* Interior Section - Bento Grid Layout with All Rooms */}
       <section className="interior-section">
-        <div className="interior-header">
+        <div className="interior-header scroll-reveal">
           <h2>Интерьер</h2>
           <p>Визуализация всех {floorPlanRooms.length} помещений вашего будущего дома</p>
         </div>
-        <div className="interior-bento-full">
+
+        {/* Stories row - visible only on mobile */}
+        <div className="interior-stories-row scroll-reveal" style={{ '--i': 1 } as React.CSSProperties}>
+          {floorPlanRooms.map((room, i) => (
+            <button
+              key={room.id}
+              className={`interior-story-btn ${storyIndex === i ? 'active' : ''}`}
+              onClick={() => setStoryIndex(i)}
+            >
+              <div className="interior-story-ring">
+                <img src={room.image} alt={room.name} />
+              </div>
+              <span>{room.name}</span>
+            </button>
+          ))}
+        </div>
+
+        <div className="interior-bento-full scroll-reveal-scale" style={{ '--i': 2 } as React.CSSProperties}>
           {floorPlanRooms.map((room, index) => (
             <div
               key={room.id}
@@ -1157,6 +1275,45 @@ export function ConstructorV1() {
           ))}
         </div>
       </section>
+
+      {/* Fullscreen Story Viewer (mobile interior) */}
+      {storyIndex !== null && (
+        <div className="interior-story-fullscreen" onClick={() => setStoryIndex(null)}>
+          <div className="interior-story-progress-bars">
+            {floorPlanRooms.map((_, i) => (
+              <div key={i} className="interior-story-track">
+                <div
+                  className="interior-story-fill"
+                  style={{
+                    width: i < storyIndex ? '100%' : i === storyIndex ? `${storyProgress}%` : '0%'
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+          <img src={floorPlanRooms[storyIndex].image} alt={floorPlanRooms[storyIndex].name} />
+          <div className="interior-story-info">
+            <h3>{floorPlanRooms[storyIndex].name}</h3>
+            <span>{floorPlanRooms[storyIndex].area} м²</span>
+          </div>
+          <button className="interior-story-close" onClick={() => setStoryIndex(null)}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="24" height="24">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+          <div className="interior-story-nav">
+            <div
+              className="interior-story-prev"
+              onClick={(e) => { e.stopPropagation(); setStoryIndex(i => i !== null && i > 0 ? i - 1 : i) }}
+            />
+            <div
+              className="interior-story-next"
+              onClick={(e) => { e.stopPropagation(); setStoryIndex(i => i !== null && i < floorPlanRooms.length - 1 ? i + 1 : null) }}
+            />
+          </div>
+        </div>
+      )}
 
       {/* Social / YouTube / Contacts Section */}
       <SocialSection />
@@ -1174,6 +1331,7 @@ export function ConstructorV1() {
                   alt={room.name}
                   enableAnimation={true}
                   localVideo={roomVideos[selectedRoom]}
+                  autoPlay={true}
                 />
                 <button className="room-modal-close-btn" onClick={() => setSelectedRoom(null)}>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -1279,7 +1437,7 @@ function SocialSection() {
       <div className="social-parallax-layers">
         {/* Layer 1: Video */}
         <div
-          className="social-parallax-layer social-parallax-video"
+          className="social-parallax-layer social-parallax-video scroll-reveal"
           style={{ transform: `translate(${mousePos.x * 8}px, ${mousePos.y * 8}px)` }}
         >
           <video
@@ -1294,8 +1452,8 @@ function SocialSection() {
 
         {/* Layer 2: Info card */}
         <div
-          className="social-parallax-layer social-parallax-info"
-          style={{ transform: `translate(${mousePos.x * -12}px, ${mousePos.y * -12}px)` }}
+          className="social-parallax-layer social-parallax-info scroll-reveal"
+          style={{ '--i': 1, transform: `translate(${mousePos.x * -12}px, ${mousePos.y * -12}px)` } as React.CSSProperties}
         >
           <h2>HouseCard</h2>
           <p className="social-parallax-tagline">Дома, в которых хочется жить</p>
@@ -1315,8 +1473,8 @@ function SocialSection() {
 
         {/* Layer 3: Social cards */}
         <div
-          className="social-parallax-layer social-parallax-socials"
-          style={{ transform: `translate(${mousePos.x * 16}px, ${mousePos.y * 16}px)` }}
+          className="social-parallax-layer social-parallax-socials scroll-reveal"
+          style={{ '--i': 2, transform: `translate(${mousePos.x * 16}px, ${mousePos.y * 16}px)` } as React.CSSProperties}
         >
           {socialLinks.map((s, i) => (
             <a

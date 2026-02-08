@@ -32,6 +32,8 @@ import { InteriorDemo } from './pages/InteriorDemo'
 import { SocialDemo } from './pages/SocialDemo'
 import { TransitionDemo } from './pages/TransitionDemo'
 import { FontDemo } from './pages/FontDemo'
+import { InteriorMobileDemo } from './pages/InteriorMobileDemo'
+import { TransitionDemoV2 } from './pages/TransitionDemoV2'
 import { useHouseStore } from './store/houseStore'
 import './App.css'
 
@@ -249,6 +251,14 @@ function AppContent() {
     return <FontDemo />
   }
 
+  if (location.pathname === '/interior-mobile-demo') {
+    return <InteriorMobileDemo />
+  }
+
+  if (location.pathname === '/transition-demo-v2') {
+    return <TransitionDemoV2 />
+  }
+
   return (
     <div className="app">
       <header className="header">
@@ -292,6 +302,7 @@ function AppContent() {
         <Route path="/social-demo" element={<SocialDemo />} />
         <Route path="/transition-demo" element={<TransitionDemo />} />
         <Route path="/font-demo" element={<FontDemo />} />
+        <Route path="/interior-mobile-demo" element={<InteriorMobileDemo />} />
       </Routes>
 
       {error && (

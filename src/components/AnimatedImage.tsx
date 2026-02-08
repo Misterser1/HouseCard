@@ -15,6 +15,7 @@ interface AnimatedImageProps {
   enableAnimation?: boolean;
   externalSrc?: string; // Public URL for Replicate API (if src is local)
   localVideo?: string; // Pre-generated local video file (skips API call)
+  autoPlay?: boolean; // Auto-start video on mount (useful for modals on mobile)
 }
 
 type AnimationStatus = 'idle' | 'loading' | 'ready' | 'error';
@@ -25,7 +26,8 @@ export function AnimatedImage({
   className = '',
   enableAnimation = true,
   externalSrc,
-  localVideo
+  localVideo,
+  autoPlay = false
 }: AnimatedImageProps) {
   const [isHovering, setIsHovering] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false); // For mobile tap-to-play
@@ -106,6 +108,13 @@ export function AnimatedImage({
   useEffect(() => {
     setIsPlaying(false);
   }, [src, localVideo]);
+
+  // Auto-play video on mobile when autoPlay is true and video is ready
+  useEffect(() => {
+    if (autoPlay && isTouchDevice && status === 'ready' && videoUrl) {
+      setIsPlaying(true);
+    }
+  }, [autoPlay, isTouchDevice, status, videoUrl]);
 
   // Progress callback
   const handleProgress = useCallback((info: ProgressInfo) => {
