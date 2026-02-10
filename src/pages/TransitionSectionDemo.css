@@ -1,0 +1,535 @@
+/* ========================================
+   Transition Section Demo
+   Hero → Floor Plan transition variants
+======================================== */
+
+.tsd-page {
+  min-height: 100vh;
+  background: #0a0a0a;
+  color: #fff;
+}
+
+/* Nav */
+.tsd-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.tsd-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.tsd-back:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.tsd-nav h1 {
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* Tabs */
+.tsd-tabs {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  overflow-x: auto;
+}
+
+.tsd-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  font-size: 0.85rem;
+  font-family: inherit;
+}
+
+.tsd-tab:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.tsd-tab.active {
+  border-color: #4a9d6e;
+  background: rgba(74, 157, 110, 0.1);
+  color: #6fcf97;
+}
+
+.tsd-tab-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.tsd-tab.active .tsd-tab-num {
+  background: rgba(74, 157, 110, 0.25);
+  color: #6fcf97;
+}
+
+.tsd-tab-label {
+  font-weight: 500;
+}
+
+/* ========================================
+   Variant wrapper
+======================================== */
+.tsd-variant {
+  margin-top: 112px;
+}
+
+/* ========================================
+   Hero Section (shared across variants)
+======================================== */
+
+.tsd-hero {
+  position: relative;
+  height: 70vh;
+  overflow: hidden;
+}
+
+.tsd-hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tsd-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+}
+
+.tsd-hero-content {
+  position: absolute;
+  bottom: 3rem;
+  left: 3rem;
+  z-index: 2;
+}
+
+.tsd-hero-tag {
+  display: inline-block;
+  padding: 0.35rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 100px;
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 0.75rem;
+}
+
+.tsd-hero-content h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.tsd-hero-content p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ========================================
+   V1: Длинный градиент
+   Высокая зона (300px) с многослойным
+   градиентом от чёрного к светлому
+======================================== */
+
+.tsd-v1-zone {
+  position: relative;
+  height: 300px;
+  margin-top: -150px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.tsd-v1-gradient {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(10, 10, 10, 0.4) 15%,
+    rgba(10, 10, 10, 0.85) 35%,
+    #0a0a0a 45%,
+    #1a2a1f 55%,
+    #3a5a42 65%,
+    #8aaa92 75%,
+    #d4e4d8 85%,
+    #f8faf8 100%
+  );
+}
+
+/* ========================================
+   V2: Скруглённая карточка
+   Светлая секция как карточка с большим
+   border-radius, наезжает на hero
+======================================== */
+
+.tsd-floor-rounded {
+  margin-top: -80px;
+  border-radius: 48px 48px 0 0;
+  position: relative;
+  z-index: 3;
+  box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* ========================================
+   V3: SVG волна
+   Крупная органическая волна (180px)
+======================================== */
+
+.tsd-v3-wave-wrap {
+  position: relative;
+  height: 0;
+  z-index: 3;
+}
+
+.tsd-v3-wave {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 180px;
+  margin-top: -180px;
+}
+
+.tsd-v3-wave path {
+  fill: #f8faf8;
+}
+
+/* ========================================
+   V4: Диагональ
+   Hero обрезан снизу по диагонали,
+   светлая секция — по верху
+======================================== */
+
+.tsd-hero-diag {
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+}
+
+.tsd-floor-diag {
+  margin-top: -10vh;
+  clip-path: polygon(0 10vh, 100% 0, 100% 100%, 0 100%);
+  padding-top: calc(10vh + 3.5rem) !important;
+}
+
+/* ========================================
+   V5: Тёмная арка
+   Внизу hero — эллиптическая арка
+   открывает светлую секцию
+======================================== */
+
+.tsd-v5-arch {
+  position: absolute;
+  bottom: -1px;
+  left: -5%;
+  right: -5%;
+  height: 100px;
+  background: #f8faf8;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  z-index: 3;
+}
+
+/* ========================================
+   V6: Зелёная полоса
+   Декоративная полоска с текстом
+   между секциями
+======================================== */
+
+.tsd-v6-strip {
+  background: linear-gradient(135deg, #1a2e22, #2E5A3C);
+  padding: 1.1rem 2rem;
+  position: relative;
+  z-index: 3;
+  overflow: hidden;
+}
+
+.tsd-v6-strip::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 0px,
+    rgba(255, 255, 255, 0.03) 1px,
+    transparent 1px,
+    transparent 60px
+  );
+}
+
+.tsd-v6-strip-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.02em;
+  position: relative;
+}
+
+.tsd-v6-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  flex-shrink: 0;
+}
+
+/* ========================================
+   Floor Plan Section (shared)
+======================================== */
+
+.tsd-floor {
+  position: relative;
+  background: #f8faf8;
+  padding: 3.5rem 3rem 4rem;
+  min-height: 80vh;
+}
+
+.tsd-floor-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.tsd-floor-tag {
+  display: inline-block;
+  padding: 0.3rem 0.85rem;
+  border: 1px solid rgba(46, 90, 60, 0.3);
+  border-radius: 100px;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: #2E5A3C;
+  background: rgba(46, 90, 60, 0.05);
+  margin-bottom: 0.75rem;
+}
+
+.tsd-floor-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  font-weight: 500;
+  color: #1a2e22;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.4rem;
+}
+
+.tsd-floor-header p {
+  font-size: 0.95rem;
+  color: rgba(26, 46, 34, 0.6);
+}
+
+.tsd-floor-stats {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgba(46, 90, 60, 0.15);
+  margin-bottom: 2rem;
+}
+
+.tsd-floor-stat {
+  text-align: center;
+}
+
+.tsd-floor-stat-val {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2E5A3C;
+  letter-spacing: -0.02em;
+}
+
+.tsd-floor-stat-lbl {
+  display: block;
+  font-size: 0.78rem;
+  color: rgba(46, 90, 60, 0.6);
+  margin-top: 0.2rem;
+}
+
+.tsd-floor-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.tsd-floor-chip {
+  padding: 0.4rem 0.9rem;
+  border: 1px solid rgba(46, 90, 60, 0.15);
+  border-radius: 100px;
+  font-size: 0.82rem;
+  color: #1a2e22;
+  background: rgba(46, 90, 60, 0.05);
+}
+
+.tsd-floor-plan-img {
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(46, 90, 60, 0.08);
+  border: 1px solid rgba(46, 90, 60, 0.1);
+}
+
+.tsd-floor-plan-img img {
+  width: 100%;
+  height: auto;
+}
+
+/* Spacer */
+.tsd-spacer {
+  height: 10vh;
+  background: #f8faf8;
+}
+
+/* ========================================
+   Mobile
+======================================== */
+
+@media (max-width: 768px) {
+  .tsd-nav {
+    padding: 0.75rem 1rem;
+  }
+
+  .tsd-nav h1 {
+    font-size: 0.85rem;
+  }
+
+  .tsd-tabs {
+    top: 52px;
+    padding: 0.5rem 1rem;
+    gap: 0.4rem;
+  }
+
+  .tsd-tab {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.78rem;
+  }
+
+  .tsd-variant {
+    margin-top: 100px;
+  }
+
+  .tsd-hero {
+    height: 60vh;
+  }
+
+  .tsd-hero-content {
+    bottom: 2rem;
+    left: 1.5rem;
+  }
+
+  .tsd-hero-content h2 {
+    font-size: 1.8rem;
+  }
+
+  .tsd-floor {
+    padding: 2.5rem 1.5rem 3rem;
+  }
+
+  .tsd-floor-header h2 {
+    font-size: 1.7rem;
+  }
+
+  .tsd-floor-stats {
+    gap: 1.5rem;
+  }
+
+  .tsd-floor-plan-img {
+    padding: 1rem;
+  }
+
+  /* V1 mobile */
+  .tsd-v1-zone {
+    height: 200px;
+    margin-top: -100px;
+  }
+
+  /* V2 mobile */
+  .tsd-floor-rounded {
+    margin-top: -50px;
+    border-radius: 32px 32px 0 0;
+  }
+
+  /* V3 mobile */
+  .tsd-v3-wave {
+    height: 100px;
+    margin-top: -100px;
+  }
+
+  /* V4 mobile */
+  .tsd-hero-diag {
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+  }
+
+  .tsd-floor-diag {
+    margin-top: -6vh;
+    clip-path: polygon(0 6vh, 100% 0, 100% 100%, 0 100%);
+    padding-top: calc(6vh + 2.5rem) !important;
+  }
+
+  /* V5 mobile */
+  .tsd-v5-arch {
+    height: 60px;
+  }
+
+  /* V6 mobile */
+  .tsd-v6-strip-inner {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+  }
+}

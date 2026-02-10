@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo, useRef, useCallback, Suspense } from 'react'
 import { Link } from 'react-router-dom'
-import { Canvas } from '@react-three/fiber'
-import { OrbitControls, useGLTF, Environment } from '@react-three/drei'
+import * as THREE from 'three'
+import { Canvas, useFrame } from '@react-three/fiber'
+import { OrbitControls, useGLTF } from '@react-three/drei'
 import { AnimatedImage } from '../components/AnimatedImage'
 import './ConstructorV1.css'
 
@@ -95,9 +96,38 @@ const roomVideos: Record<string, string> = {
   'kitchen': '/videos/rooms/4. Кухня.mp4',
 }
 
-function FloorPlan3DModel() {
-  const { scene } = useGLTF('/floor-plan.glb')
-  return <primitive object={scene} scale={1} position={[-8.5, 0, 0]} />
+const pricingModels: Record<number, string> = {
+  0: '/models/house-box.glb',
+  1: '/models/warm-contour.glb',
+  2: '/models/individual.glb',
+}
+
+function RotatingHouseModel({ url }: { url: string }) {
+  const { scene } = useGLTF(url)
+  const groupRef = useRef<THREE.Group>(null!)
+  const innerRef = useRef<THREE.Group>(null!)
+  const centered = useRef(false)
+
+  useEffect(() => {
+    if (innerRef.current && !centered.current) {
+      const box = new THREE.Box3().setFromObject(innerRef.current)
+      const center = box.getCenter(new THREE.Vector3())
+      innerRef.current.position.set(-center.x, -center.y, -center.z)
+      centered.current = true
+    }
+  }, [scene])
+
+  useFrame((_, delta) => {
+    if (groupRef.current) groupRef.current.rotation.y += delta * 0.4
+  })
+
+  return (
+    <group ref={groupRef}>
+      <group ref={innerRef}>
+        <primitive object={scene} scale={0.4} />
+      </group>
+    </group>
+  )
 }
 
 export function ConstructorV1() {
@@ -114,51 +144,6 @@ export function ConstructorV1() {
   // Floor plan state
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null)
   const [hoveredRoom, setHoveredRoom] = useState<string | null>(null)
-  const [is3DView, setIs3DView] = useState(false)
-
-  // Swipe for floor plan 2D/3D toggle on mobile
-  const floorPlanTouchStartX = useRef(0)
-  const floorPlanTouchStartY = useRef(0)
-
-  const handleFloorPlanSwipeStart = (e: React.TouchEvent) => {
-    floorPlanTouchStartX.current = e.touches[0].clientX
-    floorPlanTouchStartY.current = e.touches[0].clientY
-  }
-
-  const handleFloorPlanSwipeEnd = (e: React.TouchEvent) => {
-    const touch = e.changedTouches[0]
-    const deltaX = touch.clientX - floorPlanTouchStartX.current
-    const deltaY = touch.clientY - floorPlanTouchStartY.current
-
-    // Horizontal swipe → switch view
-    if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
-      if (deltaX < 0 && !is3DView) {
-        setIs3DView(true)
-      } else if (deltaX > 0 && is3DView) {
-        setIs3DView(false)
-      }
-      return
-    }
-
-    // Tap (no significant movement) → pass click through to SVG room
-    if (Math.abs(deltaX) < 10 && Math.abs(deltaY) < 10 && !is3DView) {
-      const svgObject = svgRef.current
-      if (!svgObject?.contentDocument) return
-
-      const rect = svgObject.getBoundingClientRect()
-      const x = touch.clientX - rect.left
-      const y = touch.clientY - rect.top
-
-      const element = svgObject.contentDocument.elementFromPoint(x, y)
-      if (element) {
-        const roomEl = (element.closest('.room-clickable') || element) as SVGElement
-        const roomId = roomEl.getAttribute('data-room')
-        if (roomId) {
-          handleSvgRoomClick(roomId)
-        }
-      }
-    }
-  }
 
   // Story auto-progress (mobile interior)
   useEffect(() => {
@@ -231,7 +216,7 @@ export function ConstructorV1() {
     if (svgObject.contentDocument) handleLoad()
 
     return () => svgObject.removeEventListener('load', handleLoad)
-  }, [handleSvgRoomClick, is3DView])
+  }, [handleSvgRoomClick])
 
   // Параметры дома
   const [isExterior, _setIsExterior] = useState(true)
@@ -252,21 +237,18 @@ export function ConstructorV1() {
         '/houses/brick/natural/house_brick_roof2.jpg',
         '/houses/brick/natural/house_brick_roof3.jpg',
         '/houses/brick/natural/house_brick_roof4.jpg',
-        '/houses/brick/natural/house_brick_roof5.jpg',
       ],
       soft: [
         '/houses/brick/soft/house_brick_soft1.jpg',
         '/houses/brick/soft/house_brick_soft2.jpg',
         '/houses/brick/soft/house_brick_soft3.jpg',
         '/houses/brick/soft/house_brick_soft4.jpg',
-        '/houses/brick/soft/house_brick_soft5.jpg',
       ],
       flat: [
         '/houses/brick/flat/house_brick1.jpg',
         '/houses/brick/flat/house_brick2.jpg',
         '/houses/brick/flat/house_brick3.jpg',
         '/houses/brick/flat/house_brick4.jpg',
-        '/houses/brick/flat/house_brick5.jpg',
       ],
     },
     combined: {
@@ -275,21 +257,18 @@ export function ConstructorV1() {
         '/houses/combined/natural/house_roof2.jpg',
         '/houses/combined/natural/house_roof3.jpg',
         '/houses/combined/natural/house_roof4.jpg',
-        '/houses/combined/natural/house_roof5.jpg',
       ],
       soft: [
         '/houses/combined/soft/house_combined_soft1.jpg',
         '/houses/combined/soft/house_combined_soft2.jpg',
         '/houses/combined/soft/house_combined_soft3.jpg',
         '/houses/combined/soft/house_combined_soft4.jpg',
-        '/houses/combined/soft/house_combined_soft5.jpg',
       ],
       flat: [
         '/houses/combined/flat/house1.jpg',
         '/houses/combined/flat/house2.jpg',
         '/houses/combined/flat/house3.jpg',
         '/houses/combined/flat/house4.jpg',
-        '/houses/combined/flat/house5.jpg',
       ],
     },
     ventilated: {
@@ -298,21 +277,18 @@ export function ConstructorV1() {
         '/houses/ventilated/natural/house_vent_roof2.jpg',
         '/houses/ventilated/natural/house_vent_roof3.jpg',
         '/houses/ventilated/natural/house_vent_roof4.jpg',
-        '/houses/ventilated/natural/house_vent_roof5.jpg',
       ],
       soft: [
         '/houses/ventilated/soft/house_vent_soft1.jpg',
         '/houses/ventilated/soft/house_vent_soft2.jpg',
         '/houses/ventilated/soft/house_vent_soft3.jpg',
         '/houses/ventilated/soft/house_vent_soft4.jpg',
-        '/houses/ventilated/soft/house_vent_soft5.jpg',
       ],
       flat: [
         '/houses/ventilated/flat/house_vent1.jpg',
         '/houses/ventilated/flat/house_vent2.jpg',
         '/houses/ventilated/flat/house_vent3.jpg',
         '/houses/ventilated/flat/house_vent4.jpg',
-        '/houses/ventilated/flat/house_vent5.jpg',
       ],
     },
   }
@@ -325,21 +301,18 @@ export function ConstructorV1() {
         '/houses/night/brick/natural/house_brick_roof_night2.jpg',
         '/houses/night/brick/natural/house_brick_roof_night3.jpg',
         '/houses/night/brick/natural/house_brick_roof_night4.jpg',
-        '/houses/night/brick/natural/house_brick_roof_night5.jpg',
       ],
       soft: [
         '/houses/night/brick/soft/house_brick_soft_night1.jpg',
         '/houses/night/brick/soft/house_brick_soft_night2.jpg',
         '/houses/night/brick/soft/house_brick_soft_night3.jpg',
         '/houses/night/brick/soft/house_brick_soft_night4.jpg',
-        '/houses/night/brick/soft/house_brick_soft_night5.jpg',
       ],
       flat: [
         '/houses/night/brick/flat/house_brick_night1.jpg',
         '/houses/night/brick/flat/house_brick_night2.jpg',
         '/houses/night/brick/flat/house_brick_night3.jpg',
         '/houses/night/brick/flat/house_brick_night4.jpg',
-        '/houses/night/brick/flat/house_brick_night5.jpg',
       ],
     },
     combined: {
@@ -348,21 +321,18 @@ export function ConstructorV1() {
         '/houses/night/combined/natural/house_roof_night2.jpg',
         '/houses/night/combined/natural/house_roof_night3.jpg',
         '/houses/night/combined/natural/house_roof_night4.jpg',
-        '/houses/night/combined/natural/house_roof_night5.jpg',
       ],
       soft: [
         '/houses/night/combined/soft/house_combined_soft_night1.jpg',
         '/houses/night/combined/soft/house_combined_soft_night2.jpg',
         '/houses/night/combined/soft/house_combined_soft_night3.jpg',
         '/houses/night/combined/soft/house_combined_soft_night4.jpg',
-        '/houses/night/combined/soft/house_combined_soft_night5.jpg',
       ],
       flat: [
         '/houses/night/combined/flat/house_combined_night1.jpg',
         '/houses/night/combined/flat/house_combined_night2.jpg',
         '/houses/night/combined/flat/house_combined_night3.jpg',
         '/houses/night/combined/flat/house_combined_night4.jpg',
-        '/houses/night/combined/flat/house_combined_night5.jpg',
       ],
     },
     ventilated: {
@@ -371,21 +341,18 @@ export function ConstructorV1() {
         '/houses/night/ventilated/natural/house_vent_roof_night2.jpg',
         '/houses/night/ventilated/natural/house_vent_roof_night3.jpg',
         '/houses/night/ventilated/natural/house_vent_roof_night4.jpg',
-        '/houses/night/ventilated/natural/house_vent_roof_night5.jpg',
       ],
       soft: [
         '/houses/night/ventilated/soft/house_vent_soft_night1.jpg',
         '/houses/night/ventilated/soft/house_vent_soft_night2.jpg',
         '/houses/night/ventilated/soft/house_vent_soft_night3.jpg',
         '/houses/night/ventilated/soft/house_vent_soft_night4.jpg',
-        '/houses/night/ventilated/soft/house_vent_soft_night5.jpg',
       ],
       flat: [
         '/houses/night/ventilated/flat/house_vent_night1.jpg',
         '/houses/night/ventilated/flat/house_vent_night2.jpg',
         '/houses/night/ventilated/flat/house_vent_night3.jpg',
         '/houses/night/ventilated/flat/house_vent_night4.jpg',
-        '/houses/night/ventilated/flat/house_vent_night5.jpg',
       ],
     },
   }
@@ -446,7 +413,6 @@ export function ConstructorV1() {
     '/houses/brick/natural/house_brick_roof2.jpg': '/videos/brick/natural/house_brick_roof2.mp4',
     '/houses/brick/natural/house_brick_roof3.jpg': '/videos/brick/natural/house_brick_roof3.mp4',
     '/houses/brick/natural/house_brick_roof4.jpg': '/videos/brick/natural/house_brick_roof4.mp4',
-    '/houses/brick/natural/house_brick_roof5.jpg': '/videos/brick/natural/house_brick_roof5.mp4',
   }
 
   // Видео для интерьера
@@ -461,11 +427,13 @@ export function ConstructorV1() {
     '/houses/interior/brick/9.Терраса.jpg': '/videos/rooms/9.Терраса.mp4',
   }
 
-  // @ts-expect-error Reserved for future use
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const _getCurrentVideo = (imagePath: string): string | undefined => {
+  const getVideoForImage = (imagePath: string): string | undefined => {
     if (!isExterior) {
       return interiorVideos[imagePath]
+    }
+    // Автоматическое определение: /houses/... .jpg → /videos/houses/... .mp4
+    if (imagePath.startsWith('/houses/')) {
+      return imagePath.replace('/houses/', '/videos/houses/').replace(/\.jpg$/, '.mp4')
     }
     return houseVideos[imagePath]
   }
@@ -473,6 +441,11 @@ export function ConstructorV1() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [isMobilePanelHidden, setIsMobilePanelHidden] = useState(false)
+  const [isAutoScrollPaused, setIsAutoScrollPaused] = useState(false)
+
+  // Auto-scroll
+  const autoScrollTimer = useRef<ReturnType<typeof setInterval> | null>(null)
+  const pauseTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Touch swipe state
   const touchStartX = useRef<number | null>(null)
@@ -507,6 +480,38 @@ export function ConstructorV1() {
   useEffect(() => {
     setCurrentImageIndex(0)
   }, [facadeStyle, roofStyle, isExterior, isDay])
+
+  // Автоскролл изображений
+  const AUTO_SCROLL_INTERVAL = 5000 // 5 секунд между слайдами
+  const PAUSE_DURATION = 8000 // 8 секунд паузы после взаимодействия
+
+  useEffect(() => {
+    if (isFullscreen || isAutoScrollPaused || houseImages.length <= 1) return
+
+    autoScrollTimer.current = setInterval(() => {
+      setCurrentImageIndex(prev => prev >= houseImages.length - 1 ? 0 : prev + 1)
+    }, AUTO_SCROLL_INTERVAL)
+
+    return () => {
+      if (autoScrollTimer.current) clearInterval(autoScrollTimer.current)
+    }
+  }, [isFullscreen, isAutoScrollPaused, houseImages.length])
+
+  // Пауза автоскролла при взаимодействии
+  const pauseAutoScroll = useCallback(() => {
+    setIsAutoScrollPaused(true)
+    if (pauseTimeout.current) clearTimeout(pauseTimeout.current)
+    pauseTimeout.current = setTimeout(() => {
+      setIsAutoScrollPaused(false)
+    }, PAUSE_DURATION)
+  }, [])
+
+  // Очистка таймеров при размонтировании
+  useEffect(() => {
+    return () => {
+      if (pauseTimeout.current) clearTimeout(pauseTimeout.current)
+    }
+  }, [])
 
   // Собираем все изображения для предзагрузки
   const allImages = useMemo(() => {
@@ -562,14 +567,17 @@ export function ConstructorV1() {
 
   // Навигация
   const goToPrevImage = () => {
+    pauseAutoScroll()
     setCurrentImageIndex(prev => prev === 0 ? houseImages.length - 1 : prev - 1)
   }
 
   const goToNextImage = () => {
+    pauseAutoScroll()
     setCurrentImageIndex(prev => prev === houseImages.length - 1 ? 0 : prev + 1)
   }
 
   const selectImage = (index: number) => {
+    pauseAutoScroll()
     setCurrentImageIndex(index)
   }
 
@@ -666,7 +674,9 @@ export function ConstructorV1() {
   return (
     <div className="cinematic-page" ref={pageRef}>
       <div
-        className="cinematic-hero"
+        className={`cinematic-hero ${isAutoScrollPaused ? 'paused' : ''}`}
+        onMouseEnter={() => setIsAutoScrollPaused(true)}
+        onMouseLeave={() => setIsAutoScrollPaused(false)}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleMainTouchEnd}
@@ -676,7 +686,8 @@ export function ConstructorV1() {
           <AnimatedImage
             src={houseImages[safeImageIndex]}
             alt={`Вид ${safeImageIndex + 1}`}
-            enableAnimation={false}
+            enableAnimation={true}
+            localVideo={getVideoForImage(houseImages[safeImageIndex])}
           />
         </div>
 
@@ -691,102 +702,6 @@ export function ConstructorV1() {
 
           {/* Header Controls */}
           <div className="header-controls">
-            {/* Facade Dropdown */}
-            <div className="custom-dropdown">
-              <button
-                className={`custom-dropdown-trigger ${facadeDropdownOpen ? 'open' : ''}`}
-                onClick={() => {
-                  setFacadeDropdownOpen(!facadeDropdownOpen)
-                  setRoofDropdownOpen(false)
-                }}
-              >
-                <span className="dropdown-label">
-                  {facadeStyle === 'brick' ? 'Кирпич' : facadeStyle === 'combined' ? 'Комби' : 'Вент. фасад'}
-                </span>
-                <span className="dropdown-arrow">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <polyline points="6 9 12 15 18 9"/>
-                  </svg>
-                </span>
-              </button>
-              <div className={`custom-dropdown-menu ${facadeDropdownOpen ? 'open' : ''}`}>
-                <div className="dropdown-menu-inner">
-                  {[
-                    { value: 'brick', label: 'Кирпич' },
-                    { value: 'combined', label: 'Комби' },
-                    { value: 'ventilated', label: 'Вент. фасад' }
-                  ].map((option, index) => (
-                    <button
-                      key={option.value}
-                      className={`dropdown-option ${facadeStyle === option.value ? 'active' : ''}`}
-                      style={{ animationDelay: `${index * 0.05}s` }}
-                      onClick={() => {
-                        setFacadeStyle(option.value as FacadeStyle)
-                        setFacadeDropdownOpen(false)
-                      }}
-                    >
-                      <span className="option-check">
-                        {facadeStyle === option.value && (
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                            <polyline points="20 6 9 17 4 12"/>
-                          </svg>
-                        )}
-                      </span>
-                      {option.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Roof Dropdown */}
-            <div className="custom-dropdown">
-              <button
-                className={`custom-dropdown-trigger ${roofDropdownOpen ? 'open' : ''}`}
-                onClick={() => {
-                  setRoofDropdownOpen(!roofDropdownOpen)
-                  setFacadeDropdownOpen(false)
-                }}
-              >
-                <span className="dropdown-label">
-                  {roofStyle === 'natural' ? 'Натуральная' : roofStyle === 'soft' ? 'Мягкая' : 'Плоская'}
-                </span>
-                <span className="dropdown-arrow">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <polyline points="6 9 12 15 18 9"/>
-                  </svg>
-                </span>
-              </button>
-              <div className={`custom-dropdown-menu ${roofDropdownOpen ? 'open' : ''}`}>
-                <div className="dropdown-menu-inner">
-                  {[
-                    { value: 'natural', label: 'Натуральная' },
-                    { value: 'soft', label: 'Мягкая' },
-                    { value: 'flat', label: 'Плоская' }
-                  ].map((option, index) => (
-                    <button
-                      key={option.value}
-                      className={`dropdown-option ${roofStyle === option.value ? 'active' : ''}`}
-                      style={{ animationDelay: `${index * 0.05}s` }}
-                      onClick={() => {
-                        setRoofStyle(option.value as RoofStyle)
-                        setRoofDropdownOpen(false)
-                      }}
-                    >
-                      <span className="option-check">
-                        {roofStyle === option.value && (
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                            <polyline points="20 6 9 17 4 12"/>
-                          </svg>
-                        )}
-                      </span>
-                      {option.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
             <button
               className={`header-toggle-btn ${isDay ? 'day' : 'night'}`}
               onClick={() => setIsDay(!isDay)}
@@ -984,6 +899,19 @@ export function ConstructorV1() {
         </div>
       )}
 
+      {/* Transition Strip */}
+      <div className="section-transition-strip">
+        <div className="section-transition-strip-inner">
+          <span>150+ домов</span>
+          <span className="strip-dot" />
+          <span>12 лет опыта</span>
+          <span className="strip-dot" />
+          <span>Гарантия 10 лет</span>
+          <span className="strip-dot" />
+          <span>98% довольных клиентов</span>
+        </div>
+      </div>
+
       {/* Floor Plan Section - Cinematic Split */}
       <section className="floor-plan-section original-theme">
         {/* Centered Header */}
@@ -993,7 +921,19 @@ export function ConstructorV1() {
         </div>
 
         <div className="floor-plan-container">
-          <div className={`floor-plan-left ${is3DView ? 'hidden-desktop' : ''}`}>
+          <div className="floor-plan-left">
+              <div className="floor-plan-dimensions scroll-reveal">
+                <div className="dim-pair">
+                  <span className="dim-num">16.5</span>
+                  <span className="dim-unit">м</span>
+                </div>
+                <span className="dim-x">&times;</span>
+                <div className="dim-pair">
+                  <span className="dim-num">12.8</span>
+                  <span className="dim-unit">м</span>
+                </div>
+                <span className="dim-label">габариты</span>
+              </div>
               <div className="floor-plan-stats scroll-reveal">
                 <div className="floor-plan-stat">
                   <span className="floor-plan-stat-value">{totalArea}</span>
@@ -1024,73 +964,8 @@ export function ConstructorV1() {
                 ))}
               </div>
             </div>
-          <div
-            className={`floor-plan-right ${is3DView ? 'full-width' : ''}`}
-            onTouchStart={handleFloorPlanSwipeStart}
-            onTouchEnd={handleFloorPlanSwipeEnd}
-          >
-            {is3DView ? (
-              <div className="floor-plan-3d-container">
-                <button
-                  className={`floor-plan-view-toggle ${is3DView ? 'is-3d' : ''}`}
-                  onClick={() => setIs3DView(!is3DView)}
-                >
-                  <span className={`view-toggle-option ${!is3DView ? 'active' : ''}`}>2D</span>
-                  <span className={`view-toggle-option ${is3DView ? 'active' : ''}`}>3D</span>
-                  <span className="view-toggle-slider" />
-                </button>
-                <Canvas
-                  camera={{ position: [0, 10, -25], fov: 50 }}
-                  style={{ background: 'transparent' }}
-                >
-                  <ambientLight intensity={0.6} />
-                  <directionalLight position={[10, 15, 10]} intensity={1} castShadow />
-                  <directionalLight position={[-5, 5, -5]} intensity={0.3} />
-                  <Suspense fallback={null}>
-                    <FloorPlan3DModel />
-                    <Environment preset="apartment" />
-                  </Suspense>
-                  <OrbitControls
-                    enablePan
-                    enableZoom
-                    enableRotate
-                    minDistance={3}
-                    maxDistance={30}
-                    maxPolarAngle={Math.PI / 2.1}
-                    target={[0, 0, 0]}
-                  />
-                </Canvas>
-                <div className="floor-plan-3d-hint desktop-hint">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/>
-                    <path d="M12 8v4M12 16h.01"/>
-                  </svg>
-                  Зажмите ЛКМ для вращения, колёсико для масштаба
-                </div>
-                <div className="floor-plan-3d-hint mobile-hint">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/>
-                    <path d="M12 8v4M12 16h.01"/>
-                  </svg>
-                  Проведите пальцем для вращения, двумя — для масштаба
-                </div>
-                <div className="floor-plan-swipe-hint swipe-hint-right">
-                  <span>2D</span>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <polyline points="9 18 15 12 9 6" />
-                  </svg>
-                </div>
-              </div>
-            ) : (
+          <div className="floor-plan-right">
               <div className="floor-plan-image">
-                <button
-                  className={`floor-plan-view-toggle ${is3DView ? 'is-3d' : ''}`}
-                  onClick={() => setIs3DView(!is3DView)}
-                >
-                  <span className={`view-toggle-option ${!is3DView ? 'active' : ''}`}>2D</span>
-                  <span className={`view-toggle-option ${is3DView ? 'active' : ''}`}>3D</span>
-                  <span className="view-toggle-slider" />
-                </button>
                 <object
                   ref={svgRef}
                   type="image/svg+xml"
@@ -1100,15 +975,7 @@ export function ConstructorV1() {
                   План дома
                 </object>
                 <div className="floor-plan-overlay" />
-                <div className="floor-plan-swipe-layer" />
-                <div className="floor-plan-swipe-hint">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <polyline points="15 18 9 12 15 6" />
-                  </svg>
-                  <span>3D</span>
-                </div>
               </div>
-            )}
           </div>
         </div>
       </section>
@@ -1130,7 +997,7 @@ export function ConstructorV1() {
           <div className="pricing-split-panels scroll-reveal">
             {[
               {
-                name: 'Холодный контур',
+                name: 'Коробка дома',
                 description: 'Базовая комплектация',
                 price: '8.5',
                 pricePerM: '35 400',
@@ -1145,14 +1012,14 @@ export function ConstructorV1() {
                 ],
               },
               {
-                name: 'Тёплый контур',
+                name: 'Тёплый контур дома',
                 description: 'Рекомендуемый выбор',
                 price: '12.5',
                 pricePerM: '52 000',
                 percent: 66,
                 popular: true,
                 features: [
-                  'Всё из "Холодного контура"',
+                  'Всё из "Коробки дома"',
                   'Электрика полный монтаж',
                   'Отопление газовый котёл',
                   'Водоснабжение и канализация',
@@ -1160,7 +1027,7 @@ export function ConstructorV1() {
                 ],
               },
               {
-                name: 'Вайт бокс',
+                name: 'Индивидуальная',
                 description: 'Максимальная комплектация',
                 price: '18.9',
                 pricePerM: '78 750',
@@ -1168,9 +1035,9 @@ export function ConstructorV1() {
                 popular: false,
                 features: [
                   'Всё из "Тёплого контура"',
-                  'Чистовая отделка премиум',
+                  'Инженерия',
+                  'Внутренняя отделка',
                   'Сантехника и освещение',
-                  'Межкомнатные двери',
                   'Готов к заселению',
                 ],
               },
@@ -1181,6 +1048,26 @@ export function ConstructorV1() {
                 onClick={() => setActivePricingPackage(i)}
               >
                 <div className="pricing-split-panel-glass" />
+                {activePricingPackage === i && pricingModels[i] && (
+                  <div className="pricing-model-viewer" key={`model-${i}`}>
+                    <Canvas
+                      camera={{ position: [0, 15, 50], fov: 20 }}
+                      gl={{ alpha: true, antialias: true }}
+                      onCreated={({ gl, scene }) => {
+                        gl.setClearColor(0x000000, 0)
+                        scene.background = null
+                      }}
+                      style={{ background: 'none' }}
+                    >
+                      <ambientLight intensity={0.7} />
+                      <directionalLight position={[5, 8, 5]} intensity={1} />
+                      <Suspense fallback={null}>
+                        <RotatingHouseModel url={pricingModels[i]} />
+                      </Suspense>
+                      <OrbitControls enablePan={false} enableZoom={false} />
+                    </Canvas>
+                  </div>
+                )}
                 <div className="pricing-split-panel-content">
                   <div className="pricing-split-panel-header">
                     {pkg.popular && <span className="pricing-split-badge">Рекомендуем</span>}
@@ -1207,7 +1094,7 @@ export function ConstructorV1() {
                     </ul>
 
                     <button className="pricing-split-btn">
-                      Выбрать комплектацию
+                      Получить консультацию
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M5 12h14M12 5l7 7-7 7"/>
                       </svg>
@@ -1229,17 +1116,13 @@ export function ConstructorV1() {
             ))}
           </div>
 
-          {/* Floor plan overlay */}
-          <div className={`pricing-split-floorplan ${activePricingPackage === 2 ? 'show' : ''}`}>
-            <img src="/floor-plan.png" alt="План дома" />
-          </div>
         </div>
       </section>
 
       {/* Interior Section - Bento Grid Layout with All Rooms */}
       <section className="interior-section">
         <div className="interior-header scroll-reveal">
-          <h2>Интерьер</h2>
+          <h2>Варианты интерьера</h2>
           <p>Визуализация всех {floorPlanRooms.length} помещений вашего будущего дома</p>
         </div>
 
@@ -1315,8 +1198,44 @@ export function ConstructorV1() {
         </div>
       )}
 
-      {/* Social / YouTube / Contacts Section */}
-      <SocialSection />
+      {/* About Us Section — Glass Morphism */}
+      <AboutSection />
+
+      {/* Quality Section — Auto Slider */}
+      <section className="quality-section">
+        <div className="quality-header scroll-reveal">
+          <h2>Наше качество</h2>
+          <p>Каждый этап строительства под контролем</p>
+        </div>
+        <div className="quality-slider">
+          <div className="quality-track">
+            {[
+              { img: '/houses/brick/natural/house_brick_roof1.jpg', title: 'Фундамент', desc: 'Монолитная плита с гидроизоляцией и утеплением' },
+              { img: '/houses/brick/natural/house_brick_roof2.jpg', title: 'Кладка стен', desc: 'Газобетон 400мм с армированием каждого 4-го ряда' },
+              { img: '/houses/brick/natural/house_brick_roof3.jpg', title: 'Кровля', desc: 'Стропильная система с утеплением и вентиляцией' },
+              { img: '/houses/combined/natural/house_roof1.jpg', title: 'Фасад', desc: 'Облицовка клинкерным кирпичом с воздушным зазором' },
+              { img: '/houses/combined/natural/house_roof2.jpg', title: 'Инженерия', desc: 'Электрика, отопление, водоснабжение и вентиляция' },
+              { img: '/houses/ventilated/natural/house_vent_roof1.jpg', title: 'Отделка', desc: 'Чистовая отделка с подготовкой под чистовой ремонт' },
+              { img: '/houses/brick/natural/house_brick_roof1.jpg', title: 'Фундамент', desc: 'Монолитная плита с гидроизоляцией и утеплением' },
+              { img: '/houses/brick/natural/house_brick_roof2.jpg', title: 'Кладка стен', desc: 'Газобетон 400мм с армированием каждого 4-го ряда' },
+              { img: '/houses/brick/natural/house_brick_roof3.jpg', title: 'Кровля', desc: 'Стропильная система с утеплением и вентиляцией' },
+              { img: '/houses/combined/natural/house_roof1.jpg', title: 'Фасад', desc: 'Облицовка клинкерным кирпичом с воздушным зазором' },
+              { img: '/houses/combined/natural/house_roof2.jpg', title: 'Инженерия', desc: 'Электрика, отопление, водоснабжение и вентиляция' },
+              { img: '/houses/ventilated/natural/house_vent_roof1.jpg', title: 'Отделка', desc: 'Чистовая отделка с подготовкой под чистовой ремонт' },
+            ].map((item, i) => (
+              <div key={i} className="quality-slide">
+                <div className="quality-slide-img">
+                  <img src={item.img} alt={item.title} />
+                </div>
+                <div className="quality-slide-info">
+                  <h3>{item.title}</h3>
+                  <p>{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Room Detail Modal - Animated */}
       {selectedRoom && (
@@ -1353,144 +1272,94 @@ export function ConstructorV1() {
 }
 
 /* ============================================
-   Social Section — Stacked Layers + Parallax
+   About Section — Glass Morphism + 3D Tilt
 ============================================ */
-const SocialIcons: Record<string, React.ReactNode> = {
-  youtube: (
-    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-    </svg>
-  ),
-  telegram: (
-    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-      <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
-    </svg>
-  ),
-  vk: (
-    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-      <path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.391 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.864-.525-2.05-1.727-1.033-1-1.49-1.135-1.744-1.135-.356 0-.458.102-.458.593v1.575c0 .424-.135.678-1.253.678-1.846 0-3.896-1.118-5.335-3.202C4.624 10.857 4.03 8.57 4.03 8.096c0-.254.102-.491.593-.491h1.744c.44 0 .61.203.78.678.847 2.49 2.27 4.675 2.863 4.675.22 0 .322-.102.322-.66V9.721c-.068-1.186-.695-1.287-.695-1.71 0-.203.17-.407.44-.407h2.744c.373 0 .508.203.508.643v3.473c0 .372.17.508.271.508.22 0 .407-.136.813-.542 1.254-1.406 2.151-3.574 2.151-3.574.119-.254.322-.491.763-.491h1.744c.525 0 .644.27.525.643-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.05.17.49-.085.744-.576.744z"/>
-    </svg>
-  ),
-  instagram: (
-    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-      <path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 1 0 0-12.324zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405a1.441 1.441 0 1 1-2.88 0 1.441 1.441 0 0 1 2.88 0z"/>
-    </svg>
-  ),
-  whatsapp: (
-    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
-    </svg>
-  ),
-  dzen: (
-    <svg viewBox="0 0 169 169" fill="currentColor" width="20" height="20">
-      <path d="M148.369 82.73c0-.64-.52-1.17-1.16-1.2-22.963-.87-36.938-3.8-46.715-13.576-9.797-9.797-12.716-23.783-13.586-46.795-.02-.64-.55-1.16-1.2-1.16h-2.679c-.64 0-1.17.52-1.2 1.16-.87 23.003-3.789 36.999-13.586 46.795-9.787 9.787-23.752 12.706-46.715 13.576-.64.02-1.16.55-1.16 1.2v2.679c0 .64.52 1.17 1.16 1.2 22.963.87 36.938 3.799 46.715 13.576 9.777 9.777 12.696 23.723 13.576 46.645.02.64.55 1.16 1.2 1.16h2.689c.64 0 1.17-.52 1.2-1.16.88-22.922 3.799-36.868 13.576-46.645 9.787-9.787 23.752-12.706 46.715-13.576.64-.02 1.16-.55 1.16-1.2v-2.679z"/>
-    </svg>
-  ),
-}
-
-const socialLinks = [
-  { id: 'youtube', name: 'YouTube', url: '#', color: '#FF0000', followers: '12.5K' },
-  { id: 'telegram', name: 'Telegram', url: '#', color: '#26A5E4', followers: '8.2K' },
-  { id: 'vk', name: 'ВКонтакте', url: '#', color: '#0077FF', followers: '15.3K' },
-  { id: 'instagram', name: 'Instagram', url: '#', color: '#E4405F', followers: '22.1K' },
-  { id: 'whatsapp', name: 'WhatsApp', url: '#', color: '#25D366' },
-  { id: 'dzen', name: 'Дзен', url: '#', color: '#000', followers: '5.7K' },
-]
+const aboutTabs = ['О нас', 'Наш опыт', 'Наши качества', 'Наша команда']
 
 const companyStats = [
-  { label: 'Построено домов', value: '340+' },
-  { label: 'Лет на рынке', value: '12' },
-  { label: 'Довольных клиентов', value: '98%' },
-  { label: 'Проектов в работе', value: '28' },
+  { value: '340+', label: 'Построено домов' },
+  { value: '12', label: 'Лет на рынке' },
+  { value: '98%', label: 'Довольных клиентов' },
+  { value: '28', label: 'Проектов в работе' },
 ]
 
-function SocialSection() {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
-  const sectionRef = useRef<HTMLElement>(null)
+const companyExperience = [
+  { year: '2014', title: 'Основание компании', desc: 'Начали с небольших проектов загородных домов' },
+  { year: '2016', title: 'Первые 50 домов', desc: 'Расширили команду и географию строительства' },
+  { year: '2018', title: 'Премия «Застройщик года»', desc: 'Признание качества на региональном уровне' },
+  { year: '2020', title: '200+ реализованных проектов', desc: 'Запустили собственное производство материалов' },
+  { year: '2022', title: 'Цифровая трансформация', desc: '3D-визуализация и онлайн-конструктор домов' },
+  { year: '2024', title: '340+ построенных домов', desc: 'Расширение на 5 регионов России' },
+]
 
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (!sectionRef.current) return
-    const rect = sectionRef.current.getBoundingClientRect()
-    setMousePos({
-      x: ((e.clientX - rect.left) / rect.width - 0.5) * 2,
-      y: ((e.clientY - rect.top) / rect.height - 0.5) * 2,
-    })
-  }, [])
+const companyQualities = [
+  { title: 'Надёжность', desc: 'Используем только проверенные материалы и технологии строительства', icon: 'shield' },
+  { title: 'Прозрачность', desc: 'Детальная смета и фиксированная цена на все этапы работ', icon: 'eye' },
+  { title: 'Качество', desc: 'Контроль качества на каждом этапе от фундамента до отделки', icon: 'star' },
+  { title: 'Сроки', desc: 'Строгое соблюдение сроков строительства по договору', icon: 'clock' },
+  { title: 'Гарантия', desc: '5 лет гарантии на все виды выполненных работ', icon: 'check' },
+  { title: 'Поддержка', desc: 'Сопровождение проекта от идеи до заселения', icon: 'heart' },
+]
 
+const companyTeam = [
+  { name: 'Алексей Родин', role: 'Основатель и директор', exp: '15 лет в строительстве' },
+  { name: 'Михаил Лесков', role: 'Главный архитектор', exp: '12 лет проектирования' },
+  { name: 'Елена Краснова', role: 'Дизайнер интерьеров', exp: '8 лет в дизайне' },
+  { name: 'Дмитрий Волков', role: 'Прораб', exp: '10 лет на объектах' },
+  { name: 'Ольга Светлова', role: 'Менеджер проектов', exp: '7 лет в управлении' },
+  { name: 'Сергей Тихонов', role: 'Инженер-конструктор', exp: '9 лет расчётов' },
+]
+
+const QualityIcons: Record<string, React.ReactNode> = {
+  shield: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 2l8 4v6c0 5.25-3.5 10-8 11-4.5-1-8-5.75-8-11V6l8-4z"/></svg>,
+  eye: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+  star: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>,
+  clock: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>,
+  check: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>,
+  heart: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>,
+}
+
+function AboutSection() {
   return (
-    <section className="social-parallax" ref={sectionRef} onMouseMove={handleMouseMove}>
-      <div className="social-parallax-blobs">
-        <div
-          className="social-parallax-blob social-parallax-blob-1"
-          style={{ transform: `translate(${mousePos.x * 30}px, ${mousePos.y * 30}px)` }}
-        />
-        <div
-          className="social-parallax-blob social-parallax-blob-2"
-          style={{ transform: `translate(${mousePos.x * -20}px, ${mousePos.y * -20}px)` }}
-        />
-        <div
-          className="social-parallax-blob social-parallax-blob-3"
-          style={{ transform: `translate(${mousePos.x * 15}px, ${mousePos.y * -15}px)` }}
-        />
-      </div>
-
-      <div className="social-parallax-layers">
-        {/* Layer 1: Video */}
-        <div
-          className="social-parallax-layer social-parallax-video scroll-reveal"
-          style={{ transform: `translate(${mousePos.x * 8}px, ${mousePos.y * 8}px)` }}
-        >
-          <video
-            className="social-parallax-player"
-            controls
-            playsInline
-            preload="metadata"
-            poster="https://rodniekraya.ru/wp-content/uploads/youtube/8680/0-1-e1724787007971.jpg"
-            src="https://rodniekraya.ru/wp-content/uploads/youtube/8680/videoplayback-2.mp4"
-          />
-        </div>
-
-        {/* Layer 2: Info card */}
-        <div
-          className="social-parallax-layer social-parallax-info scroll-reveal"
-          style={{ '--i': 1, transform: `translate(${mousePos.x * -12}px, ${mousePos.y * -12}px)` } as React.CSSProperties}
-        >
-          <h2>HouseCard</h2>
-          <p className="social-parallax-tagline">Дома, в которых хочется жить</p>
-          <div className="social-parallax-stats">
-            {companyStats.map(s => (
-              <div key={s.label} className="social-parallax-stat">
-                <span className="social-parallax-stat-val">{s.value}</span>
-                <span className="social-parallax-stat-lbl">{s.label}</span>
-              </div>
-            ))}
-          </div>
-          <div className="social-parallax-contact">
-            <a href="tel:+79991234567">+7 (999) 123-45-67</a>
-            <span>info@housecard.ru</span>
+    <section className="why-us-section">
+      <div className="why-us-container">
+        <div className="why-us-left scroll-reveal">
+          <h2 className="why-us-title">Полезные материалы</h2>
+          <span className="why-us-label">Почему выбирают нас?</span>
+          <div className="why-us-image">
+            <img src={`/houses/brick/natural/house_brick_roof1.jpg`} alt="Наш дом" />
           </div>
         </div>
-
-        {/* Layer 3: Social cards */}
-        <div
-          className="social-parallax-layer social-parallax-socials scroll-reveal"
-          style={{ '--i': 2, transform: `translate(${mousePos.x * 16}px, ${mousePos.y * 16}px)` } as React.CSSProperties}
-        >
-          {socialLinks.map((s, i) => (
-            <a
-              key={s.id}
-              href={s.url}
-              className="social-parallax-link"
-              style={{ '--accent': s.color, '--i': i } as React.CSSProperties}
-            >
-              <span className="social-parallax-link-icon" style={{ color: s.color }}>{SocialIcons[s.id]}</span>
-              <span className="social-parallax-link-name">{s.name}</span>
-              {s.followers && <span className="social-parallax-link-count">{s.followers}</span>}
+        <div className="why-us-grid scroll-reveal">
+          <div className="why-us-card text-card">
+            <h3>7 схем как подрядчики обманывают своих клиентов</h3>
+            <p>Притча на самом деле старая как мир и не сказал бы, что прямо отрываю от сердца какие-то секреты. Но, маркетинг в наше время штука злобная... Держим нос по ветру и продолжаем вещать.</p>
+          </div>
+          <div className="why-us-card text-card">
+            <p>Сегодня делюсь базовыми вещами, о том на что следует обращать внимание во время строительства. И попросту не быть простофилей, если уж вы всё таки набрались сил и решили зайти к строителям с улицы.</p>
+            <p>Чуть ниже также прикреплён файлик с тезисами из видео. И будет у вас ещё одна шпаргалочка.</p>
+            <p>Хорошо когда обращаются подготовленные заказчики, с вами всегда приятно работать.</p>
+          </div>
+          <div className="why-us-card video-card">
+            <span className="why-us-video-label">Смотрите видео прямо сейчас</span>
+            <a href="https://t.me/stroy_rk/82" target="_blank" rel="noopener noreferrer" className="why-us-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Смотреть на YouTube
             </a>
-          ))}
+            <a href="https://t.me/stroy_rk/220" target="_blank" rel="noopener noreferrer" className="why-us-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Смотреть на Дзен
+            </a>
+          </div>
+          <div className="why-us-card cta-card">
+            <p>Хотите, мы разберём ваш проект? Просто напишите в ЛС или комментариях: <strong>РАЗБОР</strong> — и мы свяжемся.</p>
+            <a href="https://t.me/stroy_rk/425" target="_blank" rel="noopener noreferrer" className="why-us-tg-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Написать в Telegram
+            </a>
+          </div>
         </div>
       </div>
-      <div className="social-copyright">&copy; 2026 HouseCard. Все права защищены.</div>
     </section>
   )
 }

@@ -34,6 +34,10 @@ import { TransitionDemo } from './pages/TransitionDemo'
 import { FontDemo } from './pages/FontDemo'
 import { InteriorMobileDemo } from './pages/InteriorMobileDemo'
 import { TransitionDemoV2 } from './pages/TransitionDemoV2'
+import AboutDemoV1 from './pages/AboutDemoV1'
+import { TransitionSectionDemo } from './pages/TransitionSectionDemo'
+import { DimensionsDemo } from './pages/DimensionsDemo'
+import { MaterialsDemo } from './pages/MaterialsDemo'
 import { useHouseStore } from './store/houseStore'
 import './App.css'
 
@@ -259,6 +263,22 @@ function AppContent() {
     return <TransitionDemoV2 />
   }
 
+  if (location.pathname === '/about-demo') {
+    return <AboutDemoV1 />
+  }
+
+  if (location.pathname === '/transition-section-demo') {
+    return <TransitionSectionDemo />
+  }
+
+  if (location.pathname === '/dimensions-demo') {
+    return <DimensionsDemo />
+  }
+
+  if (location.pathname === '/materials-demo') {
+    return <MaterialsDemo />
+  }
+
   return (
     <div className="app">
       <header className="header">
@@ -303,6 +323,10 @@ function AppContent() {
         <Route path="/transition-demo" element={<TransitionDemo />} />
         <Route path="/font-demo" element={<FontDemo />} />
         <Route path="/interior-mobile-demo" element={<InteriorMobileDemo />} />
+        <Route path="/about-demo" element={<AboutDemoV1 />} />
+        <Route path="/transition-section-demo" element={<TransitionSectionDemo />} />
+        <Route path="/dimensions-demo" element={<DimensionsDemo />} />
+        <Route path="/materials-demo" element={<MaterialsDemo />} />
       </Routes>
 
       {error && (
