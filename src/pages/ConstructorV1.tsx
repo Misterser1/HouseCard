@@ -102,6 +102,78 @@ const pricingModels: Record<number, string> = {
   2: '/models/individual.glb',
 }
 
+const qualitySteps = [
+  { img: '/houses/brick/natural/house_brick_roof1.jpg', title: 'Фундамент', desc: 'Монолитная плита с гидроизоляцией и утеплением. Заливка бетона марки М300 с вибрированием для максимальной прочности.' },
+  { img: '/houses/brick/natural/house_brick_roof2.jpg', title: 'Кладка стен', desc: 'Газобетон 400мм с армированием каждого 4-го ряда. Контроль геометрии лазерным уровнем на каждом этапе.' },
+  { img: '/houses/brick/natural/house_brick_roof3.jpg', title: 'Кровля', desc: 'Стропильная система с утеплением 200мм и вентиляционным зазором. Монтаж пароизоляции и гидроизоляции.' },
+  { img: '/houses/combined/natural/house_roof1.jpg', title: 'Фасад', desc: 'Облицовка клинкерным кирпичом с воздушным зазором 40мм. Установка гибких связей из нержавеющей стали.' },
+  { img: '/houses/combined/natural/house_roof2.jpg', title: 'Инженерия', desc: 'Разводка электрики, отопления, водоснабжения и вентиляции. Опрессовка труб давлением 6 атмосфер.' },
+  { img: '/houses/ventilated/natural/house_vent_roof1.jpg', title: 'Отделка', desc: 'Штукатурка стен по маякам, стяжка пола. Подготовка всех поверхностей под чистовой ремонт.' },
+]
+
+function QualitySlider() {
+  const [activeStep, setActiveStep] = useState(0)
+  const [progress, setProgress] = useState(0)
+  const progressRef = useRef(0)
+  const STEP_DURATION = 5000
+  const increment = 100 / (STEP_DURATION / 50)
+
+  useEffect(() => {
+    progressRef.current = 0
+    setProgress(0)
+    const interval = setInterval(() => {
+      progressRef.current += increment
+      if (progressRef.current >= 100) {
+        clearInterval(interval)
+        setActiveStep(s => (s + 1) % qualitySteps.length)
+      } else {
+        setProgress(progressRef.current)
+      }
+    }, 50)
+    return () => clearInterval(interval)
+  }, [activeStep])
+
+  const step = qualitySteps[activeStep]
+
+  return (
+    <div className="quality-stepper">
+      <div className="quality-stepper-image">
+        {qualitySteps.map((s, i) => (
+          <img
+            key={i}
+            src={s.img}
+            alt={s.title}
+            className={`quality-stepper-photo ${i === activeStep ? 'active' : ''}`}
+          />
+        ))}
+        <div className="quality-stepper-overlay">
+          <div className="quality-stepper-desc-box">
+            <h3 key={`title-${activeStep}`} className="quality-fade-in">{step.title}</h3>
+            <p key={`desc-${activeStep}`} className="quality-fade-in">{step.desc}</p>
+          </div>
+        </div>
+      </div>
+      <div className="quality-stepper-nav">
+        {qualitySteps.map((s, i) => (
+          <button
+            key={i}
+            className={`quality-stepper-btn ${i === activeStep ? 'active' : ''}`}
+            onClick={() => { setActiveStep(i); setProgress(0) }}
+          >
+            <span className="quality-stepper-btn-label">{s.title}</span>
+            <div className="quality-stepper-btn-bar">
+              <div
+                className="quality-stepper-btn-fill"
+                style={{ width: i === activeStep ? `${progress}%` : i < activeStep ? '100%' : '0%' }}
+              />
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function RotatingHouseModel({ url }: { url: string }) {
   const { scene } = useGLTF(url)
   const groupRef = useRef<THREE.Group>(null!)
@@ -146,20 +218,22 @@ export function ConstructorV1() {
   const [hoveredRoom, setHoveredRoom] = useState<string | null>(null)
 
   // Story auto-progress (mobile interior)
+  const storyProgressRef = useRef(0)
   useEffect(() => {
     if (storyIndex === null) return
+    storyProgressRef.current = 0
     setStoryProgress(0)
     const timer = setInterval(() => {
-      setStoryProgress(prev => {
-        if (prev >= 100) {
-          setStoryIndex(i => {
-            if (i === null) return null
-            return i < floorPlanRooms.length - 1 ? i + 1 : null
-          })
-          return 0
-        }
-        return prev + 2
-      })
+      storyProgressRef.current += 2
+      if (storyProgressRef.current >= 100) {
+        clearInterval(timer)
+        setStoryIndex(i => {
+          if (i === null) return null
+          return i < floorPlanRooms.length - 1 ? i + 1 : null
+        })
+      } else {
+        setStoryProgress(storyProgressRef.current)
+      }
     }, 60)
     return () => clearInterval(timer)
   }, [storyIndex])
@@ -887,15 +961,6 @@ export function ConstructorV1() {
 
       {/* Transition Strip */}
       <div className="section-transition-strip">
-        <div className="section-transition-strip-inner">
-          <span>150+ домов</span>
-          <span className="strip-dot" />
-          <span>12 лет опыта</span>
-          <span className="strip-dot" />
-          <span>Гарантия 10 лет</span>
-          <span className="strip-dot" />
-          <span>98% довольных клиентов</span>
-        </div>
       </div>
 
       {/* Floor Plan Section - Cinematic Split */}
@@ -1187,40 +1252,13 @@ export function ConstructorV1() {
       {/* About Us Section — Glass Morphism */}
       <AboutSection />
 
-      {/* Quality Section — Auto Slider */}
+      {/* Quality Section — Step Slider */}
       <section className="quality-section">
         <div className="quality-header scroll-reveal">
           <h2>Наше качество</h2>
           <p>Каждый этап строительства под контролем</p>
         </div>
-        <div className="quality-slider">
-          <div className="quality-track">
-            {[
-              { img: '/houses/brick/natural/house_brick_roof1.jpg', title: 'Фундамент', desc: 'Монолитная плита с гидроизоляцией и утеплением' },
-              { img: '/houses/brick/natural/house_brick_roof2.jpg', title: 'Кладка стен', desc: 'Газобетон 400мм с армированием каждого 4-го ряда' },
-              { img: '/houses/brick/natural/house_brick_roof3.jpg', title: 'Кровля', desc: 'Стропильная система с утеплением и вентиляцией' },
-              { img: '/houses/combined/natural/house_roof1.jpg', title: 'Фасад', desc: 'Облицовка клинкерным кирпичом с воздушным зазором' },
-              { img: '/houses/combined/natural/house_roof2.jpg', title: 'Инженерия', desc: 'Электрика, отопление, водоснабжение и вентиляция' },
-              { img: '/houses/ventilated/natural/house_vent_roof1.jpg', title: 'Отделка', desc: 'Чистовая отделка с подготовкой под чистовой ремонт' },
-              { img: '/houses/brick/natural/house_brick_roof1.jpg', title: 'Фундамент', desc: 'Монолитная плита с гидроизоляцией и утеплением' },
-              { img: '/houses/brick/natural/house_brick_roof2.jpg', title: 'Кладка стен', desc: 'Газобетон 400мм с армированием каждого 4-го ряда' },
-              { img: '/houses/brick/natural/house_brick_roof3.jpg', title: 'Кровля', desc: 'Стропильная система с утеплением и вентиляцией' },
-              { img: '/houses/combined/natural/house_roof1.jpg', title: 'Фасад', desc: 'Облицовка клинкерным кирпичом с воздушным зазором' },
-              { img: '/houses/combined/natural/house_roof2.jpg', title: 'Инженерия', desc: 'Электрика, отопление, водоснабжение и вентиляция' },
-              { img: '/houses/ventilated/natural/house_vent_roof1.jpg', title: 'Отделка', desc: 'Чистовая отделка с подготовкой под чистовой ремонт' },
-            ].map((item, i) => (
-              <div key={i} className="quality-slide">
-                <div className="quality-slide-img">
-                  <img src={item.img} alt={item.title} />
-                </div>
-                <div className="quality-slide-info">
-                  <h3>{item.title}</h3>
-                  <p>{item.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <QualitySlider />
       </section>
 
       {/* Room Detail Modal - Animated */}
@@ -1273,25 +1311,32 @@ function AboutSection() {
           </div>
         </div>
         <div className="why-us-grid scroll-reveal">
-          <div className="why-us-card text-card">
-            <h3>7 схем как подрядчики обманывают своих клиентов</h3>
-            <p>Притча на самом деле старая как мир и не сказал бы, что прямо отрываю от сердца какие-то секреты. Но, маркетинг в наше время штука злобная... Держим нос по ветру и продолжаем вещать.</p>
+          <div className="why-us-card video-embed-card">
+            <iframe
+              src="https://www.youtube.com/embed/MCzTNJojgrs"
+              title="7 схем как подрядчики обманывают своих клиентов"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
           </div>
-          <div className="why-us-card text-card">
-            <p>Сегодня делюсь базовыми вещами, о том на что следует обращать внимание во время строительства. И попросту не быть простофилей, если уж вы всё таки набрались сил и решили зайти к строителям с улицы.</p>
-            <p>Чуть ниже также прикреплён файлик с тезисами из видео. И будет у вас ещё одна шпаргалочка.</p>
-            <p>Хорошо когда обращаются подготовленные заказчики, с вами всегда приятно работать.</p>
+          <div className="why-us-card video-embed-card">
+            <iframe
+              src="https://www.youtube.com/embed/N5dd-nw5POY"
+              title="Базовые вещи при строительстве"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
           </div>
-          <div className="why-us-card video-card">
-            <span className="why-us-video-label">Смотрите видео прямо сейчас</span>
-            <a href="https://t.me/stroy_rk/82" target="_blank" rel="noopener noreferrer" className="why-us-link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-              Смотреть на YouTube
-            </a>
-            <a href="https://t.me/stroy_rk/220" target="_blank" rel="noopener noreferrer" className="why-us-link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-              Смотреть на Дзен
-            </a>
+          <div className="why-us-card video-embed-card">
+            <iframe
+              src="https://www.youtube.com/embed/pgJvpLkjjns"
+              title="Смотрите видео прямо сейчас"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
           </div>
           <div className="why-us-card cta-card">
             <p>Хотите, мы разберём ваш проект? Просто напишите в ЛС или комментариях: <strong>РАЗБОР</strong> — и мы свяжемся.</p>
