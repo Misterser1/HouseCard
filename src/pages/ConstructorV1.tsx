@@ -226,8 +226,8 @@ export function ConstructorV1() {
   const [isDay, setIsDay] = useState(true)
 
   // Custom dropdown states
-  const [facadeDropdownOpen, setFacadeDropdownOpen] = useState(false)
-  const [roofDropdownOpen, setRoofDropdownOpen] = useState(false)
+  const [facadeDropdownOpen, _setFacadeDropdownOpen] = useState(false)
+  const [roofDropdownOpen, _setRoofDropdownOpen] = useState(false)
 
   // Галерея изображений (ДЕНЬ)
   const houseImagesByConfigDay: Record<FacadeStyle, Record<RoofStyle, string[]>> = {
@@ -1272,52 +1272,8 @@ export function ConstructorV1() {
 }
 
 /* ============================================
-   About Section — Glass Morphism + 3D Tilt
+   About Section
 ============================================ */
-const aboutTabs = ['О нас', 'Наш опыт', 'Наши качества', 'Наша команда']
-
-const companyStats = [
-  { value: '340+', label: 'Построено домов' },
-  { value: '12', label: 'Лет на рынке' },
-  { value: '98%', label: 'Довольных клиентов' },
-  { value: '28', label: 'Проектов в работе' },
-]
-
-const companyExperience = [
-  { year: '2014', title: 'Основание компании', desc: 'Начали с небольших проектов загородных домов' },
-  { year: '2016', title: 'Первые 50 домов', desc: 'Расширили команду и географию строительства' },
-  { year: '2018', title: 'Премия «Застройщик года»', desc: 'Признание качества на региональном уровне' },
-  { year: '2020', title: '200+ реализованных проектов', desc: 'Запустили собственное производство материалов' },
-  { year: '2022', title: 'Цифровая трансформация', desc: '3D-визуализация и онлайн-конструктор домов' },
-  { year: '2024', title: '340+ построенных домов', desc: 'Расширение на 5 регионов России' },
-]
-
-const companyQualities = [
-  { title: 'Надёжность', desc: 'Используем только проверенные материалы и технологии строительства', icon: 'shield' },
-  { title: 'Прозрачность', desc: 'Детальная смета и фиксированная цена на все этапы работ', icon: 'eye' },
-  { title: 'Качество', desc: 'Контроль качества на каждом этапе от фундамента до отделки', icon: 'star' },
-  { title: 'Сроки', desc: 'Строгое соблюдение сроков строительства по договору', icon: 'clock' },
-  { title: 'Гарантия', desc: '5 лет гарантии на все виды выполненных работ', icon: 'check' },
-  { title: 'Поддержка', desc: 'Сопровождение проекта от идеи до заселения', icon: 'heart' },
-]
-
-const companyTeam = [
-  { name: 'Алексей Родин', role: 'Основатель и директор', exp: '15 лет в строительстве' },
-  { name: 'Михаил Лесков', role: 'Главный архитектор', exp: '12 лет проектирования' },
-  { name: 'Елена Краснова', role: 'Дизайнер интерьеров', exp: '8 лет в дизайне' },
-  { name: 'Дмитрий Волков', role: 'Прораб', exp: '10 лет на объектах' },
-  { name: 'Ольга Светлова', role: 'Менеджер проектов', exp: '7 лет в управлении' },
-  { name: 'Сергей Тихонов', role: 'Инженер-конструктор', exp: '9 лет расчётов' },
-]
-
-const QualityIcons: Record<string, React.ReactNode> = {
-  shield: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 2l8 4v6c0 5.25-3.5 10-8 11-4.5-1-8-5.75-8-11V6l8-4z"/></svg>,
-  eye: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
-  star: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>,
-  clock: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>,
-  check: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>,
-  heart: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>,
-}
 
 function AboutSection() {
   return (
