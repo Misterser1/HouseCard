@@ -226,8 +226,6 @@ export function ConstructorV1() {
   const [isDay, setIsDay] = useState(true)
 
   // Custom dropdown states
-  const [facadeDropdownOpen, _setFacadeDropdownOpen] = useState(false)
-  const [roofDropdownOpen, _setRoofDropdownOpen] = useState(false)
 
   // Галерея изображений (ДЕНЬ)
   const houseImagesByConfigDay: Record<FacadeStyle, Record<RoofStyle, string[]>> = {
@@ -460,18 +458,6 @@ export function ConstructorV1() {
     setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0)
   }, [])
 
-  // Close dropdowns when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as HTMLElement
-      if (!target.closest('.custom-dropdown')) {
-        setFacadeDropdownOpen(false)
-        setRoofDropdownOpen(false)
-      }
-    }
-    document.addEventListener('click', handleClickOutside)
-    return () => document.removeEventListener('click', handleClickOutside)
-  }, [])
 
   // Безопасный индекс (всегда в пределах массива)
   const safeImageIndex = Math.min(currentImageIndex, houseImages.length - 1)
