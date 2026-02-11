@@ -378,8 +378,8 @@ export function ConstructorV1() {
       ],
       flat: [
         '/houses/combined/flat/house1.jpg',
-        '/houses/combined/flat/house2.jpg',
         '/houses/combined/flat/house4.jpg',
+        '/houses/combined/flat/house2.jpg',
       ],
     },
     ventilated: {
