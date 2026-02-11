@@ -102,6 +102,46 @@ const pricingModels: Record<number, string> = {
   2: '/models/individual.glb',
 }
 
+const tooltipRooms = [
+  { name: 'Кухня-гостиная', x: 50, y: 47 },
+  { name: 'Спальня', x: 76, y: 15 },
+  { name: 'Прихожая', x: 24, y: 39 },
+  { name: 'Терраса', x: 50, y: 76 },
+  { name: 'Ванная', x: 79, y: 37 },
+]
+
+function FloorPlanTooltip() {
+  const [idx, setIdx] = useState(0)
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIdx(i => (i + 1) % tooltipRooms.length)
+    }, 3000)
+    return () => clearInterval(timer)
+  }, [])
+
+  const room = tooltipRooms[idx]
+
+  return (
+    <>
+      <div
+        className="fp-tooltip"
+        style={{ left: `${room.x}%`, top: `${room.y}%` }}
+      >
+        <div className="fp-tooltip-box">
+          <span className="fp-tooltip-text">Нажмите на комнату</span>
+          <span className="fp-tooltip-room">{room.name}</span>
+        </div>
+        <div className="fp-tooltip-arrow" />
+      </div>
+      <div
+        className="fp-tooltip-ring"
+        style={{ left: `${room.x}%`, top: `${room.y + 6}%` }}
+      />
+    </>
+  )
+}
+
 const qualitySteps = [
   { img: '/houses/brick/natural/house_brick_roof1.jpg', title: 'Фундамент', desc: 'Монолитная плита с гидроизоляцией и утеплением. Заливка бетона марки М300 с вибрированием для максимальной прочности.' },
   { img: '/houses/brick/natural/house_brick_roof2.jpg', title: 'Кладка стен', desc: 'Газобетон 400мм с армированием каждого 4-го ряда. Контроль геометрии лазерным уровнем на каждом этапе.' },
@@ -294,9 +334,9 @@ export function ConstructorV1() {
 
   // Параметры дома
   const [isExterior, _setIsExterior] = useState(true)
-  const [roofStyle, setRoofStyle] = useState<RoofStyle>('natural')
+  const [roofStyle, setRoofStyle] = useState<RoofStyle>('flat')
   const [_wallMaterial] = useState<WallMaterial>('brick')
-  const [facadeStyle, setFacadeStyle] = useState<FacadeStyle>('brick')
+  const [facadeStyle, setFacadeStyle] = useState<FacadeStyle>('combined')
   const [isDay, setIsDay] = useState(true)
 
   // Custom dropdown states
@@ -318,9 +358,9 @@ export function ConstructorV1() {
       ],
       flat: [
         '/houses/brick/flat/house_brick1.jpg',
+        '/houses/brick/flat/house_brick4.jpg',
         '/houses/brick/flat/house_brick2.jpg',
         '/houses/brick/flat/house_brick3.jpg',
-        '/houses/brick/flat/house_brick4.jpg',
       ],
     },
     combined: {
@@ -339,7 +379,6 @@ export function ConstructorV1() {
       flat: [
         '/houses/combined/flat/house1.jpg',
         '/houses/combined/flat/house2.jpg',
-        '/houses/combined/flat/house3.jpg',
         '/houses/combined/flat/house4.jpg',
       ],
     },
@@ -481,10 +520,21 @@ export function ConstructorV1() {
 
   // Видео для экстерьера
   const houseVideos: Record<string, string> = {
-    '/houses/brick/natural/house_brick_roof1.jpg': '/videos/brick/natural/house_brick_roof1.mp4',
-    '/houses/brick/natural/house_brick_roof2.jpg': '/videos/brick/natural/house_brick_roof2.mp4',
-    '/houses/brick/natural/house_brick_roof3.jpg': '/videos/brick/natural/house_brick_roof3.mp4',
-    '/houses/brick/natural/house_brick_roof4.jpg': '/videos/brick/natural/house_brick_roof4.mp4',
+    '/houses/brick/natural/house_brick_roof1.jpg': '/videos/houses/brick/natural/house_brick_roof1.mp4',
+    '/houses/brick/natural/house_brick_roof2.jpg': '/videos/houses/brick/natural/house_brick_roof2.mp4',
+    '/houses/brick/natural/house_brick_roof3.jpg': '/videos/houses/brick/natural/house_brick_roof3.mp4',
+    '/houses/brick/natural/house_brick_roof4.jpg': '/videos/houses/brick/natural/house_brick_roof4.mp4',
+    '/houses/brick/flat/house_brick1.jpg': '/videos/houses/brick/flat/house_brick1.mp4',
+    '/houses/brick/flat/house_brick2.jpg': '/videos/houses/brick/flat/house_brick2.mp4',
+    '/houses/brick/flat/house_brick3.jpg': '/videos/houses/brick/flat/house_brick3.mp4',
+    '/houses/brick/flat/house_brick4.jpg': '/videos/houses/brick/flat/house_brick4.mp4',
+    '/houses/night/brick/flat/house_brick_night1.jpg': '/videos/houses/brick/flat/house_brick_night1.mp4',
+    '/houses/night/brick/flat/house_brick_night2.jpg': '/videos/houses/brick/flat/house_brick_night2.mp4',
+    '/houses/night/brick/flat/house_brick_night3.jpg': '/videos/houses/brick/flat/house_brick_night3.mp4',
+    '/houses/night/brick/flat/house_brick_night4.jpg': '/videos/houses/brick/flat/house_brick_night4.mp4',
+    '/houses/combined/flat/house1.jpg': '/videos/houses/combined/flat/house1.mp4',
+    '/houses/combined/flat/house2.jpg': '/videos/houses/combined/flat/house2.mp4',
+    '/houses/combined/flat/house4.jpg': '/videos/houses/combined/flat/house4.mp4',
   }
 
   // Видео для интерьера
@@ -503,11 +553,15 @@ export function ConstructorV1() {
     if (!isExterior) {
       return interiorVideos[imagePath]
     }
+    // Сначала проверяем прямой маппинг (для flat → natural и т.д.)
+    if (houseVideos[imagePath]) {
+      return houseVideos[imagePath]
+    }
     // Автоматическое определение: /houses/... .jpg → /videos/houses/... .mp4
     if (imagePath.startsWith('/houses/')) {
       return imagePath.replace('/houses/', '/videos/houses/').replace(/\.jpg$/, '.mp4')
     }
-    return houseVideos[imagePath]
+    return undefined
   }
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
@@ -662,7 +716,9 @@ export function ConstructorV1() {
         el.classList.contains('cinematic-fullscreen-btn') ||
         el.classList.contains('animated-image-badge') ||
         el.classList.contains('mobile-controls-panel') ||
-        el.classList.contains('mobile-panel-toggle')
+        el.classList.contains('mobile-panel-toggle') ||
+        el.classList.contains('mobile-toggles') ||
+        el.classList.contains('mobile-control-group')
       ) {
         return true
       }
@@ -683,13 +739,11 @@ export function ConstructorV1() {
     touchEndX.current = e.touches[0].clientX
   }
 
-  const handleTouchEnd = (openFullscreenOnTap = false) => {
-    const touchDuration = touchStartTime.current ? Date.now() - touchStartTime.current : 0
+  const handleTouchEnd = () => {
     const diff = touchStartX.current && touchEndX.current
       ? touchStartX.current - touchEndX.current
       : 0
     const minSwipeDistance = 50
-    const maxTapDuration = 300
 
     // Check if tap was on an interactive element
     const tappedOnInteractive = isInteractiveElement(touchTarget.current)
@@ -702,17 +756,6 @@ export function ConstructorV1() {
         goToPrevImage()
       }
     }
-    // If it was a tap (short touch without movement) - open fullscreen on mobile
-    // But only if NOT on an interactive element
-    else if (
-      openFullscreenOnTap &&
-      isTouchDevice &&
-      touchDuration < maxTapDuration &&
-      !touchEndX.current &&
-      !tappedOnInteractive
-    ) {
-      setIsFullscreen(true)
-    }
 
     // Reset
     touchStartX.current = null
@@ -721,22 +764,20 @@ export function ConstructorV1() {
     touchTarget.current = null
   }
 
-  // Fullscreen touch handlers (swipe only, no tap to close)
   const handleFullscreenTouchEnd = () => {
-    handleTouchEnd(false)
+    handleTouchEnd()
   }
 
-  // Main area touch handler (tap opens fullscreen)
   const handleMainTouchEnd = () => {
-    handleTouchEnd(true)
+    handleTouchEnd()
   }
 
   return (
     <div className="cinematic-page" ref={pageRef}>
       <div
         className={`cinematic-hero ${isAutoScrollPaused ? 'paused' : ''}`}
-        onMouseEnter={() => setIsAutoScrollPaused(true)}
-        onMouseLeave={() => setIsAutoScrollPaused(false)}
+        onMouseEnter={() => { if (!isTouchDevice) setIsAutoScrollPaused(true) }}
+        onMouseLeave={() => { if (!isTouchDevice) setIsAutoScrollPaused(false) }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleMainTouchEnd}
@@ -1026,6 +1067,7 @@ export function ConstructorV1() {
                   План дома
                 </object>
                 <div className="floor-plan-overlay" />
+                <FloorPlanTooltip />
               </div>
           </div>
         </div>

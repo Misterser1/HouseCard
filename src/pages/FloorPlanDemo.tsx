@@ -1,273 +1,372 @@
-import { useState } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import './FloorPlanDemo.css'
 
-// Room data
-const rooms = [
-  { id: 'boiler', name: 'Котельная', area: 6.92, description: 'Техническое помещение', image: '/rooms/boiler.jpg' },
-  { id: 'bedroom-parents', name: 'Спальня родителей', area: 13.83, description: 'Спальня с гардеробной', image: '/rooms/5. Спальня.jpg' },
-  { id: 'bathroom-small', name: 'С/У', area: 4.83, description: 'Гостевой санузел', image: '/rooms/7.Ванная.jpg' },
-  { id: 'hallway', name: 'Прихожая', area: 10.87, description: 'Просторная прихожая', image: '/rooms/1. Прихожая.jpg' },
-  { id: 'living-room', name: 'Кухня-гостиная', area: 43.60, description: 'Сердце дома', image: '/rooms/3.Кухня-столовая.jpg' },
-  { id: 'bathroom-large', name: 'Ванная', area: 8.47, description: 'Основной санузел', image: '/rooms/7.Ванная.jpg' },
-  { id: 'bedroom-left', name: 'Спальня', area: 16.72, description: 'Главная спальня', image: '/rooms/5. Спальня.jpg' },
-  { id: 'bedroom-right', name: 'Детская', area: 15.21, description: 'Детская комната', image: '/rooms/5. Спальня.jpg' },
+// ─── Room positions (% based, relative to the plan container) ───
+// These approximate room center points on the floor-plan SVG.
+const roomPositions = [
+  { id: 'hallway',        name: 'Прихожая',          x: 50, y: 18, w: 18, h: 14 },
+  { id: 'living-room',    name: 'Кухня-гостиная',    x: 30, y: 50, w: 36, h: 30 },
+  { id: 'bedroom-parents',name: 'Спальня родителей',  x: 75, y: 30, w: 22, h: 20 },
+  { id: 'bedroom-left',   name: 'Спальня',            x: 18, y: 80, w: 20, h: 18 },
+  { id: 'bedroom-right',  name: 'Детская',            x: 75, y: 75, w: 20, h: 18 },
+  { id: 'bathroom',       name: 'Ванная',             x: 50, y: 80, w: 16, h: 14 },
 ]
 
-const totalArea = 240
+// SVG floor plan rendered as an <object> tag
+function FloorPlanSVG() {
+  return (
+    <object
+      type="image/svg+xml"
+      data="/floor-plan.svg"
+      aria-label="План дома"
+    >
+      План дома
+    </object>
+  )
+}
 
-export default function FloorPlanDemo() {
-  const [activeVariant, setActiveVariant] = useState(1)
-  const [selectedRoom, setSelectedRoom] = useState<string | null>(null)
-  const [hoveredRoom, setHoveredRoom] = useState<string | null>(null)
+// Eye icon SVG used in Variant 6
+function EyeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  )
+}
 
-  const variants = [
-    { id: 1, name: 'Cinematic Split' },
-    { id: 2, name: 'Floating Cards' },
-    { id: 3, name: '3D Perspective' },
-    { id: 4, name: 'Minimal Luxury' },
-    { id: 5, name: 'Interactive Grid' },
-  ]
+
+/* ═══════════════════════════════════════════════════════════════════
+   VARIANT 1 — Pulsing Dots
+   ═══════════════════════════════════════════════════════════════════ */
+function Variant1() {
+  return (
+    <div className="fpc-plan-container">
+      <FloorPlanSVG />
+      <div className="fpc-v1-dots">
+        {roomPositions.map((room) => (
+          <div
+            key={room.id}
+            className="fpc-v1-dot"
+            style={{ left: `${room.x}%`, top: `${room.y}%` }}
+          >
+            <span className="fpc-v1-dot-label">{room.name}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   VARIANT 2 — Highlight on load (wave)
+   ═══════════════════════════════════════════════════════════════════ */
+function Variant2() {
+  const [highlightIdx, setHighlightIdx] = useState(-1)
+  const [done, setDone] = useState(false)
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const runAnimation = useCallback(() => {
+    setDone(false)
+    setHighlightIdx(-1)
+    let i = 0
+    const next = () => {
+      if (i < roomPositions.length) {
+        setHighlightIdx(i)
+        i++
+        timerRef.current = setTimeout(next, 500)
+      } else {
+        setHighlightIdx(-1)
+        setDone(true)
+      }
+    }
+    timerRef.current = setTimeout(next, 400)
+  }, [])
+
+  useEffect(() => {
+    runAnimation()
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current)
+    }
+  }, [runAnimation])
 
   return (
-    <div className="fp-demo-page">
-      {/* Variant Selector */}
-      <div className="fp-demo-nav">
-        <h1>Варианты секции планировки</h1>
-        <div className="fp-demo-tabs">
-          {variants.map(v => (
-            <button
-              key={v.id}
-              className={`fp-demo-tab ${activeVariant === v.id ? 'active' : ''}`}
-              onClick={() => { setActiveVariant(v.id); setSelectedRoom(null); setHoveredRoom(null) }}
-            >
-              {v.id}. {v.name}
-            </button>
-          ))}
+    <div className="fpc-plan-container">
+      <FloorPlanSVG />
+      <div className="fpc-v2-overlays">
+        {roomPositions.map((room, idx) => (
+          <div
+            key={room.id}
+            className={`fpc-v2-room-overlay ${
+              highlightIdx === idx ? 'fpc-v2-highlight' : ''
+            } ${done ? 'fpc-v2-done' : ''}`}
+            style={{
+              left: `${room.x - room.w / 2}%`,
+              top: `${room.y - room.h / 2}%`,
+              width: `${room.w}%`,
+              height: `${room.h}%`,
+            }}
+          >
+            <span className="fpc-v2-label">{room.name}</span>
+          </div>
+        ))}
+      </div>
+      <button className="fpc-v2-replay" onClick={runAnimation}>
+        Повторить
+      </button>
+    </div>
+  )
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   VARIANT 3 — Finger + tap animation
+   ═══════════════════════════════════════════════════════════════════ */
+function Variant3() {
+  const [currentIdx, setCurrentIdx] = useState(0)
+  const [isTapping, setIsTapping] = useState(false)
+  const [ripple, setRipple] = useState<{ x: number; y: number; key: number } | null>(null)
+  const rippleKey = useRef(0)
+
+  useEffect(() => {
+    let moveTimeout: ReturnType<typeof setTimeout>
+    let tapTimeout: ReturnType<typeof setTimeout>
+    let rippleTimeout: ReturnType<typeof setTimeout>
+    let nextTimeout: ReturnType<typeof setTimeout>
+
+    const cycle = () => {
+      // Wait for finger to arrive, then tap
+      moveTimeout = setTimeout(() => {
+        setIsTapping(true)
+        const room = roomPositions[currentIdx]
+        rippleKey.current++
+        setRipple({ x: room.x, y: room.y, key: rippleKey.current })
+
+        tapTimeout = setTimeout(() => {
+          setIsTapping(false)
+        }, 400)
+
+        rippleTimeout = setTimeout(() => {
+          setRipple(null)
+        }, 900)
+
+        nextTimeout = setTimeout(() => {
+          setCurrentIdx((prev) => (prev + 1) % roomPositions.length)
+        }, 2000)
+      }, 1400)
+    }
+
+    cycle()
+
+    return () => {
+      clearTimeout(moveTimeout)
+      clearTimeout(tapTimeout)
+      clearTimeout(rippleTimeout)
+      clearTimeout(nextTimeout)
+    }
+  }, [currentIdx])
+
+  const room = roomPositions[currentIdx]
+
+  return (
+    <div className="fpc-plan-container">
+      <FloorPlanSVG />
+      <div className="fpc-v3-finger-layer">
+        <div
+          className={`fpc-v3-finger ${isTapping ? 'fpc-v3-tapping' : ''}`}
+          style={{ left: `${room.x}%`, top: `${room.y}%` }}
+        >
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <path d="M18 4a2 2 0 0 0-4 0v12l-3.4-3.4a2 2 0 0 0-2.83 2.83L15 22.66V28h8l3-8V10a2 2 0 0 0-4 0V8a2 2 0 0 0-4 0V4z" fill="#1a2e22" stroke="#f5f2ed" strokeWidth="1"/>
+          </svg>
         </div>
+        {ripple && (
+          <div
+            key={ripple.key}
+            className="fpc-v3-ripple fpc-v3-ripple-active"
+            style={{ left: `${ripple.x}%`, top: `${ripple.y}%` }}
+          />
+        )}
+      </div>
+    </div>
+  )
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   VARIANT 4 — Dashed room borders
+   ═══════════════════════════════════════════════════════════════════ */
+function Variant4() {
+  return (
+    <div className="fpc-plan-container">
+      <FloorPlanSVG />
+      <div className="fpc-v4-borders">
+        {roomPositions.map((room) => (
+          <div
+            key={room.id}
+            className="fpc-v4-border-zone"
+            style={{
+              left: `${room.x - room.w / 2}%`,
+              top: `${room.y - room.h / 2}%`,
+              width: `${room.w}%`,
+              height: `${room.h}%`,
+            }}
+          >
+            <span className="fpc-v4-room-tag">{room.name}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   VARIANT 5 — Floating tooltip
+   ═══════════════════════════════════════════════════════════════════ */
+function Variant5() {
+  const [tooltipIdx, setTooltipIdx] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTooltipIdx((prev) => (prev + 1) % roomPositions.length)
+    }, 3000)
+    return () => clearInterval(interval)
+  }, [])
+
+  const room = roomPositions[tooltipIdx]
+
+  return (
+    <div className="fpc-plan-container">
+      <FloorPlanSVG />
+      <div className="fpc-v5-tooltip-layer">
+        <div
+          className="fpc-v5-tooltip"
+          style={{ left: `${room.x}%`, top: `${room.y - room.h / 2 - 8}%` }}
+        >
+          Нажмите на комнату
+          <span className="fpc-v5-tooltip-room">{room.name}</span>
+        </div>
+        <div
+          className="fpc-v5-target-ring"
+          style={{ left: `${room.x}%`, top: `${room.y}%` }}
+        />
+      </div>
+    </div>
+  )
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   VARIANT 6 — Eye icons in rooms
+   ═══════════════════════════════════════════════════════════════════ */
+function Variant6() {
+  const [hiddenRooms, setHiddenRooms] = useState<Set<string>>(new Set())
+
+  const handleClick = (roomId: string) => {
+    setHiddenRooms((prev) => {
+      const next = new Set(prev)
+      next.add(roomId)
+      return next
+    })
+  }
+
+  return (
+    <div className="fpc-plan-container">
+      <FloorPlanSVG />
+      <div className="fpc-v6-icons-layer">
+        {roomPositions.map((room) => (
+          <div
+            key={room.id}
+            className={`fpc-v6-icon-wrapper ${hiddenRooms.has(room.id) ? 'fpc-v6-hidden' : ''}`}
+            style={{ left: `${room.x}%`, top: `${room.y}%` }}
+            onClick={() => handleClick(room.id)}
+          >
+            <div className="fpc-v6-icon-circle">
+              <EyeIcon />
+            </div>
+            <span className="fpc-v6-icon-label">{room.name}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   MAIN PAGE
+   ═══════════════════════════════════════════════════════════════════ */
+
+interface VariantInfo {
+  id: number
+  title: string
+  subtitle: string
+  Component: React.FC
+}
+
+const variants: VariantInfo[] = [
+  {
+    id: 1,
+    title: 'Пульсирующие точки',
+    subtitle: 'Цветные точки с мягкой анимацией пульсации',
+    Component: Variant1,
+  },
+  {
+    id: 2,
+    title: 'Подсветка при загрузке',
+    subtitle: 'Комнаты подсвечиваются волной при загрузке',
+    Component: Variant2,
+  },
+  {
+    id: 3,
+    title: 'Палец + анимация тапа',
+    subtitle: 'Анимированный палец нажимает на комнаты',
+    Component: Variant3,
+  },
+  {
+    id: 4,
+    title: 'Границы комнат',
+    subtitle: 'Пунктирные границы с мягким свечением',
+    Component: Variant4,
+  },
+  {
+    id: 5,
+    title: 'Всплывающая подсказка',
+    subtitle: 'Подсказка перемещается между комнатами',
+    Component: Variant5,
+  },
+  {
+    id: 6,
+    title: 'Иконки в комнатах',
+    subtitle: 'Иконки-глаза исчезают после первого клика',
+    Component: Variant6,
+  },
+]
+
+export default function FloorPlanDemo() {
+  return (
+    <div className="fpc-page">
+      <div className="fpc-header">
+        <h1>Индикация кликабельности комнат</h1>
+        <p>6 вариантов для интерактивной планировки дома</p>
       </div>
 
-      {/* Variant 1: Cinematic Split */}
-      {activeVariant === 1 && (
-        <section className="fp-v1">
-          <div className="fp-v1-container">
-            <div className="fp-v1-left">
-              <div className="fp-v1-header">
-                <span className="fp-v1-tag">ПЛАНИРОВКА</span>
-                <h2>Продуманное пространство</h2>
-                <p>Каждый метр используется максимально эффективно</p>
-              </div>
-              <div className="fp-v1-stats">
-                <div className="fp-v1-stat">
-                  <span className="fp-v1-stat-value">{totalArea}</span>
-                  <span className="fp-v1-stat-label">м² общая</span>
-                </div>
-                <div className="fp-v1-stat">
-                  <span className="fp-v1-stat-value">{rooms.length}</span>
-                  <span className="fp-v1-stat-label">помещений</span>
-                </div>
-                <div className="fp-v1-stat">
-                  <span className="fp-v1-stat-value">1</span>
-                  <span className="fp-v1-stat-label">этаж</span>
-                </div>
-              </div>
-              <div className="fp-v1-rooms">
-                {rooms.map(room => (
-                  <button
-                    key={room.id}
-                    className={`fp-v1-room ${selectedRoom === room.id ? 'active' : ''}`}
-                    onClick={() => setSelectedRoom(selectedRoom === room.id ? null : room.id)}
-                  >
-                    <span className="fp-v1-room-name">{room.name}</span>
-                    <span className="fp-v1-room-area">{room.area} м²</span>
-                  </button>
-                ))}
+      <div className="fpc-grid">
+        {variants.map(({ id, title, subtitle, Component }) => (
+          <div key={id} className="fpc-card">
+            <div className="fpc-card-header">
+              <div className="fpc-card-number">{id}</div>
+              <div>
+                <div className="fpc-card-title">{title}</div>
+                <div className="fpc-card-subtitle">{subtitle}</div>
               </div>
             </div>
-            <div className="fp-v1-right">
-              <div className="fp-v1-plan">
-                <img src="/floor-plan.svg" alt="План" />
-                <div className="fp-v1-plan-overlay" />
-              </div>
-              {selectedRoom && (
-                <div className="fp-v1-room-preview">
-                  <img src={rooms.find(r => r.id === selectedRoom)?.image} alt="" />
-                  <div className="fp-v1-room-preview-info">
-                    <h3>{rooms.find(r => r.id === selectedRoom)?.name}</h3>
-                    <p>{rooms.find(r => r.id === selectedRoom)?.description}</p>
-                  </div>
-                </div>
-              )}
-            </div>
+            <Component />
           </div>
-        </section>
-      )}
-
-      {/* Variant 2: Floating Cards */}
-      {activeVariant === 2 && (
-        <section className="fp-v2">
-          <div className="fp-v2-header">
-            <h2>Планировка дома</h2>
-            <div className="fp-v2-area-badge">
-              <span>{totalArea} м²</span>
-            </div>
-          </div>
-          <div className="fp-v2-content">
-            <div className="fp-v2-plan-wrapper">
-              <img src="/floor-plan.svg" alt="План" className="fp-v2-plan" />
-              <div className="fp-v2-glow" />
-            </div>
-            <div className="fp-v2-cards">
-              {rooms.slice(0, 6).map((room, idx) => (
-                <div
-                  key={room.id}
-                  className={`fp-v2-card fp-v2-card-${idx + 1}`}
-                  onMouseEnter={() => setHoveredRoom(room.id)}
-                  onMouseLeave={() => setHoveredRoom(null)}
-                >
-                  <div className="fp-v2-card-inner">
-                    <img src={room.image} alt={room.name} />
-                    <div className="fp-v2-card-content">
-                      <h4>{room.name}</h4>
-                      <span>{room.area} м²</span>
-                    </div>
-                  </div>
-                  {hoveredRoom === room.id && (
-                    <div className="fp-v2-card-expand">
-                      <p>{room.description}</p>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Variant 3: 3D Perspective */}
-      {activeVariant === 3 && (
-        <section className="fp-v3">
-          <div className="fp-v3-scene">
-            <div className="fp-v3-floor">
-              <div className="fp-v3-plan-container">
-                <img src="/floor-plan.svg" alt="План" className="fp-v3-plan" />
-                <div className="fp-v3-shadow" />
-              </div>
-            </div>
-            <div className="fp-v3-info-panel">
-              <div className="fp-v3-title">
-                <span className="fp-v3-eyebrow">ПЕРВЫЙ ЭТАЖ</span>
-                <h2>Планировка</h2>
-              </div>
-              <div className="fp-v3-total">
-                <div className="fp-v3-total-number">{totalArea}</div>
-                <div className="fp-v3-total-label">квадратных метров</div>
-              </div>
-              <div className="fp-v3-room-list">
-                {rooms.map(room => (
-                  <div
-                    key={room.id}
-                    className={`fp-v3-room-item ${hoveredRoom === room.id ? 'active' : ''}`}
-                    onMouseEnter={() => setHoveredRoom(room.id)}
-                    onMouseLeave={() => setHoveredRoom(null)}
-                  >
-                    <div className="fp-v3-room-line" />
-                    <span className="fp-v3-room-name">{room.name}</span>
-                    <span className="fp-v3-room-area">{room.area}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Variant 4: Minimal Luxury */}
-      {activeVariant === 4 && (
-        <section className="fp-v4">
-          <div className="fp-v4-grid">
-            <div className="fp-v4-plan-cell">
-              <div className="fp-v4-plan-frame">
-                <img src="/floor-plan.svg" alt="План" />
-              </div>
-              <div className="fp-v4-badge">
-                <span className="fp-v4-badge-number">{totalArea}</span>
-                <span className="fp-v4-badge-unit">м²</span>
-              </div>
-            </div>
-            <div className="fp-v4-info-cell">
-              <div className="fp-v4-header">
-                <div className="fp-v4-line" />
-                <h2>Планировка</h2>
-                <p>Одноэтажный дом с продуманной эргономикой</p>
-              </div>
-              <div className="fp-v4-rooms-grid">
-                {rooms.map(room => (
-                  <button
-                    key={room.id}
-                    className={`fp-v4-room-card ${selectedRoom === room.id ? 'active' : ''}`}
-                    onClick={() => setSelectedRoom(selectedRoom === room.id ? null : room.id)}
-                  >
-                    <div className="fp-v4-room-card-bg" style={{ backgroundImage: `url(${room.image})` }} />
-                    <div className="fp-v4-room-card-content">
-                      <span className="fp-v4-room-area">{room.area} м²</span>
-                      <span className="fp-v4-room-name">{room.name}</span>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Variant 5: Interactive Grid */}
-      {activeVariant === 5 && (
-        <section className="fp-v5">
-          <div className="fp-v5-header">
-            <div className="fp-v5-title-group">
-              <span className="fp-v5-overline">LAYOUT</span>
-              <h2>Планировка дома</h2>
-            </div>
-            <div className="fp-v5-counter">
-              <span className="fp-v5-counter-value">{totalArea}</span>
-              <span className="fp-v5-counter-unit">м²</span>
-            </div>
-          </div>
-          <div className="fp-v5-main">
-            <div className="fp-v5-sidebar">
-              {rooms.map((room, idx) => (
-                <button
-                  key={room.id}
-                  className={`fp-v5-sidebar-item ${selectedRoom === room.id ? 'active' : ''}`}
-                  onClick={() => setSelectedRoom(selectedRoom === room.id ? null : room.id)}
-                >
-                  <span className="fp-v5-sidebar-num">{String(idx + 1).padStart(2, '0')}</span>
-                  <span className="fp-v5-sidebar-name">{room.name}</span>
-                  <span className="fp-v5-sidebar-area">{room.area}</span>
-                </button>
-              ))}
-            </div>
-            <div className="fp-v5-plan-area">
-              <div className="fp-v5-plan-wrapper">
-                <img src="/floor-plan.svg" alt="План" />
-                {selectedRoom && (
-                  <div className="fp-v5-spotlight" />
-                )}
-              </div>
-              {selectedRoom && (
-                <div className="fp-v5-room-detail">
-                  <img src={rooms.find(r => r.id === selectedRoom)?.image} alt="" />
-                  <div className="fp-v5-room-detail-info">
-                    <h3>{rooms.find(r => r.id === selectedRoom)?.name}</h3>
-                    <p>{rooms.find(r => r.id === selectedRoom)?.description}</p>
-                    <span className="fp-v5-room-detail-area">{rooms.find(r => r.id === selectedRoom)?.area} м²</span>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </section>
-      )}
+        ))}
+      </div>
     </div>
   )
 }

@@ -109,12 +109,12 @@ export function AnimatedImage({
     setIsPlaying(false);
   }, [src, localVideo]);
 
-  // Auto-play video on mobile when autoPlay is true and video is ready
+  // Auto-play video on mobile when localVideo is available or autoPlay is true
   useEffect(() => {
-    if (autoPlay && isTouchDevice && status === 'ready' && videoUrl) {
+    if (isTouchDevice && status === 'ready' && videoUrl && (autoPlay || localVideo)) {
       setIsPlaying(true);
     }
-  }, [autoPlay, isTouchDevice, status, videoUrl]);
+  }, [autoPlay, isTouchDevice, status, videoUrl, localVideo]);
 
   // Progress callback
   const handleProgress = useCallback((info: ProgressInfo) => {

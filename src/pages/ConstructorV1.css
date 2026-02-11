@@ -81,6 +81,14 @@
   animation-play-state: paused;
 }
 
+/* Disable kenBurns zoom on mobile */
+@media (max-width: 768px) {
+  .cinematic-slide.active img,
+  .cinematic-slide.active video {
+    animation: none;
+  }
+}
+
 /* Hide LIVE badge from AnimatedImage */
 .cinematic-slide .animated-image-badge {
   display: none !important;
@@ -728,15 +736,16 @@
   left: 0;
   top: 0;
   height: 100%;
-  width: 0;
   background: white;
   border-radius: 6px;
   animation: dotProgress 5s linear forwards;
+  will-change: transform;
+  transform-origin: left center;
 }
 
 @keyframes dotProgress {
-  0% { width: 0; }
-  100% { width: 100%; }
+  0% { transform: scaleX(0); width: 100%; }
+  100% { transform: scaleX(1); width: 100%; }
 }
 
 /* ===== FULLSCREEN BUTTON ===== */
@@ -1960,6 +1969,120 @@
   align-items: center !important;
   justify-content: center !important;
   min-height: 100%;
+  flex-direction: column;
+}
+
+/* Tap hint — mobile only */
+.floor-plan-tap-hint {
+  display: none;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: rgba(26, 46, 34, 0.45);
+  margin-bottom: 0.5rem;
+  animation: hintPulse 2s ease-in-out infinite;
+}
+
+.floor-plan-tap-hint svg {
+  flex-shrink: 0;
+}
+
+@keyframes hintPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .floor-plan-tap-hint {
+    display: flex;
+  }
+}
+
+/* Floor Plan Floating Tooltip — mobile only */
+.fp-tooltip {
+  display: none;
+  position: absolute;
+  transform: translate(-50%, -100%);
+  z-index: 10;
+  pointer-events: none;
+  transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1), top 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fpTooltipFadeIn 0.5s ease;
+}
+
+.fp-tooltip-box {
+  background: #1a2e22;
+  color: #fff;
+  padding: 0.5rem 0.85rem;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.fp-tooltip-text {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.fp-tooltip-room {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.fp-tooltip-arrow {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #1a2e22;
+  margin: 0 auto;
+}
+
+.fp-tooltip-ring {
+  display: none;
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #2E5A3C;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9;
+  animation: fpRingPulse 1.5s ease-in-out infinite;
+  transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1), top 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fpTooltipFadeIn {
+  from { opacity: 0; transform: translate(-50%, -100%) translateY(5px); }
+  to { opacity: 1; transform: translate(-50%, -100%) translateY(0); }
+}
+
+@keyframes fpRingPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  50% { transform: translate(-50%, -50%) scale(1.6); opacity: 0.3; }
+}
+
+@media (max-width: 768px) {
+  .fp-tooltip {
+    display: block;
+  }
+  .fp-tooltip-ring {
+    display: block;
+  }
+}
+
+@media (max-width: 480px) {
+  .fp-tooltip-box {
+    padding: 0.4rem 0.65rem;
+  }
+  .fp-tooltip-text {
+    font-size: 0.6rem;
+  }
+  .fp-tooltip-room {
+    font-size: 0.75rem;
+  }
 }
 
 .cinematic-page .floor-plan-image {
