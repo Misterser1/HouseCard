@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import multer from 'multer'
 import Replicate from 'replicate'
+import crypto from 'crypto'
 import { config } from 'dotenv'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
@@ -14,6 +15,10 @@ const __dirname = dirname(__filename)
 
 const app = express()
 const PORT = 4500
+
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123'
+const adminTokens = new Set()
+const CONFIG_PATH = join(__dirname, 'data', 'config.json')
 
 app.use(cors())
 app.use(express.json({ limit: '50mb' }))
@@ -280,6 +285,75 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
 
   const imageUrl = `http://localhost:${PORT}/uploads/${req.file.filename}`
   res.json({ success: true, imageUrl })
+})
+
+// ===== Admin file upload =====
+
+const adminStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const sub = file.mimetype.startsWith('video/') ? 'videos/rooms' : 'rooms'
+    const dir = join(__dirname, '..', 'public', sub)
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
+    cb(null, dir)
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${Buffer.from(file.originalname, 'latin1').toString('utf8')}`)
+  }
+})
+const adminUpload = multer({ storage: adminStorage, limits: { fileSize: 200 * 1024 * 1024 } })
+
+app.post('/api/admin/upload', adminUpload.single('file'), (req, res) => {
+  const token = req.headers.authorization?.replace('Bearer ', '')
+  if (!token || !adminTokens.has(token)) {
+    return res.status(401).json({ success: false, error: 'Unauthorized' })
+  }
+  if (!req.file) {
+    return res.status(400).json({ success: false, error: 'No file' })
+  }
+  const sub = req.file.mimetype.startsWith('video/') ? 'videos/rooms' : 'rooms'
+  const url = `/${sub}/${req.file.filename}`
+  res.json({ success: true, url })
+})
+
+// ===== Admin API =====
+
+// Логин
+app.post('/api/admin/login', (req, res) => {
+  const { password } = req.body
+  if (password === ADMIN_PASSWORD) {
+    const token = crypto.randomBytes(32).toString('hex')
+    adminTokens.add(token)
+    res.json({ success: true, token })
+  } else {
+    res.status(401).json({ success: false, error: 'Неверный пароль' })
+  }
+})
+
+// Получить конфиг (публичный)
+app.get('/api/config', (req, res) => {
+  try {
+    const data = fs.readFileSync(CONFIG_PATH, 'utf-8')
+    res.json(JSON.parse(data))
+  } catch (error) {
+    console.error('Config read error:', error)
+    res.status(500).json({ success: false, error: 'Ошибка чтения конфигурации' })
+  }
+})
+
+// Сохранить конфиг (требует токен)
+app.post('/api/config', (req, res) => {
+  const token = req.headers.authorization?.replace('Bearer ', '')
+  if (!token || !adminTokens.has(token)) {
+    return res.status(401).json({ success: false, error: 'Не авторизован' })
+  }
+  try {
+    const configData = req.body
+    fs.writeFileSync(CONFIG_PATH, JSON.stringify(configData, null, 2), 'utf-8')
+    res.json({ success: true })
+  } catch (error) {
+    console.error('Config write error:', error)
+    res.status(500).json({ success: false, error: 'Ошибка сохранения конфигурации' })
+  }
 })
 
 app.listen(PORT, () => {

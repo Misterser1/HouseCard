@@ -1,10 +1,20 @@
 import { useState, useEffect, useMemo, useRef, useCallback, Suspense } from 'react'
-import { Link } from 'react-router-dom'
 import * as THREE from 'three'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { OrbitControls, useGLTF } from '@react-three/drei'
+import { OrbitControls, useGLTF, Environment } from '@react-three/drei'
 import { AnimatedImage } from '../components/AnimatedImage'
+import { fetchConfig } from '../services/configService'
+import type { SiteConfig } from '../services/configService'
 import './ConstructorV1.css'
+
+function plural(n: number, one: string, few: string, many: string) {
+  const abs = Math.abs(n) % 100
+  const lastDigit = abs % 10
+  if (abs > 10 && abs < 20) return many
+  if (lastDigit > 1 && lastDigit < 5) return few
+  if (lastDigit === 1) return one
+  return many
+}
 
 type RoofStyle = 'natural' | 'soft' | 'flat'
 type WallMaterial = 'brick' | 'gasblock'
@@ -60,22 +70,69 @@ const Icons = {
   ),
 }
 
-// Room data for floor plan (14 помещений по схеме)
-const floorPlanRooms = [
-  { id: 'hallway', name: 'Прихожая', area: 10.87, description: 'Просторная прихожая с местом для верхней одежды и обуви', features: ['Встроенные шкафы', 'Зеркало в полный рост', 'Банкетка'], image: '/rooms/1.%20Прихожая.jpg' },
-  { id: 'corridor', name: 'Коридор', area: 9.12, description: 'Связующее пространство между комнатами', features: ['Освещение', 'Доступ ко всем комнатам'], image: '/rooms/1.%20Прихожая.jpg' },
-  { id: 'living-room', name: 'Кухня-гостиная', area: 43.60, description: 'Просторная кухня-гостиная — сердце дома для семейных встреч', features: ['Открытая планировка', 'Зона отдыха', 'Обеденная зона', 'Выход на террасу'], image: '/rooms/3.Кухня-столовая.jpg' },
-  { id: 'bedroom-parents', name: 'Спальня', area: 13.83, description: 'Уютная спальня с выходом в гардеробную', features: ['Большое окно', 'Гардеробная зона', 'Спальное место'], image: '/rooms/5.%20Спальня.jpg' },
-  { id: 'wardrobe', name: 'Гардероб', area: 6.08, description: 'Вместительная гардеробная комната', features: ['Системы хранения', 'Освещение', 'Зеркало'], image: '/rooms/2.Гардероб.jpg' },
-  { id: 'bedroom-left', name: 'Спальня', area: 16.72, description: 'Главная спальня с панорамным видом', features: ['Большое окно', 'Рабочая зона', 'Выход на террасу'], image: '/rooms/5.%20Спальня.jpg' },
-  { id: 'bedroom-right', name: 'Спальня', area: 11.88, description: 'Гостевая спальня или детская комната', features: ['Естественное освещение', 'Место для кровати', 'Рабочий уголок'], image: '/rooms/6.Спальня.jpg' },
-  { id: 'bathroom-large', name: 'Ванная', area: 8.47, description: 'Основная ванная комната с современным оснащением', features: ['Ванна', 'Душевая кабина', 'Раковина', 'Тёплый пол'], image: '/rooms/7.Ванная.jpg' },
-  { id: 'bathroom-small', name: 'С/У', area: 4.63, description: 'Компактный гостевой санузел', features: ['Унитаз', 'Раковина', 'Зеркало'], image: '/rooms/9.Сан.узел.jpg' },
-  { id: 'boiler', name: 'Котельная', area: 6.92, description: 'Техническое помещение для инженерных систем', features: ['Газовый котёл', 'Бойлер', 'Вентиляция'], image: '/rooms/8.Кладовая.jpg' },
-  { id: 'storage', name: 'Кладовая', area: 8.07, description: 'Помещение для хранения вещей и инвентаря', features: ['Стеллажи', 'Освещение', 'Вентиляция'], image: '/rooms/8.Кладовая.jpg' },
-  { id: 'terrace', name: 'Терраса', area: 26.27, description: 'Просторная терраса для отдыха на свежем воздухе', features: ['Зона барбекю', 'Мебель для отдыха', 'Освещение'], image: '/rooms/10.%20Терраса.jpg' },
-  { id: 'porch', name: 'Крыльцо', area: 4.50, description: 'Входная группа с навесом', features: ['Навес', 'Освещение', 'Ступени'], image: '/rooms/11.Крыльцо.jpg' },
-  { id: 'kitchen', name: 'Кухня', area: 12.04, description: 'Функциональная рабочая зона кухни', features: ['Современная техника', 'Рабочая поверхность', 'Кухонный остров'], image: '/rooms/4.%20Кухня.jpg' },
+const defaultQualitySteps = [
+  { img: '/houses/brick/natural/house_brick_roof1.jpg', img2: '/videos/quality/foundation.jpg', video: '/videos/quality/foundation.MOV', title: 'Фундамент', desc: 'Монолитная плита с гидроизоляцией и утеплением. Заливка бетона марки М300 с вибрированием для максимальной прочности.' },
+  { img: '/houses/brick/natural/house_brick_roof2.jpg', img2: '/videos/quality/masonry.jpg', video: '/videos/quality/masonry.MOV', title: 'Кладка стен', desc: 'Газобетон 400мм с армированием каждого 4-го ряда. Контроль геометрии лазерным уровнем на каждом этапе.' },
+  { img: '/houses/brick/natural/house_brick_roof3.jpg', img2: '/videos/quality/roof.jpg', video: '/videos/quality/roof.MOV', title: 'Кровля', desc: 'Стропильная система с утеплением 200мм и вентиляционным зазором. Монтаж пароизоляции и гидроизоляции.' },
+  { img: '/houses/combined/natural/house_roof1.jpg', img2: '/videos/quality/front.jpg', video: '/videos/quality/front.MOV', title: 'Фасад', desc: 'Облицовка клинкерным кирпичом с воздушным зазором 40мм. Установка гибких связей из нержавеющей стали.' },
+]
+
+const defaultTooltipRooms = [
+  { name: 'Кухня-гостиная', x: 49.7, y: 47.3 },
+  { name: 'Спальня', x: 73.5, y: 17 },
+  { name: 'Прихожая', x: 26, y: 41 },
+  { name: 'Терраса', x: 49.9, y: 76.2 },
+]
+
+const defaultPricing = [
+  {
+    name: 'Коробка дома',
+    description: 'Базовая комплектация',
+    price: '8.5',
+    pricePerM: '35 400',
+    percent: 33,
+    popular: false,
+    features: ['Фундамент монолитная плита', 'Стены из газобетона 400мм', 'Кровля с утеплением', 'Окна ПВХ двухкамерные', 'Входная дверь'],
+    modelPath: '/models/house-box.glb',
+  },
+  {
+    name: 'Тёплый контур дома',
+    description: 'Рекомендуемый выбор',
+    price: '12.5',
+    pricePerM: '52 000',
+    percent: 66,
+    popular: true,
+    features: ['Всё из "Коробки дома"', 'Электрика полный монтаж', 'Отопление газовый котёл', 'Водоснабжение и канализация', 'Черновая отделка'],
+    modelPath: '/models/warm-contour.glb',
+  },
+  {
+    name: 'Индивидуальная',
+    description: 'Максимальная комплектация',
+    price: '18.9',
+    pricePerM: '78 750',
+    percent: 100,
+    popular: false,
+    features: ['Всё из "Тёплого контура"', 'Инженерия', 'Внутренняя отделка', 'Сантехника и освещение', 'Готов к заселению'],
+    modelPath: '/models/individual.glb',
+  },
+]
+
+// Room data for floor plan (default fallback)
+const defaultFloorPlanRooms = [
+  { id: 'hallway', name: 'Прихожая', area: 10.87, description: 'Просторная прихожая с местом для верхней одежды и обуви', features: ['Встроенные шкафы', 'Зеркало в полный рост', 'Банкетка'], image: '/rooms/1.%20Прихожая.jpg', video: '/videos/rooms/1. Прихожая.mp4' },
+  { id: 'corridor', name: 'Коридор', area: 9.12, description: 'Связующее пространство между комнатами', features: ['Освещение', 'Доступ ко всем комнатам'], image: '/rooms/1.%20Прихожая.jpg', video: '/videos/rooms/1. Прихожая.mp4' },
+  { id: 'living-room', name: 'Кухня-гостиная', area: 43.60, description: 'Просторная кухня-гостиная — сердце дома для семейных встреч', features: ['Открытая планировка', 'Зона отдыха', 'Обеденная зона', 'Выход на террасу'], image: '/rooms/3.Кухня-столовая.jpg', video: '/videos/rooms/3.Кухня-столовая.mp4' },
+  { id: 'bedroom-parents', name: 'Спальня', area: 13.83, description: 'Уютная спальня с выходом в гардеробную', features: ['Большое окно', 'Гардеробная зона', 'Спальное место'], image: '/rooms/5.%20Спальня.jpg', video: '/videos/rooms/5. Спальня.mp4' },
+  { id: 'wardrobe', name: 'Гардероб', area: 6.08, description: 'Вместительная гардеробная комната', features: ['Системы хранения', 'Освещение', 'Зеркало'], image: '/rooms/2.Гардероб.jpg', video: '/videos/rooms/2.Гардероб.mp4' },
+  { id: 'bedroom-left', name: 'Спальня', area: 16.72, description: 'Главная спальня с панорамным видом', features: ['Большое окно', 'Рабочая зона', 'Выход на террасу'], image: '/rooms/5.%20Спальня.jpg', video: '/videos/rooms/5. Спальня.mp4' },
+  { id: 'bedroom-right', name: 'Спальня', area: 11.88, description: 'Гостевая спальня или детская комната', features: ['Естественное освещение', 'Место для кровати', 'Рабочий уголок'], image: '/rooms/6.Спальня.jpg', video: '/videos/rooms/6.Спальня.mp4' },
+  { id: 'bathroom-large', name: 'Ванная', area: 8.47, description: 'Основная ванная комната с современным оснащением', features: ['Ванна', 'Душевая кабина', 'Раковина', 'Тёплый пол'], image: '/rooms/7.Ванная.jpg', video: '/videos/rooms/7.Ванная.mp4' },
+  { id: 'bathroom-small', name: 'С/У', area: 4.63, description: 'Компактный гостевой санузел', features: ['Унитаз', 'Раковина', 'Зеркало'], image: '/rooms/9.Сан.узел.jpg', video: '/videos/rooms/9.Сан.узел.mp4' },
+  { id: 'boiler', name: 'Котельная', area: 6.92, description: 'Техническое помещение для инженерных систем', features: ['Газовый котёл', 'Бойлер', 'Вентиляция'], image: '/rooms/8.Кладовая.jpg', video: '/videos/rooms/8.Кладовая.mp4' },
+  { id: 'storage', name: 'Кладовая', area: 8.07, description: 'Помещение для хранения вещей и инвентаря', features: ['Стеллажи', 'Освещение', 'Вентиляция'], image: '/rooms/8.Кладовая.jpg', video: '/videos/rooms/8.Кладовая.mp4' },
+  { id: 'terrace', name: 'Терраса', area: 26.27, description: 'Просторная терраса для отдыха на свежем воздухе', features: ['Зона барбекю', 'Мебель для отдыха', 'Освещение'], image: '/rooms/10.%20Терраса.jpg', video: '/videos/rooms/9.Терраса.mp4' },
+  { id: 'porch', name: 'Крыльцо', area: 4.50, description: 'Входная группа с навесом', features: ['Навес', 'Освещение', 'Ступени'], image: '/rooms/11.Крыльцо.jpg', video: '/videos/rooms/11.Крыльцо.mp4' },
+  { id: 'kitchen', name: 'Кухня', area: 12.04, description: 'Функциональная рабочая зона кухни', features: ['Современная техника', 'Рабочая поверхность', 'Кухонный остров'], image: '/rooms/4.%20Кухня.jpg', video: '/videos/rooms/4. Кухня.mp4' },
 ]
 
 // Video mapping for rooms
@@ -96,31 +153,20 @@ const roomVideos: Record<string, string> = {
   'kitchen': '/videos/rooms/4. Кухня.mp4',
 }
 
-const pricingModels: Record<number, string> = {
-  0: '/models/house-box.glb',
-  1: '/models/warm-contour.glb',
-  2: '/models/individual.glb',
-}
 
-const tooltipRooms = [
-  { name: 'Кухня-гостиная', x: 50, y: 47 },
-  { name: 'Спальня', x: 76, y: 15 },
-  { name: 'Прихожая', x: 24, y: 39 },
-  { name: 'Терраса', x: 50, y: 76 },
-  { name: 'Ванная', x: 79, y: 37 },
-]
-
-function FloorPlanTooltip() {
+function FloorPlanTooltip({ tooltips }: { tooltips: typeof defaultTooltipRooms }) {
   const [idx, setIdx] = useState(0)
+  const total = tooltips.length
+  const stepDuration = 3000
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setIdx(i => (i + 1) % tooltipRooms.length)
-    }, 3000)
+      setIdx(prev => (prev + 1) % total)
+    }, stepDuration)
     return () => clearInterval(timer)
-  }, [])
+  }, [total])
 
-  const room = tooltipRooms[idx]
+  const room = tooltips[idx]
 
   return (
     <>
@@ -142,16 +188,7 @@ function FloorPlanTooltip() {
   )
 }
 
-const qualitySteps = [
-  { img: '/houses/brick/natural/house_brick_roof1.jpg', title: 'Фундамент', desc: 'Монолитная плита с гидроизоляцией и утеплением. Заливка бетона марки М300 с вибрированием для максимальной прочности.' },
-  { img: '/houses/brick/natural/house_brick_roof2.jpg', title: 'Кладка стен', desc: 'Газобетон 400мм с армированием каждого 4-го ряда. Контроль геометрии лазерным уровнем на каждом этапе.' },
-  { img: '/houses/brick/natural/house_brick_roof3.jpg', title: 'Кровля', desc: 'Стропильная система с утеплением 200мм и вентиляционным зазором. Монтаж пароизоляции и гидроизоляции.' },
-  { img: '/houses/combined/natural/house_roof1.jpg', title: 'Фасад', desc: 'Облицовка клинкерным кирпичом с воздушным зазором 40мм. Установка гибких связей из нержавеющей стали.' },
-  { img: '/houses/combined/natural/house_roof2.jpg', title: 'Инженерия', desc: 'Разводка электрики, отопления, водоснабжения и вентиляции. Опрессовка труб давлением 6 атмосфер.' },
-  { img: '/houses/ventilated/natural/house_vent_roof1.jpg', title: 'Отделка', desc: 'Штукатурка стен по маякам, стяжка пола. Подготовка всех поверхностей под чистовой ремонт.' },
-]
-
-function QualitySlider() {
+function QualitySlider({ steps }: { steps: typeof defaultQualitySteps }) {
   const [activeStep, setActiveStep] = useState(0)
   const [progress, setProgress] = useState(0)
   const progressRef = useRef(0)
@@ -165,7 +202,7 @@ function QualitySlider() {
       progressRef.current += increment
       if (progressRef.current >= 100) {
         clearInterval(interval)
-        setActiveStep(s => (s + 1) % qualitySteps.length)
+        setActiveStep(s => (s + 1) % steps.length)
       } else {
         setProgress(progressRef.current)
       }
@@ -173,28 +210,33 @@ function QualitySlider() {
     return () => clearInterval(interval)
   }, [activeStep])
 
-  const step = qualitySteps[activeStep]
+  const step = steps[activeStep]
 
   return (
     <div className="quality-stepper">
-      <div className="quality-stepper-image">
-        {qualitySteps.map((s, i) => (
-          <img
-            key={i}
-            src={s.img}
-            alt={s.title}
-            className={`quality-stepper-photo ${i === activeStep ? 'active' : ''}`}
-          />
-        ))}
-        <div className="quality-stepper-overlay">
-          <div className="quality-stepper-desc-box">
-            <h3 key={`title-${activeStep}`} className="quality-fade-in">{step.title}</h3>
-            <p key={`desc-${activeStep}`} className="quality-fade-in">{step.desc}</p>
-          </div>
+      <div className="quality-stepper-images">
+        <div className="quality-stepper-image">
+          {steps.map((s, i) => (
+            s.video ? (
+              <video key={i} src={s.video} autoPlay loop muted playsInline className={`quality-stepper-photo ${i === activeStep ? 'active' : ''}`} />
+            ) : (
+              <img key={i} src={s.img} alt={s.title} className={`quality-stepper-photo ${i === activeStep ? 'active' : ''}`} />
+            )
+          ))}
+        </div>
+        <div className="quality-stepper-divider" />
+        <div className="quality-stepper-image">
+          {steps.map((s, i) => (
+            <img key={i} src={s.img2} alt={s.title} className={`quality-stepper-photo ${i === activeStep ? 'active' : ''}`} />
+          ))}
         </div>
       </div>
+      <div className="quality-stepper-desc-box" key={activeStep}>
+        <h3 className="quality-fade-in">{step.title}</h3>
+        <p className="quality-fade-in">{step.desc}</p>
+      </div>
       <div className="quality-stepper-nav">
-        {qualitySteps.map((s, i) => (
+        {steps.map((s, i) => (
           <button
             key={i}
             className={`quality-stepper-btn ${i === activeStep ? 'active' : ''}`}
@@ -212,6 +254,33 @@ function QualitySlider() {
       </div>
     </div>
   )
+}
+
+function TypingText({ text }: { text: string }) {
+  const [displayed, setDisplayed] = useState('')
+  const [isDeleting, setIsDeleting] = useState(false)
+
+  useEffect(() => {
+    let timeout: ReturnType<typeof setTimeout>
+
+    if (!isDeleting) {
+      if (displayed.length < text.length) {
+        timeout = setTimeout(() => setDisplayed(text.slice(0, displayed.length + 1)), 80)
+      } else {
+        timeout = setTimeout(() => setIsDeleting(true), 3000)
+      }
+    } else {
+      if (displayed.length > 0) {
+        timeout = setTimeout(() => setDisplayed(text.slice(0, displayed.length - 1)), 40)
+      } else {
+        timeout = setTimeout(() => setIsDeleting(false), 1000)
+      }
+    }
+
+    return () => clearTimeout(timeout)
+  }, [displayed, isDeleting, text])
+
+  return <>{displayed}<span className="typing-cursor" /></>
 }
 
 function RotatingHouseModel({ url }: { url: string }) {
@@ -236,18 +305,29 @@ function RotatingHouseModel({ url }: { url: string }) {
   return (
     <group ref={groupRef}>
       <group ref={innerRef}>
-        <primitive object={scene} scale={0.4} />
+        <primitive object={scene} scale={0.7} />
       </group>
     </group>
   )
 }
 
 export function ConstructorV1() {
-  // Основные параметры проекта
-  const [areaLength] = useState(10)
-  const [areaWidth] = useState(12)
-  const [rooms] = useState(4)
-  const [bathrooms] = useState(2)
+  // Загрузка конфигурации с сервера
+  const [siteConfig, setSiteConfig] = useState<SiteConfig | null>(null)
+  useEffect(() => {
+    fetchConfig().then(setSiteConfig).catch(() => {})
+  }, [])
+
+  // Основные параметры проекта (из конфига или дефолтные)
+  const areaLength = siteConfig?.project.dimensions.length ?? 10
+  const areaWidth = siteConfig?.project.dimensions.width ?? 12
+  const rooms = siteConfig?.project.rooms ?? 4
+  const bathrooms = siteConfig?.project.bathrooms ?? 2
+
+  const floorPlanRooms = siteConfig?.rooms ?? defaultFloorPlanRooms
+  const qualitySteps = siteConfig?.qualitySteps ?? defaultQualitySteps
+  const floorPlanTooltips = siteConfig?.floorPlanTooltips ?? defaultTooltipRooms
+  const pricingPackages = siteConfig?.pricing ?? defaultPricing
 
   // Interior stories state (mobile)
   const [storyIndex, setStoryIndex] = useState<number | null>(null)
@@ -514,9 +594,22 @@ export function ConstructorV1() {
     ],
   }
 
+  // Мобильные изображения
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768
+  const mobileImages: Partial<Record<FacadeStyle, Partial<Record<RoofStyle, string[]>>>> = {
+    combined: {
+      flat: [
+        '/houses/mobile/combined/house1.jpeg',
+        '/houses/mobile/combined/house2.jpeg',
+        '/houses/mobile/combined/house3.jpeg',
+      ],
+    },
+  }
+
   // Выбор изображений (только экстерьер в первой секции)
   const houseImagesByConfig = isDay ? houseImagesByConfigDay : houseImagesByConfigNight
-  const houseImages = houseImagesByConfig[facadeStyle][roofStyle]
+  const mobileOverride = isMobile && isDay ? mobileImages[facadeStyle]?.[roofStyle] : undefined
+  const houseImages = mobileOverride ?? houseImagesByConfig[facadeStyle][roofStyle]
 
   // Видео для экстерьера
   const houseVideos: Record<string, string> = {
@@ -533,25 +626,18 @@ export function ConstructorV1() {
     '/houses/night/brick/flat/house_brick_night3.jpg': '/videos/houses/brick/flat/house_brick_night3.mp4',
     '/houses/night/brick/flat/house_brick_night4.jpg': '/videos/houses/brick/flat/house_brick_night4.mp4',
     '/houses/combined/flat/house1.jpg': '/videos/houses/combined/flat/house1.mp4',
-    '/houses/combined/flat/house2.jpg': '/videos/houses/combined/flat/house2.mp4',
-    '/houses/combined/flat/house4.jpg': '/videos/houses/combined/flat/house4.mp4',
-  }
-
-  // Видео для интерьера
-  const interiorVideos: Record<string, string> = {
-    '/houses/interior/brick/1. Прихожая.jpg': '/videos/rooms/1. Прихожая.mp4',
-    '/houses/interior/brick/2.Гардероб.jpg': '/videos/rooms/2.Гардероб.mp4',
-    '/houses/interior/brick/3.Кухня-столовая.jpg': '/videos/rooms/3.Кухня-столовая.mp4',
-    '/houses/interior/brick/4. Кухня.jpg': '/videos/rooms/4. Кухня.mp4',
-    '/houses/interior/brick/5. Спальня.jpg': '/videos/rooms/5. Спальня.mp4',
-    '/houses/interior/brick/6.Спальня.jpg': '/videos/rooms/6.Спальня.mp4',
-    '/houses/interior/brick/7.Ванная.jpg': '/videos/rooms/7.Ванная.mp4',
-    '/houses/interior/brick/9.Терраса.jpg': '/videos/rooms/9.Терраса.mp4',
+    '/houses/combined/flat/house4.jpg': '/videos/houses/combined/flat/house2.mp4',
+    '/houses/combined/flat/house2.jpg': '/videos/houses/combined/flat/house3.mp4',
   }
 
   const getVideoForImage = (imagePath: string): string | undefined => {
     if (!isExterior) {
-      return interiorVideos[imagePath]
+      // Берём имя файла и строим путь к видео
+      const filename = imagePath.split('/').pop()
+      if (filename) {
+        return '/videos/rooms/' + filename.replace(/\.jpg$/, '.mp4')
+      }
+      return undefined
     }
     // Сначала проверяем прямой маппинг (для flat → natural и т.д.)
     if (houseVideos[imagePath]) {
@@ -578,13 +664,7 @@ export function ConstructorV1() {
   const touchEndX = useRef<number | null>(null)
   const touchStartTime = useRef<number | null>(null)
   const touchTarget = useRef<EventTarget | null>(null)
-  const [isTouchDevice, setIsTouchDevice] = useState(false)
   const [activePricingPackage, setActivePricingPackage] = useState(1)
-
-  // Detect touch device
-  useEffect(() => {
-    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0)
-  }, [])
 
 
   // Безопасный индекс (всегда в пределах массива)
@@ -677,7 +757,7 @@ export function ConstructorV1() {
   }, [])
 
   // Вычисляемые значения
-  const totalArea = areaLength * areaWidth * 2
+  const totalArea = Math.round(areaLength * areaWidth * 2)
 
   // Навигация
   const goToPrevImage = () => {
@@ -776,8 +856,6 @@ export function ConstructorV1() {
     <div className="cinematic-page" ref={pageRef}>
       <div
         className={`cinematic-hero ${isAutoScrollPaused ? 'paused' : ''}`}
-        onMouseEnter={() => { if (!isTouchDevice) setIsAutoScrollPaused(true) }}
-        onMouseLeave={() => { if (!isTouchDevice) setIsAutoScrollPaused(false) }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleMainTouchEnd}
@@ -789,6 +867,7 @@ export function ConstructorV1() {
             alt={`Вид ${safeImageIndex + 1}`}
             enableAnimation={true}
             localVideo={getVideoForImage(houseImages[safeImageIndex])}
+            autoPlay={true}
           />
         </div>
 
@@ -797,9 +876,9 @@ export function ConstructorV1() {
 
         {/* Header */}
         <header className="cinematic-header">
-          <Link to="/" className="cinematic-logo">
+          <a href="/" className="cinematic-logo">
             <img src="/logo.png" alt="Родные Края" className="cinematic-logo-img" />
-          </Link>
+          </a>
 
           {/* Header Controls */}
           <div className="header-controls">
@@ -818,7 +897,7 @@ export function ConstructorV1() {
               {Icons.expand}
             </button>
             <button className="cinematic-btn-header">
-              Заказать звонок
+              {siteConfig?.project.ctaButtonText ?? 'Заказать звонок'}
             </button>
           </div>
         </header>
@@ -837,16 +916,17 @@ export function ConstructorV1() {
         <div className="cinematic-content">
           {/* Left - Info */}
           <div className="cinematic-info">
-            <h1 className="cinematic-title">Родные Края</h1>
-            <p className="cinematic-subtitle">Дом площадью {totalArea} м² в окружении природы</p>
+            <h1 className="cinematic-title">{siteConfig?.project.brandName ?? 'Родные Края'}</h1>
+            <p className="cinematic-project-name">{siteConfig?.project.projectName ?? '«Лесная Резиденция»'}</p>
+            <p className="cinematic-subtitle">{(siteConfig?.project.subtitle ?? 'Дом площадью {totalArea} м² в окружении природы').replace('{totalArea}', String(totalArea))}</p>
             <div className="cinematic-stats">
               <div className="cinematic-stat">
                 <span className="cinematic-stat-value">{rooms}</span>
-                <span className="cinematic-stat-label">комнаты</span>
+                <span className="cinematic-stat-label">{plural(rooms, 'комната', 'комнаты', 'комнат')}</span>
               </div>
               <div className="cinematic-stat">
                 <span className="cinematic-stat-value">{bathrooms}</span>
-                <span className="cinematic-stat-label">санузла</span>
+                <span className="cinematic-stat-label">{plural(bathrooms, 'санузел', 'санузла', 'санузлов')}</span>
               </div>
               <div className="cinematic-stat">
                 <span className="cinematic-stat-value">{totalArea}</span>
@@ -1000,28 +1080,24 @@ export function ConstructorV1() {
         </div>
       )}
 
-      {/* Transition Strip */}
-      <div className="section-transition-strip">
-      </div>
-
       {/* Floor Plan Section - Cinematic Split */}
       <section className="floor-plan-section original-theme">
         {/* Centered Header */}
         <div className="floor-plan-header-top scroll-reveal">
-          <h2>Планировка</h2>
-          <p>Каждый метр используется максимально эффективно</p>
+          <h2>{siteConfig?.sections.floorPlan.title ?? 'Планировка'}</h2>
+          <p>{siteConfig?.sections.floorPlan.subtitle ?? 'Каждый метр используется максимально эффективно'}</p>
         </div>
 
         <div className="floor-plan-container">
           <div className="floor-plan-left">
               <div className="floor-plan-dimensions scroll-reveal">
                 <div className="dim-pair">
-                  <span className="dim-num">16.5</span>
+                  <span className="dim-num">{areaLength}</span>
                   <span className="dim-unit">м</span>
                 </div>
                 <span className="dim-x">&times;</span>
                 <div className="dim-pair">
-                  <span className="dim-num">12.8</span>
+                  <span className="dim-num">{areaWidth}</span>
                   <span className="dim-unit">м</span>
                 </div>
                 <span className="dim-label">габариты</span>
@@ -1033,11 +1109,11 @@ export function ConstructorV1() {
                 </div>
                 <div className="floor-plan-stat">
                   <span className="floor-plan-stat-value">{floorPlanRooms.length}</span>
-                  <span className="floor-plan-stat-label">помещений</span>
+                  <span className="floor-plan-stat-label">{plural(floorPlanRooms.length, 'помещение', 'помещения', 'помещений')}</span>
                 </div>
                 <div className="floor-plan-stat">
-                  <span className="floor-plan-stat-value">1</span>
-                  <span className="floor-plan-stat-label">этаж</span>
+                  <span className="floor-plan-stat-value">{siteConfig?.project.floors ?? 1}</span>
+                  <span className="floor-plan-stat-label">{plural(siteConfig?.project.floors ?? 1, 'этаж', 'этажа', 'этажей')}</span>
                 </div>
               </div>
               <div className="floor-plan-rooms chips-style scroll-reveal" style={{ '--i': 1 } as React.CSSProperties}>
@@ -1067,7 +1143,7 @@ export function ConstructorV1() {
                   План дома
                 </object>
                 <div className="floor-plan-overlay" />
-                <FloorPlanTooltip />
+                <FloorPlanTooltip tooltips={floorPlanTooltips} />
               </div>
           </div>
         </div>
@@ -1088,74 +1164,32 @@ export function ConstructorV1() {
 
           {/* Package panels */}
           <div className="pricing-split-panels scroll-reveal">
-            {[
-              {
-                name: 'Коробка дома',
-                description: 'Базовая комплектация',
-                price: '8.5',
-                pricePerM: '35 400',
-                percent: 33,
-                popular: false,
-                features: [
-                  'Фундамент монолитная плита',
-                  'Стены из газобетона 400мм',
-                  'Кровля с утеплением',
-                  'Окна ПВХ двухкамерные',
-                  'Входная дверь',
-                ],
-              },
-              {
-                name: 'Тёплый контур дома',
-                description: 'Рекомендуемый выбор',
-                price: '12.5',
-                pricePerM: '52 000',
-                percent: 66,
-                popular: true,
-                features: [
-                  'Всё из "Коробки дома"',
-                  'Электрика полный монтаж',
-                  'Отопление газовый котёл',
-                  'Водоснабжение и канализация',
-                  'Черновая отделка',
-                ],
-              },
-              {
-                name: 'Индивидуальная',
-                description: 'Максимальная комплектация',
-                price: '18.9',
-                pricePerM: '78 750',
-                percent: 100,
-                popular: false,
-                features: [
-                  'Всё из "Тёплого контура"',
-                  'Инженерия',
-                  'Внутренняя отделка',
-                  'Сантехника и освещение',
-                  'Готов к заселению',
-                ],
-              },
-            ].map((pkg, i) => (
+            {pricingPackages.map((pkg, i) => (
               <div
                 key={i}
                 className={`pricing-split-panel ${activePricingPackage === i ? 'expanded' : ''} ${pkg.popular ? 'featured' : ''}`}
                 onClick={() => setActivePricingPackage(i)}
               >
                 <div className="pricing-split-panel-glass" />
-                {activePricingPackage === i && pricingModels[i] && (
+                {activePricingPackage === i && pkg.modelPath && (
                   <div className="pricing-model-viewer" key={`model-${i}`}>
                     <Canvas
                       camera={{ position: [0, 15, 50], fov: 20 }}
-                      gl={{ alpha: true, antialias: true }}
+                      gl={{ alpha: true, antialias: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.8 }}
                       onCreated={({ gl, scene }) => {
                         gl.setClearColor(0x000000, 0)
                         scene.background = null
                       }}
                       style={{ background: 'none' }}
                     >
-                      <ambientLight intensity={0.7} />
-                      <directionalLight position={[5, 8, 5]} intensity={1} />
+                      <ambientLight intensity={3} />
+                      <directionalLight position={[5, 10, 5]} intensity={2} />
+                      <directionalLight position={[-5, 10, -5]} intensity={1.5} />
+                      <directionalLight position={[0, -5, 5]} intensity={0.8} />
+                      <hemisphereLight args={['#ffffff', '#b0c4de', 1.2]} />
                       <Suspense fallback={null}>
-                        <RotatingHouseModel url={pricingModels[i]} />
+                        <RotatingHouseModel url={pkg.modelPath} />
+                        <Environment preset="city" background={false} />
                       </Suspense>
                       <OrbitControls enablePan={false} enableZoom={false} />
                     </Canvas>
@@ -1163,8 +1197,6 @@ export function ConstructorV1() {
                 )}
                 <div className="pricing-split-panel-content">
                   <div className="pricing-split-panel-header">
-                    {pkg.popular && <span className="pricing-split-badge">Рекомендуем</span>}
-                    <span className="pricing-split-number">{String(i + 1).padStart(2, '0')}</span>
                     <h3>{pkg.name}</h3>
                     <p>{pkg.description}</p>
                   </div>
@@ -1176,18 +1208,34 @@ export function ConstructorV1() {
 
                   <div className="pricing-split-panel-details">
                     <ul className="pricing-split-features">
-                      {pkg.features.map((f, j) => (
-                        <li key={j}>
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                            <polyline points="20 6 9 17 4 12"/>
-                          </svg>
-                          <span>{f}</span>
-                        </li>
+                      {pkg.features.map((f: string | { heading: string; items: string[] }, j: number) => (
+                        typeof f === 'string' ? (
+                          <li key={j}>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                              <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span>{f}</span>
+                          </li>
+                        ) : (
+                          <li key={j} className="pricing-feature-group">
+                            <strong className="pricing-feature-heading">{f.heading}</strong>
+                            <ul>
+                              {f.items.map((item, k) => (
+                                <li key={k}>
+                                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                  </svg>
+                                  <span>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </li>
+                        )
                       ))}
                     </ul>
 
                     <button className="pricing-split-btn">
-                      Получить консультацию
+                      {siteConfig?.project.consultButtonText ?? 'Получить консультацию'}
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M5 12h14M12 5l7 7-7 7"/>
                       </svg>
@@ -1195,16 +1243,6 @@ export function ConstructorV1() {
                   </div>
                 </div>
 
-                {/* Completion indicator */}
-                <div className="pricing-split-completion">
-                  <div className="pricing-split-completion-bar">
-                    <div
-                      className="pricing-split-completion-fill"
-                      style={{ height: `${pkg.percent}%` }}
-                    />
-                  </div>
-                  <span className="pricing-split-completion-text">{pkg.percent}%</span>
-                </div>
               </div>
             ))}
           </div>
@@ -1215,8 +1253,8 @@ export function ConstructorV1() {
       {/* Interior Section - Bento Grid Layout with All Rooms */}
       <section className="interior-section">
         <div className="interior-header scroll-reveal">
-          <h2>Варианты интерьера</h2>
-          <p>Визуализация всех {floorPlanRooms.length} помещений вашего будущего дома</p>
+          <h2>{siteConfig?.sections.interior.title ?? 'Варианты интерьера'}</h2>
+          <p>{(siteConfig?.sections.interior.subtitle ?? 'Визуализация всех {count} {rooms_word} вашего будущего дома').replace('{count}', String(floorPlanRooms.length)).replace('{rooms_word}', plural(floorPlanRooms.length, 'помещения', 'помещений', 'помещений'))}</p>
         </div>
 
         {/* Stories row - visible only on mobile */}
@@ -1292,15 +1330,15 @@ export function ConstructorV1() {
       )}
 
       {/* About Us Section — Glass Morphism */}
-      <AboutSection />
+      <AboutSection siteConfig={siteConfig} />
 
       {/* Quality Section — Step Slider */}
       <section className="quality-section">
         <div className="quality-header scroll-reveal">
-          <h2>Наше качество</h2>
-          <p>Каждый этап строительства под контролем</p>
+          <h2>{siteConfig?.sections.quality.title ?? 'Наше качество'}</h2>
+          <p>{siteConfig?.sections.quality.subtitle ?? 'Каждый этап строительства под контролем'}</p>
         </div>
-        <QualitySlider />
+        <QualitySlider steps={qualitySteps} />
       </section>
 
       {/* Room Detail Modal - Animated */}
@@ -1315,7 +1353,7 @@ export function ConstructorV1() {
                   src={room.image}
                   alt={room.name}
                   enableAnimation={true}
-                  localVideo={roomVideos[selectedRoom]}
+                  localVideo={room.video || roomVideos[selectedRoom]}
                   autoPlay={true}
                 />
                 <button className="room-modal-close-btn" onClick={() => setSelectedRoom(null)}>
@@ -1333,6 +1371,22 @@ export function ConstructorV1() {
           })()}
         </div>
       )}
+
+      {/* Telegram chat widget */}
+      <div className="tg-chat-wrapper">
+        <span className="tg-chat-tooltip"><TypingText text={siteConfig?.project.telegramTooltip ?? 'Напишите — обсудим проект'} /></span>
+        <a
+          href={siteConfig?.project.telegramUrl ?? 'https://t.me/stroy_rk'}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="tg-chat-widget"
+          aria-label="Написать в Telegram"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.492-1.302.48-.428-.013-1.252-.242-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+          </svg>
+        </a>
+      </div>
     </div>
   )
 }
@@ -1341,52 +1395,62 @@ export function ConstructorV1() {
    About Section
 ============================================ */
 
-function AboutSection() {
+function AboutSection({ siteConfig }: { siteConfig: SiteConfig | null }) {
+  const [activeYT, setActiveYT] = useState<Record<number, boolean>>({})
+
+  const videos = siteConfig?.youtubeVideos ?? [
+    { title: 'Договор подряда или как принимать работы', videoId: 'pgJvpLkjjns', telegramLink: 'https://t.me/stroy_rk/220' },
+    { title: 'Ошибки при строительстве частного дома', videoId: 'N5dd-nw5POY', telegramLink: 'https://t.me/stroy_rk/82' },
+    { title: '7 схем как подрядчики обманывают своих клиентов', videoId: 'MCzTNJojgrs', telegramLink: 'https://t.me/stroy_rk/303' },
+    { title: 'Про большие объекты…', videoId: 'pgJvpLkjjns', telegramLink: 'https://t.me/stroy_rk/425' },
+  ]
+
   return (
     <section className="why-us-section">
       <div className="why-us-container">
-        <div className="why-us-left scroll-reveal">
-          <h2 className="why-us-title">Полезные материалы</h2>
-          <span className="why-us-label">Почему выбирают нас?</span>
-          <div className="why-us-image">
-            <img src={`/houses/brick/natural/house_brick_roof1.jpg`} alt="Наш дом" />
-          </div>
-        </div>
-        <div className="why-us-grid scroll-reveal">
-          <div className="why-us-card video-embed-card">
-            <iframe
-              src="https://www.youtube.com/embed/MCzTNJojgrs"
-              title="7 схем как подрядчики обманывают своих клиентов"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-          <div className="why-us-card video-embed-card">
-            <iframe
-              src="https://www.youtube.com/embed/N5dd-nw5POY"
-              title="Базовые вещи при строительстве"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-          <div className="why-us-card video-embed-card">
-            <iframe
-              src="https://www.youtube.com/embed/pgJvpLkjjns"
-              title="Смотрите видео прямо сейчас"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-          <div className="why-us-card cta-card">
-            <p>Хотите, мы разберём ваш проект? Просто напишите в ЛС или комментариях: <strong>РАЗБОР</strong> — и мы свяжемся.</p>
-            <a href="https://t.me/stroy_rk/425" target="_blank" rel="noopener noreferrer" className="why-us-tg-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-              Написать в Telegram
-            </a>
-          </div>
+        <h2 className="why-us-title scroll-reveal">{siteConfig?.sections.about.title ?? 'Делимся опытом'}</h2>
+        <div className="why-us-grid why-us-grid-full scroll-reveal">
+          {videos.map((v, i) => (
+            <div className="video-embed-wrapper" key={i}>
+              <span className="video-card-title"><span className="video-card-num">{i + 1}.</span> {v.title}</span>
+              <div className="why-us-card video-embed-card">
+              {v.previewVideo && !activeYT[i] ? (
+                <div className="video-preview-container" onClick={() => setActiveYT(prev => ({ ...prev, [i]: true }))}>
+                  <video
+                    src={v.previewVideo}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="video-preview-mov"
+                  />
+                  <div className="video-preview-play">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="48" height="48">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </div>
+                </div>
+              ) : (
+                <iframe
+                  src={`https://www.youtube.com/embed/${v.videoId}${activeYT[i] ? '?autoplay=1' : ''}`}
+                  title={v.title}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              )}
+              <a href={v.telegramLink} target="_blank" rel="noopener noreferrer" className="video-card-tg-link">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                  <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.492-1.302.48-.428-.013-1.252-.242-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                </svg>
+                <span>Обсудить в Telegram</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
+                  <path d="M7 17L17 7M17 7H7M17 7v10"/>
+                </svg>
+              </a>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

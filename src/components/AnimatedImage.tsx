@@ -39,6 +39,7 @@ export function AnimatedImage({
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const isLocalVideo = localVideo && localVideo.startsWith('/');
 
   // Detect touch device
   useEffect(() => {
@@ -94,24 +95,23 @@ export function AnimatedImage({
   useEffect(() => {
     if (!videoRef.current || !videoUrl) return;
 
-    const shouldPlay = isTouchDevice ? isPlaying : isHovering;
+    const shouldPlay = autoPlay || (isTouchDevice ? isPlaying : isHovering);
 
     if (shouldPlay) {
-      videoRef.current.currentTime = 0;
       videoRef.current.play().catch(() => {});
     } else {
       videoRef.current.pause();
     }
-  }, [isHovering, isPlaying, videoUrl, isTouchDevice]);
+  }, [isHovering, isPlaying, videoUrl, isTouchDevice, autoPlay]);
 
   // Reset isPlaying when video URL changes (switching images)
   useEffect(() => {
     setIsPlaying(false);
   }, [src, localVideo]);
 
-  // Auto-play video on mobile when localVideo is available or autoPlay is true
+  // Auto-play video when ready (mobile with localVideo, or autoPlay on any device)
   useEffect(() => {
-    if (isTouchDevice && status === 'ready' && videoUrl && (autoPlay || localVideo)) {
+    if (status === 'ready' && videoUrl && (autoPlay || (isTouchDevice && localVideo))) {
       setIsPlaying(true);
     }
   }, [autoPlay, isTouchDevice, status, videoUrl, localVideo]);
@@ -179,7 +179,7 @@ export function AnimatedImage({
   };
 
   // Compute shouldShowVideo once
-  const shouldShowVideo = isTouchDevice ? isPlaying : isHovering;
+  const shouldShowVideo = autoPlay || (isTouchDevice ? isPlaying : isHovering);
 
   return (
     <div
@@ -210,22 +210,24 @@ export function AnimatedImage({
         <video
           ref={videoRef}
           src={videoUrl}
-          crossOrigin="anonymous"
+          {...(isLocalVideo ? {} : { crossOrigin: 'anonymous' as const })}
+          autoPlay={autoPlay}
           muted
           loop
           playsInline
-          preload="metadata"
+          preload={autoPlay ? 'auto' : 'metadata'}
           className="animated-image-video"
-          onCanPlay={() => setVideoLoaded(true)}
+          onCanPlay={() => {
+            setVideoLoaded(true);
+            // Перезапуск воспроизведения после загрузки
+            const shouldPlay = autoPlay || (isTouchDevice ? isPlaying : isHovering);
+            if (shouldPlay && videoRef.current) {
+              videoRef.current.play().catch(() => {});
+            }
+          }}
           onError={(e) => {
             console.error('Video load error:', e);
             setVideoLoaded(false);
-            // Try without crossOrigin if it fails
-            const video = e.currentTarget;
-            if (video.crossOrigin) {
-              video.crossOrigin = '';
-              video.load();
-            }
           }}
           style={{
             position: 'absolute',

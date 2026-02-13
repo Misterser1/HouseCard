@@ -1,0 +1,554 @@
+{
+  "project": {
+    "brandName": "Родные Края",
+    "projectName": "«Лесная Резиденция»",
+    "subtitle": "Дом площадью 280 м² в окружении природы",
+    "dimensions": {
+      "length": 18.5,
+      "width": 16.8
+    },
+    "rooms": 15,
+    "bathrooms": 2,
+    "floors": 1,
+    "telegramUrl": "https://t.me/stroy_rk",
+    "telegramTooltip": "Напишите — обсудим проект",
+    "ctaButtonText": "Заказать звонок",
+    "consultButtonText": "Получить консультацию",
+    "ctaText": "Хотите, мы разберём ваш проект? Просто напишите в ЛС или комментариях: <strong>РАЗБОР</strong> — и мы свяжемся.",
+    "ctaTelegramLink": "https://t.me/stroy_rk/425"
+  },
+  "sections": {
+    "floorPlan": {
+      "title": "Планировка",
+      "subtitle": "Каждый метр используется максимально эффективно"
+    },
+    "interior": {
+      "title": "Варианты интерьера",
+      "subtitle": "Визуализация всех {count} помещений вашего будущего дома"
+    },
+    "quality": {
+      "title": "Наше качество",
+      "subtitle": "Каждый этап строительства под контролем"
+    },
+    "about": {
+      "title": "Делимся опытом"
+    }
+  },
+  "rooms": [
+    {
+      "id": "hallway",
+      "name": "Прихожая",
+      "area": 10.87,
+      "description": "Просторная прихожая с местом для верхней одежды и обуви",
+      "features": [
+        "Встроенные шкафы",
+        "Зеркало в полный рост",
+        "Банкетка"
+      ],
+      "image": "/rooms/1.%20Прихожая.jpg",
+      "video": "/videos/rooms/1. Прихожая.mp4"
+    },
+    {
+      "id": "corridor",
+      "name": "Коридор",
+      "area": 9.12,
+      "description": "Связующее пространство между комнатами",
+      "features": [
+        "Освещение",
+        "Доступ ко всем комнатам"
+      ],
+      "image": "/rooms/1.%20Прихожая.jpg",
+      "video": "/videos/rooms/1. Прихожая.mp4"
+    },
+    {
+      "id": "living-room",
+      "name": "Кухня-гостиная",
+      "area": 43.6,
+      "description": "Просторная кухня-гостиная — сердце дома для семейных встреч",
+      "features": [
+        "Открытая планировка",
+        "Зона отдыха",
+        "Обеденная зона",
+        "Выход на террасу"
+      ],
+      "image": "/rooms/3.Кухня-столовая.jpg",
+      "video": "/videos/rooms/3.Кухня-столовая.mp4"
+    },
+    {
+      "id": "bedroom-parents",
+      "name": "Спальня",
+      "area": 13.83,
+      "description": "Уютная спальня с выходом в гардеробную",
+      "features": [
+        "Большое окно",
+        "Гардеробная зона",
+        "Спальное место"
+      ],
+      "image": "/rooms/5.%20Спальня.jpg",
+      "video": "/videos/rooms/5. Спальня.mp4"
+    },
+    {
+      "id": "wardrobe",
+      "name": "Гардероб",
+      "area": 6.08,
+      "description": "Вместительная гардеробная комната",
+      "features": [
+        "Системы хранения",
+        "Освещение",
+        "Зеркало"
+      ],
+      "image": "/rooms/2.Гардероб.jpg",
+      "video": "/videos/rooms/2.Гардероб.mp4"
+    },
+    {
+      "id": "bedroom-left",
+      "name": "Спальня",
+      "area": 16.72,
+      "description": "Главная спальня с панорамным видом",
+      "features": [
+        "Большое окно",
+        "Рабочая зона",
+        "Выход на террасу"
+      ],
+      "image": "/rooms/5.%20Спальня.jpg",
+      "video": "/videos/rooms/5. Спальня.mp4"
+    },
+    {
+      "id": "bedroom-right",
+      "name": "Спальня",
+      "area": 11.88,
+      "description": "Гостевая спальня или детская комната",
+      "features": [
+        "Естественное освещение",
+        "Место для кровати",
+        "Рабочий уголок"
+      ],
+      "image": "/rooms/6.Спальня.jpg",
+      "video": "/videos/rooms/6.Спальня.mp4"
+    },
+    {
+      "id": "bathroom-large",
+      "name": "Ванная",
+      "area": 8.47,
+      "description": "Основная ванная комната с современным оснащением",
+      "features": [
+        "Ванна",
+        "Душевая кабина",
+        "Раковина",
+        "Тёплый пол"
+      ],
+      "image": "/rooms/7.Ванная.jpg",
+      "video": "/videos/rooms/7.Ванная.mp4"
+    },
+    {
+      "id": "bathroom-small",
+      "name": "С/У",
+      "area": 4.63,
+      "description": "Компактный гостевой санузел",
+      "features": [
+        "Унитаз",
+        "Раковина",
+        "Зеркало"
+      ],
+      "image": "/rooms/9.Сан.узел.jpg",
+      "video": "/videos/rooms/9.Сан.узел.mp4"
+    },
+    {
+      "id": "boiler",
+      "name": "Котельная",
+      "area": 6.92,
+      "description": "Техническое помещение для инженерных систем",
+      "features": [
+        "Газовый котёл",
+        "Бойлер",
+        "Вентиляция"
+      ],
+      "image": "/rooms/8.Кладовая.jpg",
+      "video": "/videos/rooms/8.Кладовая.mp4"
+    },
+    {
+      "id": "storage",
+      "name": "Кладовая",
+      "area": 8.07,
+      "description": "Помещение для хранения вещей и инвентаря",
+      "features": [
+        "Стеллажи",
+        "Освещение",
+        "Вентиляция"
+      ],
+      "image": "/rooms/8.Кладовая.jpg",
+      "video": "/videos/rooms/8.Кладовая.mp4"
+    },
+    {
+      "id": "terrace",
+      "name": "Терраса",
+      "area": 26.27,
+      "description": "Просторная терраса для отдыха на свежем воздухе",
+      "features": [
+        "Зона барбекю",
+        "Мебель для отдыха",
+        "Освещение"
+      ],
+      "image": "/rooms/10.%20Терраса.jpg",
+      "video": "/videos/rooms/9.Терраса.mp4"
+    },
+    {
+      "id": "porch",
+      "name": "Крыльцо",
+      "area": 4.5,
+      "description": "Входная группа с навесом",
+      "features": [
+        "Навес",
+        "Освещение",
+        "Ступени"
+      ],
+      "image": "/rooms/11.Крыльцо.jpg",
+      "video": "/videos/rooms/11.Крыльцо.mp4"
+    },
+    {
+      "id": "kitchen",
+      "name": "Кухня",
+      "area": 12.04,
+      "description": "Функциональная рабочая зона кухни",
+      "features": [
+        "Современная техника",
+        "Рабочая поверхность",
+        "Кухонный остров"
+      ],
+      "image": "/rooms/4.%20Кухня.jpg",
+      "video": "/videos/rooms/4. Кухня.mp4"
+    }
+  ],
+  "exteriorImages": {
+    "day": {
+      "brick": {
+        "natural": [
+          "/houses/brick/natural/house_brick_roof1.jpg",
+          "/houses/brick/natural/house_brick_roof2.jpg",
+          "/houses/brick/natural/house_brick_roof3.jpg",
+          "/houses/brick/natural/house_brick_roof4.jpg"
+        ],
+        "soft": [
+          "/houses/brick/soft/house_brick_soft1.jpg",
+          "/houses/brick/soft/house_brick_soft2.jpg",
+          "/houses/brick/soft/house_brick_soft3.jpg",
+          "/houses/brick/soft/house_brick_soft4.jpg"
+        ],
+        "flat": [
+          "/houses/brick/flat/house_brick1.jpg",
+          "/houses/brick/flat/house_brick4.jpg",
+          "/houses/brick/flat/house_brick2.jpg",
+          "/houses/brick/flat/house_brick3.jpg"
+        ]
+      },
+      "combined": {
+        "natural": [
+          "/houses/combined/natural/house_roof1.jpg",
+          "/houses/combined/natural/house_roof2.jpg",
+          "/houses/combined/natural/house_roof3.jpg",
+          "/houses/combined/natural/house_roof4.jpg"
+        ],
+        "soft": [
+          "/houses/combined/soft/house_combined_soft1.jpg",
+          "/houses/combined/soft/house_combined_soft2.jpg",
+          "/houses/combined/soft/house_combined_soft3.jpg",
+          "/houses/combined/soft/house_combined_soft4.jpg"
+        ],
+        "flat": [
+          "/houses/combined/flat/house1.jpg",
+          "/houses/combined/flat/house4.jpg",
+          "/houses/combined/flat/house2.jpg"
+        ]
+      },
+      "ventilated": {
+        "natural": [
+          "/houses/ventilated/natural/house_vent_roof1.jpg",
+          "/houses/ventilated/natural/house_vent_roof2.jpg",
+          "/houses/ventilated/natural/house_vent_roof3.jpg",
+          "/houses/ventilated/natural/house_vent_roof4.jpg"
+        ],
+        "soft": [
+          "/houses/ventilated/soft/house_vent_soft1.jpg",
+          "/houses/ventilated/soft/house_vent_soft2.jpg",
+          "/houses/ventilated/soft/house_vent_soft3.jpg",
+          "/houses/ventilated/soft/house_vent_soft4.jpg"
+        ],
+        "flat": [
+          "/houses/ventilated/flat/house_vent1.jpg",
+          "/houses/ventilated/flat/house_vent2.jpg",
+          "/houses/ventilated/flat/house_vent3.jpg",
+          "/houses/ventilated/flat/house_vent4.jpg"
+        ]
+      }
+    },
+    "night": {
+      "brick": {
+        "natural": [
+          "/houses/night/brick/natural/house_brick_roof_night1.jpg",
+          "/houses/night/brick/natural/house_brick_roof_night2.jpg",
+          "/houses/night/brick/natural/house_brick_roof_night3.jpg",
+          "/houses/night/brick/natural/house_brick_roof_night4.jpg"
+        ],
+        "soft": [
+          "/houses/night/brick/soft/house_brick_soft_night1.jpg",
+          "/houses/night/brick/soft/house_brick_soft_night2.jpg",
+          "/houses/night/brick/soft/house_brick_soft_night3.jpg",
+          "/houses/night/brick/soft/house_brick_soft_night4.jpg"
+        ],
+        "flat": [
+          "/houses/night/brick/flat/house_brick_night1.jpg",
+          "/houses/night/brick/flat/house_brick_night2.jpg",
+          "/houses/night/brick/flat/house_brick_night3.jpg",
+          "/houses/night/brick/flat/house_brick_night4.jpg"
+        ]
+      },
+      "combined": {
+        "natural": [
+          "/houses/night/combined/natural/house_roof_night1.jpg",
+          "/houses/night/combined/natural/house_roof_night2.jpg",
+          "/houses/night/combined/natural/house_roof_night3.jpg",
+          "/houses/night/combined/natural/house_roof_night4.jpg"
+        ],
+        "soft": [
+          "/houses/night/combined/soft/house_combined_soft_night1.jpg",
+          "/houses/night/combined/soft/house_combined_soft_night2.jpg",
+          "/houses/night/combined/soft/house_combined_soft_night3.jpg",
+          "/houses/night/combined/soft/house_combined_soft_night4.jpg"
+        ],
+        "flat": [
+          "/houses/night/combined/flat/house_combined_night1.jpg",
+          "/houses/night/combined/flat/house_combined_night2.jpg",
+          "/houses/night/combined/flat/house_combined_night3.jpg",
+          "/houses/night/combined/flat/house_combined_night4.jpg"
+        ]
+      },
+      "ventilated": {
+        "natural": [
+          "/houses/night/ventilated/natural/house_vent_roof_night1.jpg",
+          "/houses/night/ventilated/natural/house_vent_roof_night2.jpg",
+          "/houses/night/ventilated/natural/house_vent_roof_night3.jpg",
+          "/houses/night/ventilated/natural/house_vent_roof_night4.jpg"
+        ],
+        "soft": [
+          "/houses/night/ventilated/soft/house_vent_soft_night1.jpg",
+          "/houses/night/ventilated/soft/house_vent_soft_night2.jpg",
+          "/houses/night/ventilated/soft/house_vent_soft_night3.jpg",
+          "/houses/night/ventilated/soft/house_vent_soft_night4.jpg"
+        ],
+        "flat": [
+          "/houses/night/ventilated/flat/house_vent_night1.jpg",
+          "/houses/night/ventilated/flat/house_vent_night2.jpg",
+          "/houses/night/ventilated/flat/house_vent_night3.jpg",
+          "/houses/night/ventilated/flat/house_vent_night4.jpg"
+        ]
+      }
+    }
+  },
+  "interiorImages": {
+    "brick": [
+      "/houses/interior/brick/1. Прихожая.jpg",
+      "/houses/interior/brick/2.Гардероб.jpg",
+      "/houses/interior/brick/3.Кухня-столовая.jpg",
+      "/houses/interior/brick/4. Кухня.jpg",
+      "/houses/interior/brick/5. Спальня.jpg",
+      "/houses/interior/brick/6.Спальня.jpg",
+      "/houses/interior/brick/7.Ванная.jpg",
+      "/houses/interior/brick/8.Кладовая.jpg",
+      "/houses/interior/brick/9.Сан.узел.jpg",
+      "/houses/interior/brick/9.Терраса.jpg",
+      "/houses/interior/brick/10. Терраса.jpg",
+      "/houses/interior/brick/11.Крыльцо.jpg"
+    ],
+    "combined": [
+      "/houses/interior/combined/1. Прихожая.jpg",
+      "/houses/interior/combined/2.Гардероб.jpg",
+      "/houses/interior/combined/3.Кухня-столовая.jpg",
+      "/houses/interior/combined/4. Кухня.jpg",
+      "/houses/interior/combined/5. Спальня.jpg",
+      "/houses/interior/combined/6.Спальня.jpg",
+      "/houses/interior/combined/7.Ванная.jpg",
+      "/houses/interior/combined/8.Кладовая.jpg",
+      "/houses/interior/combined/9.Сан.узел.jpg",
+      "/houses/interior/combined/9.Терраса.jpg",
+      "/houses/interior/combined/10. Терраса.jpg",
+      "/houses/interior/combined/11.Крыльцо.jpg"
+    ],
+    "ventilated": [
+      "/houses/interior/ventilated/1. Прихожая.jpg",
+      "/houses/interior/ventilated/2.Гардероб.jpg",
+      "/houses/interior/ventilated/3.Кухня-столовая.jpg",
+      "/houses/interior/ventilated/4. Кухня.jpg",
+      "/houses/interior/ventilated/5. Спальня.jpg",
+      "/houses/interior/ventilated/6.Спальня.jpg",
+      "/houses/interior/ventilated/7.Ванная.jpg",
+      "/houses/interior/ventilated/8.Кладовая.jpg",
+      "/houses/interior/ventilated/9.Сан.узел.jpg",
+      "/houses/interior/ventilated/9.Терраса.jpg",
+      "/houses/interior/ventilated/10. Терраса.jpg",
+      "/houses/interior/ventilated/11.Крыльцо.jpg"
+    ]
+  },
+  "videoMappings": {
+    "exterior": {
+      "/houses/brick/natural/house_brick_roof1.jpg": "/videos/houses/brick/natural/house_brick_roof1.mp4",
+      "/houses/brick/natural/house_brick_roof2.jpg": "/videos/houses/brick/natural/house_brick_roof2.mp4",
+      "/houses/brick/natural/house_brick_roof3.jpg": "/videos/houses/brick/natural/house_brick_roof3.mp4",
+      "/houses/brick/natural/house_brick_roof4.jpg": "/videos/houses/brick/natural/house_brick_roof4.mp4",
+      "/houses/brick/flat/house_brick1.jpg": "/videos/houses/brick/flat/house_brick1.mp4",
+      "/houses/brick/flat/house_brick2.jpg": "/videos/houses/brick/flat/house_brick2.mp4",
+      "/houses/brick/flat/house_brick3.jpg": "/videos/houses/brick/flat/house_brick3.mp4",
+      "/houses/brick/flat/house_brick4.jpg": "/videos/houses/brick/flat/house_brick4.mp4",
+      "/houses/night/brick/flat/house_brick_night1.jpg": "/videos/houses/brick/flat/house_brick_night1.mp4",
+      "/houses/night/brick/flat/house_brick_night2.jpg": "/videos/houses/brick/flat/house_brick_night2.mp4",
+      "/houses/night/brick/flat/house_brick_night3.jpg": "/videos/houses/brick/flat/house_brick_night3.mp4",
+      "/houses/night/brick/flat/house_brick_night4.jpg": "/videos/houses/brick/flat/house_brick_night4.mp4",
+      "/houses/combined/flat/house1.jpg": "/videos/houses/combined/flat/house1.mp4",
+      "/houses/combined/flat/house2.jpg": "/videos/houses/combined/flat/house2.mp4",
+      "/houses/combined/flat/house4.jpg": "/videos/houses/combined/flat/house4.mp4"
+    },
+    "interior": {
+      "/houses/interior/brick/1. Прихожая.jpg": "/videos/rooms/1. Прихожая.mp4",
+      "/houses/interior/brick/2.Гардероб.jpg": "/videos/rooms/2.Гардероб.mp4",
+      "/houses/interior/brick/3.Кухня-столовая.jpg": "/videos/rooms/3.Кухня-столовая.mp4",
+      "/houses/interior/brick/4. Кухня.jpg": "/videos/rooms/4. Кухня.mp4",
+      "/houses/interior/brick/5. Спальня.jpg": "/videos/rooms/5. Спальня.mp4",
+      "/houses/interior/brick/6.Спальня.jpg": "/videos/rooms/6.Спальня.mp4",
+      "/houses/interior/brick/7.Ванная.jpg": "/videos/rooms/7.Ванная.mp4",
+      "/houses/interior/brick/9.Терраса.jpg": "/videos/rooms/9.Терраса.mp4"
+    }
+  },
+  "qualitySteps": [
+    {
+      "img": "/houses/brick/natural/house_brick_roof1.jpg",
+      "img2": "/videos/quality/foundation.jpg",
+      "video": "/videos/quality/foundation.MOV",
+      "title": "Фундамент",
+      "desc": "Монолитная плита с гидроизоляцией и утеплением. Заливка бетона марки М300 с вибрированием для максимальной прочности."
+    },
+    {
+      "img": "/houses/brick/natural/house_brick_roof2.jpg",
+      "img2": "/videos/quality/masonry.jpg",
+      "video": "/videos/quality/masonry.MOV",
+      "title": "Кладка стен",
+      "desc": "Газобетон 400мм с армированием каждого 4-го ряда. Контроль геометрии лазерным уровнем на каждом этапе."
+    },
+    {
+      "img": "/houses/brick/natural/house_brick_roof3.jpg",
+      "img2": "/videos/quality/roof.jpg",
+      "video": "/videos/quality/roof.MOV",
+      "title": "Кровля",
+      "desc": "Стропильная система с утеплением 200мм и вентиляционным зазором. Монтаж пароизоляции и гидроизоляции."
+    },
+    {
+      "img": "/houses/combined/natural/house_roof1.jpg",
+      "img2": "/videos/quality/front.jpg",
+      "video": "/videos/quality/front.MOV",
+      "title": "Фасад",
+      "desc": "Облицовка клинкерным кирпичом с воздушным зазором 40мм. Установка гибких связей из нержавеющей стали."
+    }
+  ],
+  "pricing": [
+    {
+      "name": "Коробка дома",
+      "description": "Базовая комплектация",
+      "price": "8.5",
+      "pricePerM": "35 400",
+      "percent": 33,
+      "popular": false,
+      "features": [
+        "Фундамент монолитная плита",
+        "Стены из газобетона 400мм",
+        "Кровля с утеплением",
+        "Окна ПВХ двухкамерные",
+        "Входная дверь"
+      ],
+      "modelPath": "/models/house-box.glb"
+    },
+    {
+      "name": "Тёплый контур дома",
+      "description": "Рекомендуемый выбор",
+      "price": "12.5",
+      "pricePerM": "52 000",
+      "percent": 66,
+      "popular": true,
+      "features": [
+        "Всё из \"Коробки дома\"",
+        "Электрика полный монтаж",
+        "Отопление газовый котёл",
+        "Водоснабжение и канализация",
+        "Черновая отделка"
+      ],
+      "modelPath": "/models/warm-contour.glb"
+    },
+    {
+      "name": "Индивидуальная",
+      "description": "Максимальная комплектация",
+      "price": "18.9",
+      "pricePerM": "78 750",
+      "percent": 100,
+      "popular": false,
+      "features": [
+        "Всё из \"Тёплого контура\"",
+        "Инженерия",
+        "Внутренняя отделка",
+        "Сантехника и освещение",
+        "Готов к заселению"
+      ],
+      "modelPath": "/models/individual.glb"
+    }
+  ],
+  "youtubeVideos": [
+    {
+      "title": "Договор подряда или как принимать работы",
+      "videoId": "pgJvpLkjjns",
+      "telegramLink": "https://t.me/stroy_rk/220",
+      "previewVideo": "/videos/about/first_gf.MOV"
+    },
+    {
+      "title": "Ошибки при строительстве частного дома",
+      "videoId": "N5dd-nw5POY",
+      "telegramLink": "https://t.me/stroy_rk/82",
+      "previewVideo": "/videos/about/second_gf.MOV"
+    },
+    {
+      "title": "7 схем как подрядчики обманывают своих клиентов",
+      "videoId": "MCzTNJojgrs",
+      "telegramLink": "https://t.me/stroy_rk/303",
+      "previewVideo": "/videos/about/third_gf.MOV"
+    },
+    {
+      "title": "Про большие объекты…",
+      "videoId": "pgJvpLkjjns",
+      "telegramLink": "https://t.me/stroy_rk/425",
+      "previewVideo": "/videos/about/fourth_gf.MOV"
+    }
+  ],
+  "floorPlanTooltips": [
+    {
+      "name": "Кухня-гостиная",
+      "x": 49.7,
+      "y": 47.3
+    },
+    {
+      "name": "Спальня",
+      "x": 73.5,
+      "y": 17
+    },
+    {
+      "name": "Прихожая",
+      "x": 26,
+      "y": 41
+    },
+    {
+      "name": "Терраса",
+      "x": 49.9,
+      "y": 76.2
+    }
+  ],
+  "timing": {
+    "autoScrollInterval": 5000,
+    "stepDuration": 5000,
+    "pauseDuration": 8000,
+    "tooltipDuration": 3000
+  }
+}
